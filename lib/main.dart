@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:pomodoro2/task_container.dart';
+import 'gustav_klimt_variables.dart';
+import 'image_container.dart';
+import 'package:intl/intl.dart';
+
+
 
 void main() {
   runApp(const MyApp());
@@ -6,9 +13,12 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -28,17 +38,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int counter = 0;
-  final Color? textColor = Colors.white70;
-
-  //TODO 01: Make the all height, width... variable.
-
-  void _incrementCounter() {
-    setState(() {
-      counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,147 +45,45 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SizedBox(
-              child: Image.asset(
-                'assets/images/Gustav Klimt/1.jpg',
-                height: MediaQuery.of(context).size.height * 0.25,
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.fitWidth,
+            const ImageContainer(
+              imageUrl: 'assets/images/Gustav Klimt/1.jpg',
+              imageAlignment: Alignment(0, -1),
+              scaleOfImage: 1.2,
+            ),
+            Expanded(
+              child:SingleChildScrollView(
+                child: createTask()
               ),
-            ),
-            Column(
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.075,
-                  width: MediaQuery.of(context).size.width,
-                  child: DecoratedBox(
-                    decoration: const BoxDecoration(
-                        color: Color.fromRGBO(216, 162, 75, 1)
-                    ),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding:const EdgeInsets.all(10.0),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.25,
-                            child: Text(
-                              "Test",
-                              style: TextStyle(
-                                color: textColor,
-                                fontSize: 17,
-                              ),
-                              overflow: TextOverflow.fade,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding:const EdgeInsets.all(10.0),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.65,
-                            child: Text(
-                              "Test",
-                              style: TextStyle(
-                                color: textColor,
-                                fontSize: 17,
-                              ),
-                              overflow: TextOverflow.fade,
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.300,
-                  width: MediaQuery.of(context).size.width,
-                  child: DecoratedBox(
-                    decoration: const BoxDecoration(
-                        color: Color.fromRGBO(241, 197, 80, 1)
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Text(
-                        "Test",
-                        style: TextStyle(
-                          color: textColor,
-                          fontSize: 17,
-                        ),
-                        overflow: TextOverflow.fade,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.075,
-                  width: MediaQuery.of(context).size.width,
-                  child: DecoratedBox(
-                      decoration: const BoxDecoration(
-                          color: Color.fromRGBO(216, 162, 75, 1)
-                      ),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding:const EdgeInsets.all(10.0),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.25,
-                              child: Text(
-                                "Test",
-                                style: TextStyle(
-                                  color: textColor,
-                                  fontSize: 17,
-                                ),
-                                overflow: TextOverflow.fade,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding:const EdgeInsets.all(10.0),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.65,
-                              child: Text(
-                                "Test",
-                                style: TextStyle(
-                                  color: textColor,
-                                  fontSize: 17,
-                                ),
-                                overflow: TextOverflow.fade,
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                  ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.300,
-                  width: MediaQuery.of(context).size.width,
-                  child: DecoratedBox(
-                    decoration: const BoxDecoration(
-                        color: Color.fromRGBO(241, 197, 80, 1)
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(
-                        "Test",
-                        style: TextStyle(
-                          color: textColor,
-                          fontSize: 17,
-                        ),
-                        overflow: TextOverflow.fade,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            )
           ],
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
+}
+
+Column createTask() {
+  List<TaskContainer> newContainer = [];
+  DateTime dateTime = DateTime.now();
+  DateFormat dateFormat = DateFormat('yMd');
+  DateFormat dayFormat = DateFormat('EEEE');
+  String date = "";
+  String day = "";
+  for (int i = 0; i < 7; i++) {
+    date = dateFormat.format(dateTime);
+    day = dayFormat.format(dateTime);
+    newContainer.add(TaskContainer(
+      dayText: day,
+      dateText: date,
+      dateColor: GustavKlimtVariables.dateColor,
+      taskColor: GustavKlimtVariables.taskColor,
+      textColor: GustavKlimtVariables.textColor,
+    ));
+    dateTime = dateTime.add(const Duration(days: 1));
+  }
+  return Column(
+    children: [
+      ...newContainer
+    ],
+  );
 }
