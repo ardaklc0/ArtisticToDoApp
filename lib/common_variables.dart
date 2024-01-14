@@ -8,4 +8,5 @@ class Variables {
  static const double heightProportionOfTaskContainer = 0.3;
  static EdgeInsets fixedEdgeInsets = const EdgeInsets.all(10.0);
  static double textSize = 17.0;
+ static double inputTextSize = 14.0;
 }

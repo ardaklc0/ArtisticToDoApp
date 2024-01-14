@@ -16,7 +16,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
@@ -25,7 +24,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+          );
   }
 }
 
@@ -41,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -50,10 +50,8 @@ class _MyHomePageState extends State<MyHomePage> {
               imageAlignment: Alignment(0, -1),
               scaleOfImage: 1.2,
             ),
-            Expanded(
-              child:SingleChildScrollView(
-                child: createTask()
-              ),
+            Flexible(
+              child:createTask(),
             )
           ],
         ),
@@ -62,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-Column createTask() {
+SingleChildScrollView createTask() {
   List<TaskContainer> newContainer = [];
   DateTime dateTime = DateTime.now();
   DateFormat dateFormat = DateFormat('yMd');
@@ -81,9 +79,11 @@ Column createTask() {
     ));
     dateTime = dateTime.add(const Duration(days: 1));
   }
-  return Column(
-    children: [
-      ...newContainer
-    ],
+  return SingleChildScrollView(
+    child: Column(
+      children: [
+        ...newContainer
+      ],
+    )
   );
 }
