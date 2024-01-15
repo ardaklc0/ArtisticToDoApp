@@ -41,7 +41,7 @@ class TaskContainer extends StatelessWidget {
                             dayText,
                             style: TextStyle(
                               color: GustavKlimtVariables.textColor,
-                              fontSize: Variables.textSize,
+                              fontSize: deviceWidth * 0.04,
                             ),
                             overflow: TextOverflow.fade,
                           ),
@@ -55,7 +55,7 @@ class TaskContainer extends StatelessWidget {
                             dateText,
                             style: TextStyle(
                               color: GustavKlimtVariables.textColor,
-                              fontSize: Variables.textSize,
+                              fontSize: deviceWidth * 0.04 ,
                             ),
                             overflow: TextOverflow.fade,
                           ),
@@ -91,12 +91,12 @@ class TaskContainer extends StatelessWidget {
                     ],
                   ),
                 ),
-                            ),
               ),
+            ),
           ),
         ),
-              ],
-            );
+      ],
+    );
   }
 }
 
