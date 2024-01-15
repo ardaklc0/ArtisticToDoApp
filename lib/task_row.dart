@@ -27,6 +27,8 @@ class _TaskRowState extends State<TaskRow> {
 
   @override
   Widget build(BuildContext context) {
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceHeight = MediaQuery.of(context).size.height;
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
@@ -41,7 +43,7 @@ class _TaskRowState extends State<TaskRow> {
     return Row(
       children: [
         SizedBox(
-          width: MediaQuery.of(context).size.width * 0.80,
+          width: deviceWidth * 0.80,
           child: Focus(
             focusNode: _focus,
             onFocusChange: (value) {
@@ -53,8 +55,8 @@ class _TaskRowState extends State<TaskRow> {
               maxLines: null,
               autofocus: true,
               style: TextStyle(
-                color: GustavKlimtVariables.textColor,
-                fontSize: Variables.inputTextSize,
+                fontSize: deviceWidth * 0.035,
+                decoration: isChecked ? TextDecoration.lineThrough : TextDecoration.none,
               ),
             ),
           ),
@@ -62,7 +64,7 @@ class _TaskRowState extends State<TaskRow> {
         Padding(
           padding: Variables.fixedEdgeInsets,
           child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.10,
+            width: deviceWidth * 0.10,
             child: Checkbox(
               checkColor: Colors.white,
               fillColor: MaterialStateProperty.resolveWith(getColor),
