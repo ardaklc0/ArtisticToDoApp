@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pomodoro2/task_row.dart';
 import 'common_variables.dart';
-import 'gustav_klimt_variables.dart';
 
 class TaskContainer extends StatelessWidget {
-  final Color? dateColor;
+  final Color dateColor;
   final Color? taskColor;
   final Color? textColor;
   final String dayText;
@@ -40,7 +38,7 @@ class TaskContainer extends StatelessWidget {
                           child: Text(
                             dayText,
                             style: TextStyle(
-                              color: GustavKlimtVariables.textColor,
+                              color: textColor,
                               fontSize: deviceWidth * 0.04,
                             ),
                             overflow: TextOverflow.fade,
@@ -54,7 +52,7 @@ class TaskContainer extends StatelessWidget {
                           child: Text(
                             dateText,
                             style: TextStyle(
-                              color: GustavKlimtVariables.textColor,
+                              color: textColor,
                               fontSize: deviceWidth * 0.04 ,
                             ),
                             overflow: TextOverflow.fade,
@@ -64,7 +62,7 @@ class TaskContainer extends StatelessWidget {
                     ],
                   )
               ),
-            ),
+            ), //DateContainer
             SizedBox(
               height: deviceHeight * Variables.heightProportionOfTaskContainer,
               width: deviceWidth,
@@ -79,22 +77,41 @@ class TaskContainer extends StatelessWidget {
                 },
                 child: Padding(
                   padding: Variables.fixedEdgeInsets,
-                  child: const SingleChildScrollView(
+                  child: SingleChildScrollView(
                     keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                     child: Column(
                       children: [
-                        TaskRow(),
-                        TaskRow(),
-                        TaskRow(),
-                        TaskRow(),
-                        TaskRow(),
+                        TaskRow(
+                          textColor: textColor,
+                          checkboxColor: dateColor,
+                        ),
+                        TaskRow(
+                          textColor: textColor,
+                          checkboxColor: dateColor,
+                        ),
+                        TaskRow(
+                          textColor: textColor,
+                          checkboxColor: dateColor,
+                        ),
+                        TaskRow(
+                          textColor: textColor,
+                          checkboxColor: dateColor,
+                        ),
+                        TaskRow(
+                          textColor: textColor,
+                          checkboxColor: dateColor,
+                        ),
+                        TaskRow(
+                          textColor: textColor,
+                          checkboxColor: dateColor,
+                        )
                     ],
                   ),
                 ),
               ),
             ),
           ),
-        ),
+        ), //TaskContainer
       ],
     );
   }

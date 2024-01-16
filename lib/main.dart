@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:pomodoro2/GustavKlimtCreation/gustav_klimt.dart';
 import 'package:pomodoro2/task_container.dart';
-import 'gustav_klimt_variables.dart';
-import 'image_container.dart';
+import 'OsmanHamdiCreation/osman_hamdi.dart';
 import 'package:intl/intl.dart';
 
 
@@ -23,44 +22,12 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-          );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const ImageContainer(
-              imageUrl: 'assets/images/Gustav Klimt/1.jpg',
-              imageAlignment: Alignment(0, -1),
-              scaleOfImage: 1.2,
-            ),
-            Flexible(
-              child:createTask(),
-            )
-          ],
-        ),
-      ),
+      home: const GustavKlimt(title: 'Gustav Klimt Home Page'),
     );
   }
 }
 
-SingleChildScrollView createTask() {
+SingleChildScrollView createTask(Color dateColor, Color? taskColor, Color? textColor) {
   List<TaskContainer> newContainer = [];
   DateTime dateTime = DateTime.now();
   DateFormat dateFormat = DateFormat('yMd');
@@ -73,17 +40,17 @@ SingleChildScrollView createTask() {
     newContainer.add(TaskContainer(
       dayText: day,
       dateText: date,
-      dateColor: GustavKlimtVariables.dateColor,
-      taskColor: GustavKlimtVariables.taskColor,
-      textColor: GustavKlimtVariables.textColor,
+      dateColor: dateColor,
+      taskColor: taskColor,
+      textColor: textColor,
     ));
     dateTime = dateTime.add(const Duration(days: 1));
   }
   return SingleChildScrollView(
-    child: Column(
-      children: [
-        ...newContainer
-      ],
-    )
+      child: Column(
+        children: [
+          ...newContainer
+        ],
+      )
   );
 }
