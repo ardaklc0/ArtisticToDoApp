@@ -14,16 +14,17 @@ class GustavKlimt extends StatefulWidget {
 class _GustavKlimtState extends State<GustavKlimt> {
   @override
   Widget build(BuildContext context) {
+    final double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const ImageContainer(
+            ImageContainer(
               imageUrl: 'assets/images/Gustav Klimt/1.jpg',
-              imageAlignment: Alignment(0, -1),
-              scaleOfImage: 1.2,
+              imageAlignment: const Alignment(0, -1),
+              scaleOfImage: deviceWidth * 0.003,
             ),
             Flexible(
               child: createTask(
@@ -34,6 +35,15 @@ class _GustavKlimtState extends State<GustavKlimt> {
             )
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: GustavKlimtVariables.dateColor,
+        child: const Icon(
+            Icons.home_filled
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
       ),
     );
   }

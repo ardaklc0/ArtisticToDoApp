@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pomodoro2/GustavKlimtCreation/gustav_klimt.dart';
+import 'package:pomodoro2/MonetCreation/monet.dart';
+import 'package:pomodoro2/home_page.dart';
 import 'package:pomodoro2/task_container.dart';
 import 'OsmanHamdiCreation/osman_hamdi.dart';
 import 'package:intl/intl.dart';
@@ -22,7 +24,13 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const GustavKlimt(title: 'Gustav Klimt Home Page'),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const HomePage(),
+        '/gustav_klimt': (context) => const GustavKlimt(title: 'Gustav Klimt Home Page'),
+        '/osman_hamdi': (context) => const OsmanHamdi(title: 'Osman Hamdi Page'),
+        '/monet': (context) => const Monet(title: 'Monet Page')
+      },
     );
   }
 }

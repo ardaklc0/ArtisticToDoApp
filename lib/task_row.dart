@@ -62,8 +62,15 @@ class _TaskRowState extends State<TaskRow> {
                 maxLines: null,
                 autofocus: true,
                 decoration: InputDecoration(
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                        color: widget.checkboxColor,
+                        width: 1.5),
+                  ),
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: widget.checkboxColor, width: 1.5),
+                    borderSide: BorderSide(
+                      color: widget.checkboxColor,
+                      width: 1.5),
                   ),
                 ),
                 style: TextStyle(
