@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'common_variables.dart';
-import 'gustav_klimt_variables.dart';
 
 class TaskRow extends StatefulWidget {
-  const TaskRow({super.key});
+  final Color? textColor;
+  final Color checkboxColor;
+  const TaskRow({super.key, required this.textColor, required this.checkboxColor});
   @override
   State<TaskRow> createState() => _TaskRowState();
 }
@@ -28,7 +28,6 @@ class _TaskRowState extends State<TaskRow> {
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
-    final double deviceHeight = MediaQuery.of(context).size.height;
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
@@ -38,7 +37,7 @@ class _TaskRowState extends State<TaskRow> {
       if (states.any(interactiveStates.contains)) {
         return Colors.blue;
       }
-      return const Color.fromRGBO(216, 162, 75, 1);
+      return widget.checkboxColor;
     }
     return Row(
       children: [
@@ -49,14 +48,29 @@ class _TaskRowState extends State<TaskRow> {
             onFocusChange: (value) {
               print(_controller.text);
             },
-            child: TextField(
-              textCapitalization: TextCapitalization.sentences,
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              autofocus: true,
-              style: TextStyle(
-                fontSize: deviceWidth * 0.035,
-                decoration: isChecked ? TextDecoration.lineThrough : TextDecoration.none,
+            child: Theme(
+              data: Theme.of(context).copyWith(
+                textSelectionTheme: TextSelectionThemeData(
+                  cursorColor: widget.checkboxColor,
+                  selectionColor: widget.checkboxColor,
+                  selectionHandleColor: widget.checkboxColor,
+                ),
+              ),
+              child: TextField(
+                textCapitalization: TextCapitalization.sentences,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                autofocus: true,
+                decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: widget.checkboxColor, width: 1.5),
+                  ),
+                ),
+                style: TextStyle(
+                  fontSize: deviceWidth * 0.035,
+                  decoration: isChecked ? TextDecoration.lineThrough : TextDecoration.none,
+                  color: widget.textColor,
+                ),
               ),
             ),
           ),
