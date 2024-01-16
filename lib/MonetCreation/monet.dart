@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import '../image_container.dart';
+import 'package:pomodoro2/MonetCreation/monet_variables.dart';
 import '../main.dart';
-import 'osman_hamdi_variables.dart';
+import '../image_container.dart';
 
-class OsmanHamdi extends StatefulWidget {
-  const OsmanHamdi({super.key, required this.title});
+class Monet extends StatefulWidget {
+  const Monet({super.key, required this.title});
   final String title;
 
   @override
-  State<OsmanHamdi> createState() => _OsmanHamdiState();
+  State<Monet> createState() => _MonetState();
 }
 
-class _OsmanHamdiState extends State<OsmanHamdi> {
+class _MonetState extends State<Monet> {
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
@@ -22,24 +22,24 @@ class _OsmanHamdiState extends State<OsmanHamdi> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ImageContainer(
-              imageUrl: 'assets/images/Osman Hamdi Bey/1.jpg',
+              imageUrl: 'assets/images/Monet/1.jpg',
               imageAlignment: const Alignment(0, -1),
-              scaleOfImage: deviceWidth * 0.003,
+              scaleOfImage: deviceWidth * 0.009,
             ),
             Flexible(
               child: createTask(
-                OsmanHamdiVariables.dateColor,
-                OsmanHamdiVariables.taskColor,
-                OsmanHamdiVariables.textColor,
+                MonetVariables.dateColor,
+                MonetVariables.taskColor,
+                MonetVariables.textColor,
               ),
             )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: OsmanHamdiVariables.dateColor,
+        backgroundColor: MonetVariables.dateColor,
         child: const Icon(
-          Icons.home_filled
+            Icons.home_filled
         ),
         onPressed: () {
           Navigator.pop(context);
