@@ -3,10 +3,12 @@ import 'package:pomodoro2/GustavKlimtCreation/gustav_klimt.dart';
 import 'package:pomodoro2/MonetCreation/monet.dart';
 import 'package:pomodoro2/home_page.dart';
 import 'package:pomodoro2/task_container.dart';
+import 'package:pomodoro2/task_entity.dart';
+import 'package:pomodoro2/task_service.dart';
+import 'package:sqflite/sqflite.dart';
 import 'OsmanHamdiCreation/osman_hamdi.dart';
 import 'package:intl/intl.dart';
-
-
+import 'package:path/path.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,7 +37,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-SingleChildScrollView createTask(Color dateColor, Color? taskColor, Color? textColor) {
+Future<SingleChildScrollView> createTask(Color dateColor, Color? taskColor, Color? textColor) async {
   List<TaskContainer> newContainer = [];
   DateTime dateTime = DateTime.now();
   DateFormat dateFormat = DateFormat('yMd');
@@ -51,6 +53,7 @@ SingleChildScrollView createTask(Color dateColor, Color? taskColor, Color? textC
       dateColor: dateColor,
       taskColor: taskColor,
       textColor: textColor,
+      tasks: await getTasks(),
     ));
     dateTime = dateTime.add(const Duration(days: 1));
   }

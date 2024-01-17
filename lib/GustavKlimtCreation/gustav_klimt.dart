@@ -27,11 +27,22 @@ class _GustavKlimtState extends State<GustavKlimt> {
               scaleOfImage: deviceWidth * 0.003,
             ),
             Flexible(
-              child: createTask(
-                GustavKlimtVariables.dateColor,
-                GustavKlimtVariables.taskColor,
-                GustavKlimtVariables.textColor,
-              ),
+              child: FutureBuilder<Widget>(
+                future: createTask(
+                  GustavKlimtVariables.dateColor,
+                  GustavKlimtVariables.taskColor,
+                  GustavKlimtVariables.textColor,
+                ),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return snapshot.data ?? Container();
+                  }
+                },
+              )
             )
           ],
         ),

@@ -27,11 +27,22 @@ class _MonetState extends State<Monet> {
               scaleOfImage: deviceWidth * 0.009,
             ),
             Flexible(
-              child: createTask(
-                MonetVariables.dateColor,
-                MonetVariables.taskColor,
-                MonetVariables.textColor,
-              ),
+                child: FutureBuilder<Widget>(
+                  future: createTask(
+                    MonetVariables.dateColor,
+                    MonetVariables.taskColor,
+                    MonetVariables.textColor,
+                  ),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      return snapshot.data ?? Container();
+                    }
+                  },
+                )
             )
           ],
         ),
