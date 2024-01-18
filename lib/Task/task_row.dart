@@ -87,10 +87,10 @@ class _TaskRowState extends State<TaskRow> {
                     print("Error creating new task: $error");
                   }
                 }
-                List<Task> tasks = await getTasks(1);
-                tasks.forEach((element) {
+                List<Task> tasks = await getTasks(widget.plannerId);
+                for (var element in tasks) {
                   print(element);
-                });
+                }
               }
             },
             focusNode: _focus,

@@ -13,16 +13,11 @@ class OsmanHamdi extends StatefulWidget {
 }
 
 class _OsmanHamdiState extends State<OsmanHamdi> {
-  late Future<SingleChildScrollView> taskFuture;
 
   @override
   void initState(){
     super.initState();
-    taskFuture = createTask(
-      OsmanHamdiVariables.dateColor,
-      OsmanHamdiVariables.taskColor,
-      OsmanHamdiVariables.textColor,
-    );
+
   }
 
   @override
@@ -39,20 +34,7 @@ class _OsmanHamdiState extends State<OsmanHamdi> {
               imageUrl: 'assets/images/Osman Hamdi Bey/1.jpg',
               imageAlignment: Alignment(0, -1),
             ),
-            Flexible(
-                child: FutureBuilder<SingleChildScrollView>(
-                  future: taskFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      return snapshot.data ?? Container();
-                    }
-                  },
-                )
-            )
+
           ],
         ),
       ),
