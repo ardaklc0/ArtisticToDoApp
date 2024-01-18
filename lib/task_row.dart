@@ -56,42 +56,41 @@ class _TaskRowState extends State<TaskRow> {
         SizedBox(
           width: deviceWidth * 0.80,
           child: Focus(
-            focusNode: _focus,
             onFocusChange: (value) async {
-              bool isControllerEmpty = _controller.text != "" ? true : false ;
-              bool isDateTextEmpty = widget.dateText != "" ? true : false;
-              bool isControllerTextEqualToWidgetText = _controller.text != widget.text ? false : true;
-              bool isTaskNull = widget.task == null ? true : false;
-
               String dayFormat = "";
-
-              if (isTaskNull) {
-                if (isDateTextEmpty) {
+              if (_controller.text.isNotEmpty) {
+                if (widget.dateText == null) {
                   DateTime dateTime = DateTime.now();
                   dayFormat = DateFormat('yMd').format(dateTime).toString();
                 } else {
                   dayFormat = widget.dateText!;
                 }
-                var task = Task(
-                  taskDescription: _controller.text,
-                  creationDate: dayFormat,
-                );
-                await insertTask(task);
-                List<Task> tasks = await getTasks();
-                tasks.forEach((element) {
-                  print(element);
-                });
-              } else {
-                if (isControllerTextEqualToWidgetText) {
+                if (widget.task != null) {
                   var existingTask = Task(
-                    id: widget.task?.id,
+                    id: widget.task!.id,
                     creationDate: widget.task!.creationDate,
                     taskDescription: _controller.text,
                   );
                   await updateTask(existingTask);
+                  print("Updated existing task: $existingTask");
+                } else {
+                  var newTask = Task(
+                    taskDescription: _controller.text,
+                    creationDate: dayFormat,
+                  );
+                  try {
+                    await insertTask(newTask);
+                  } catch (error) {
+                    print("Error creating new task: $error");
+                  }
                 }
+                List<Task> tasks = await getTasks();
+                tasks.forEach((element) {
+                  print(element);
+                });
               }
             },
+            focusNode: _focus,
             child: Theme(
               data: Theme.of(context).copyWith(
                 textSelectionTheme: TextSelectionThemeData(
