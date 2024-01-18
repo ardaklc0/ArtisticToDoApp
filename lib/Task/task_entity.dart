@@ -21,6 +21,6 @@ class Task {
   }
   @override
   String toString() {
-    return 'Task{id: $id, creation_date: $creationDate, task_description: $taskDescription, task_id: $plannerId}';
+    return 'Task{id: $id, creation_date: $creationDate, task_description: $taskDescription, planner_id: $plannerId}';
   }
 }

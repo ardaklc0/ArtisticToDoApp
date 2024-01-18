@@ -6,8 +6,9 @@ import '../main.dart';
 import '../image_container.dart';
 
 class VanGogh extends StatefulWidget {
-  const VanGogh({super.key, required this.title});
+  const VanGogh({super.key, required this.title, this.plannerId});
   final String title;
+  final int? plannerId;
 
   @override
   State<VanGogh> createState() => _VanGoghState();
@@ -19,7 +20,9 @@ class _VanGoghState extends State<VanGogh> {
   @override
   void initState(){
     super.initState();
-    taskFuture = createTask(
+    taskFuture = createPlanner(
+      "1/18/2024",
+      widget.plannerId!,
       VanGoghVariables.dateColor,
       VanGoghVariables.taskColor,
       VanGoghVariables.textColor,

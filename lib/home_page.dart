@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pomodoro2/CreationPage/planner_service.dart';
 import 'package:pomodoro2/Task/task_service.dart';
+import 'package:pomodoro2/VanGoghCreation/van_gogh.dart';
 import 'package:pomodoro2/VanGoghCreation/van_gogh_variables.dart';
 import 'package:pomodoro2/main.dart';
 
@@ -152,45 +153,49 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
 
-Future<void> createVanGogh() async {
-  DateTime dateTime = DateTime.now();
-  String dayFormat = DateFormat('yMd').format(dateTime).toString();
-  Planner planner = Planner(
-      creationDate: dayFormat,
-      plannerArtist: "VanGogh"
-  );
-  await insertPlanner(planner);
-}
-
-Future<List<Padding>> fetchPlanners() async {
-  var planners = await getPlanners();
-  List<Padding> plannerContainers = [];
-  final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
-    foregroundColor: Colors.white,
-    backgroundColor: Colors.black,
-  );
-
-  for (var element in planners) {
-    plannerContainers.add(
-      Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: ElevatedButton(
-          style: raisedButtonStyle,
-          onPressed: () async {
-            createPlanner(
-              element.creationDate,
-              element.id!,
-              VanGoghVariables.dateColor,
-              VanGoghVariables.taskColor,
-              VanGoghVariables.textColor,
-            );
-          },
-          child: Text('Van Gogh ${element.id} ${element.creationDate} ${element.plannerArtist}'),
-        ),
-      ),
-    );
+  void goToVanGogh(int plannerId) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return VanGogh(title: "Van Gogh", plannerId: plannerId);
+    }));
   }
-  return plannerContainers;
+
+  Future<void> createVanGogh() async {
+    DateTime dateTime = DateTime.now();
+    String dayFormat = DateFormat('yMd').format(dateTime).toString();
+    Planner planner = Planner(
+        creationDate: dayFormat,
+        plannerArtist: "VanGogh"
+    );
+    await insertPlanner(planner);
+  }
+
+  Future<List<Padding>> fetchPlanners() async {
+    var planners = await getPlanners();
+    List<Padding> plannerContainers = [];
+    final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
+      foregroundColor: Colors.white,
+      backgroundColor: Colors.black,
+    );
+
+    for (var element in planners) {
+      plannerContainers.add(
+        Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: ElevatedButton(
+            style: raisedButtonStyle,
+            onPressed: () async {
+              goToVanGogh(element.id!);
+            },
+            child: Text('Van Gogh ${element.id} ${element.creationDate} ${element.plannerArtist}'),
+          ),
+        ),
+      );
+    }
+    return plannerContainers;
+  }
+
+
 }
+
+

@@ -13,16 +13,10 @@ class SalvadorDali extends StatefulWidget {
 }
 
 class _SalvadorDaliState extends State<SalvadorDali> {
-  late Future<SingleChildScrollView> taskFuture;
 
   @override
   void initState(){
     super.initState();
-    taskFuture = createTask(
-      SalvadorDaliVariables.dateColor,
-      SalvadorDaliVariables.taskColor,
-      SalvadorDaliVariables.textColor,
-    );
   }
 
   @override
@@ -39,20 +33,6 @@ class _SalvadorDaliState extends State<SalvadorDali> {
               imageUrl: 'assets/images/Dali/6.jpg',
               imageAlignment: Alignment(0, -1),
             ),
-            Flexible(
-                child: FutureBuilder<SingleChildScrollView>(
-                  future: taskFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      return snapshot.data ?? Container();
-                    }
-                  },
-                )
-            )
           ],
         ),
       ),

@@ -12,16 +12,11 @@ class Monet extends StatefulWidget {
 }
 
 class _MonetState extends State<Monet> {
-  late Future<SingleChildScrollView> taskFuture;
 
   @override
   void initState(){
     super.initState();
-    taskFuture = createTask(
-      MonetVariables.dateColor,
-      MonetVariables.taskColor,
-      MonetVariables.textColor,
-    );
+
   }
 
   @override
@@ -38,20 +33,7 @@ class _MonetState extends State<Monet> {
               imageUrl: 'assets/images/Monet/1.jpg',
               imageAlignment: Alignment(0, -1),
             ),
-            Flexible(
-                child: FutureBuilder<SingleChildScrollView>(
-                  future: taskFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      return snapshot.data ?? Container();
-                    }
-                  },
-                )
-            )
+
           ],
         ),
       ),
