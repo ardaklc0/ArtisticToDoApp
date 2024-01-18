@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pomodoro2/GustavKlimtCreation/gustav_klimt.dart';
 import 'package:pomodoro2/MonetCreation/monet.dart';
 import 'package:pomodoro2/home_page.dart';
-import 'package:pomodoro2/task_container.dart';
-import 'package:pomodoro2/task_service.dart';
+import 'package:pomodoro2/Task/task_container.dart';
+import 'package:pomodoro2/Task/task_service.dart';
 import 'OsmanHamdiCreation/osman_hamdi.dart';
 import 'package:intl/intl.dart';
 import 'PicassoCreation/picasso.dart';
@@ -33,12 +33,45 @@ class MyApp extends StatelessWidget {
         '/osman_hamdi': (context) => const OsmanHamdi(title: 'Osman Hamdi Page'),
         '/monet': (context) => const Monet(title: 'Monet Page'),
         '/picasso': (context) => const Picasso(title: 'Picasso Home Page'),
-        '/salvador-dali': (context) => const SalvadorDali(title: 'Salvador Dali Page'),
-        '/van-gogh': (context) => const VanGogh(title: 'Van Gogh Page')
+        '/salvador_dali': (context) => const SalvadorDali(title: 'Salvador Dali Page'),
+        '/van_gogh': (context) => const VanGogh(title: 'Van Gogh Page'),
       },
     );
   }
 }
+
+Future<SingleChildScrollView> createPlanner(String dateTime, int plannerId, Color dateColor, Color? taskColor, Color? textColor) async {
+  List<TaskContainer> newContainer = [];
+  DateTime dateTime = DateTime.now();
+  DateFormat dateFormat = DateFormat('yMd');
+  DateFormat dayFormat = DateFormat('EEEE');
+  String date = "";
+  String day = "";
+
+  for (int i = 0; i < 7; i++) {
+    date = dateFormat.format(dateTime);
+    day = dayFormat.format(dateTime);
+    newContainer.add(TaskContainer(
+        dayText: day,
+        dateText: date,
+        dateColor: dateColor,
+        taskColor: taskColor,
+        textColor: textColor,
+        tasks: await getTasks(plannerId),
+        plannerId: plannerId
+    ));
+    dateTime = dateTime.add(const Duration(days: 1));
+  }
+  return SingleChildScrollView(
+      child: Column(
+        children: [
+          ...newContainer
+        ],
+      )
+  );
+}
+
+
 
 Future<SingleChildScrollView> createTask(Color dateColor, Color? taskColor, Color? textColor) async {
   List<TaskContainer> newContainer = [];
@@ -56,7 +89,8 @@ Future<SingleChildScrollView> createTask(Color dateColor, Color? taskColor, Colo
       dateColor: dateColor,
       taskColor: taskColor,
       textColor: textColor,
-      tasks: await getTasks(),
+      tasks: await getTasks(1),
+      plannerId: 1
     ));
     dateTime = dateTime.add(const Duration(days: 1));
   }
