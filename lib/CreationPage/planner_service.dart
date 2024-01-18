@@ -1,8 +1,7 @@
-import 'dart:async';
-import 'package:flutter/widgets.dart';
-import 'package:path/path.dart';
-import 'package:pomodoro2/task_entity.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:pomodoro2/CreationPage/planner_entity.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 Future<Database> initializeDatabase() async {
   String path = join(await getDatabasesPath(), 'task_database.db');
@@ -11,52 +10,51 @@ Future<Database> initializeDatabase() async {
     path,
     onCreate: (db, version) async {
       await db.execute(
-        'CREATE TABLE IF NOT EXISTS tasks(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, creation_date TEXT, task_description TEXT)',
+        'CREATE TABLE IF NOT EXISTS planners(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, creation_date TEXT, planner_artist TEXT)',
       );
     },
     version: 2,
   );
 }
-Future<void> insertTask(Task task) async {
+Future<void> insertPlanner(Planner planner) async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = await initializeDatabase();
   final db = await database;
   await db.insert(
-    'tasks',
-    task.toMap(),
-    conflictAlgorithm: ConflictAlgorithm.replace,
-  );
+    'planners',
+    planner.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace);
 }
-Future<List<Task>> getTasks() async {
+Future<List<Planner>> getPlanners() async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = await initializeDatabase();
   final db = await database;
-  final List<Map<String, dynamic>> maps = await db.query('tasks');
+  final List<Map<String, dynamic>> maps = await db.query('planners');
   return List.generate(maps.length, (i) {
-    return Task(
-      id: maps[i]['id'] as int,
-      taskDescription: maps[i]['task_description'] as String,
-      creationDate: maps[i]['creation_date'] as String,
+    return Planner(
+        id: maps[i]['id'] as int,
+        creationDate: maps[i]['creation_date'] as String,
+        plannerArtist: maps[i]['planner_artist'] as String
     );
   });
 }
-Future<void> updateTask(Task task) async {
+Future<void> updatePlanner(Planner planner) async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = await initializeDatabase();
   final db = await database;
   await db.update(
-    'tasks',
-    task.toMap(),
+    'planners',
+    planner.toMap(),
     where: 'id = ?',
-    whereArgs: [task.id],
+    whereArgs: [planner.id],
   );
 }
-Future<void> deleteTask(int id) async {
+Future<void> deletePlanner(int id) async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = await initializeDatabase();
   final db = await database;
   await db.delete(
-    'tasks',
+    'planners',
     where: 'id = ?',
     whereArgs: [id],
   );

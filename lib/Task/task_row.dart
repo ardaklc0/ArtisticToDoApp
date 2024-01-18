@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pomodoro2/task_entity.dart';
-import 'package:pomodoro2/task_service.dart';
-import 'common_variables.dart';
+import 'package:pomodoro2/Task/task_entity.dart';
+import 'package:pomodoro2/Task/task_service.dart';
+import '../common_variables.dart';
 
 class TaskRow extends StatefulWidget {
   final Color? textColor;
@@ -10,7 +10,8 @@ class TaskRow extends StatefulWidget {
   final String? text;
   final String? dateText;
   final Task? task;
-  const TaskRow({super.key, required this.textColor, required this.checkboxColor, this.text, this.dateText, this.task});
+  final int plannerId;
+  const TaskRow({super.key, required this.textColor, required this.checkboxColor, this.text, this.dateText, this.task, required this.plannerId});
   @override
   State<TaskRow> createState() => _TaskRowState();
 }
@@ -70,6 +71,7 @@ class _TaskRowState extends State<TaskRow> {
                     id: widget.task!.id,
                     creationDate: widget.task!.creationDate,
                     taskDescription: _controller.text,
+                    plannerId: widget.plannerId
                   );
                   await updateTask(existingTask);
                   print("Updated existing task: $existingTask");
@@ -77,6 +79,7 @@ class _TaskRowState extends State<TaskRow> {
                   var newTask = Task(
                     taskDescription: _controller.text,
                     creationDate: dayFormat,
+                    plannerId: widget.plannerId
                   );
                   try {
                     await insertTask(newTask);
@@ -84,7 +87,7 @@ class _TaskRowState extends State<TaskRow> {
                     print("Error creating new task: $error");
                   }
                 }
-                List<Task> tasks = await getTasks();
+                List<Task> tasks = await getTasks(1);
                 tasks.forEach((element) {
                   print(element);
                 });
@@ -105,7 +108,7 @@ class _TaskRowState extends State<TaskRow> {
                 controller: _controller,
 
                 maxLines: null,
-                autofocus: true,
+                autofocus: false,
                 decoration: InputDecoration(
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pomodoro2/task_entity.dart';
-import 'package:pomodoro2/task_row.dart';
-import 'package:pomodoro2/task_service.dart';
-import 'common_variables.dart';
+import 'package:pomodoro2/Task/task_entity.dart';
+import 'package:pomodoro2/Task/task_row.dart';
+import 'package:pomodoro2/Task/task_service.dart';
+import '../common_variables.dart';
 
 class TaskContainer extends StatefulWidget {
   final Color dateColor;
@@ -12,7 +12,8 @@ class TaskContainer extends StatefulWidget {
   final String dayText;
   final String dateText;
   final List<Task>? tasks;
-  const TaskContainer({super.key, required this.dateColor, required this.taskColor, required this.textColor, required this.dayText, required this.dateText, this.tasks});
+  final int plannerId;
+  const TaskContainer({super.key, required this.dateColor, required this.taskColor, required this.textColor, required this.dayText, required this.dateText, this.tasks, required this.plannerId});
 
   @override
   State<TaskContainer> createState() => _TaskContainerState();
@@ -28,20 +29,18 @@ class _TaskContainerState extends State<TaskContainer> {
   }
 
   void initializeTasks() {
-    widget.tasks?.forEach((element) {
-      if (widget.dateText == element.creationDate) {
-        setState(() {
-          textFields.add(
-            TaskRow(
-              textColor: widget.textColor,
-              checkboxColor: widget.dateColor,
-              text: element.taskDescription,
-              dateText: element.creationDate,
-              task: element,
-          ));
-        });
-      }
-    });
+    if (widget.tasks != null) {
+      textFields.addAll(widget.tasks!.where((element) => widget.dateText == element.creationDate).map((element) {
+        return TaskRow(
+          textColor: widget.textColor,
+          checkboxColor: widget.dateColor,
+          text: element.taskDescription,
+          dateText: element.creationDate,
+          task: element,
+          plannerId: widget.plannerId
+        );
+      }));
+    }
   }
 
   void addTask() {
@@ -50,9 +49,11 @@ class _TaskContainerState extends State<TaskContainer> {
         textColor: widget.textColor,
         checkboxColor: widget.dateColor,
         dateText: widget.dateText,
+          plannerId: widget.plannerId
       ));
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +71,7 @@ class _TaskContainerState extends State<TaskContainer> {
 
     return Column(
       children: [
+
         SizedBox(
           height: MediaQuery.of(context).size.height * Variables.heightProportionOfDateContainer,
           width: MediaQuery.of(context).size.width,
@@ -137,10 +139,18 @@ class _TaskContainerState extends State<TaskContainer> {
                     Column(
                       children: textFields
                     ),
-                    ElevatedButton(
-                      onPressed: addTask,
-                      style: raisedButtonStyle,
-                      child: const Text("Create A Task"),
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: ElevatedButton(
+                        onPressed: addTask,
+                        style: raisedButtonStyle,
+                        child: Text(
+                          "Create A Task",
+                          style: TextStyle(
+                            fontSize: deviceWidth * 0.035,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
