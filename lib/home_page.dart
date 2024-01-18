@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pomodoro2/CreationPage/planner_service.dart';
+import 'package:pomodoro2/GustavKlimtCreation/gustav_klimt.dart';
+import 'package:pomodoro2/OsmanHamdiCreation/osman_hamdi.dart';
+import 'package:pomodoro2/SalvadorDaliCreation/salvador_dali.dart';
 import 'package:pomodoro2/Task/task_service.dart';
 import 'package:pomodoro2/VanGoghCreation/van_gogh.dart';
 import 'package:pomodoro2/VanGoghCreation/van_gogh_variables.dart';
 import 'package:pomodoro2/main.dart';
 
 import 'CreationPage/planner_entity.dart';
+import 'MonetCreation/monet.dart';
+import 'PicassoCreation/picasso.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -58,6 +63,7 @@ class _HomePageState extends State<HomePage> {
                       child: ElevatedButton(
                         style: raisedButtonStyle,
                         onPressed: () {
+                          createPlannerWrtArtist("GustavKlimt");
                           Navigator.pushNamed(context, '/gustav_klimt');
                         },
                         child: const Text('Gustav Klimt'),
@@ -68,6 +74,7 @@ class _HomePageState extends State<HomePage> {
                       child: ElevatedButton(
                         style: raisedButtonStyle,
                         onPressed: () {
+                          createPlannerWrtArtist("OsmanHamdi");
                           Navigator.pushNamed(context, '/osman_hamdi');
                         },
                         child: const Text('Osman Hamdi Bey'),
@@ -78,6 +85,7 @@ class _HomePageState extends State<HomePage> {
                       child: ElevatedButton(
                         style: raisedButtonStyle,
                         onPressed: () {
+                          createPlannerWrtArtist("Monet");
                           Navigator.pushNamed(context, '/monet');
                         },
                         child: const Text('Monet'),
@@ -88,6 +96,7 @@ class _HomePageState extends State<HomePage> {
                       child: ElevatedButton(
                         style: raisedButtonStyle,
                         onPressed: () {
+                          createPlannerWrtArtist("Picasso");
                           Navigator.pushNamed(context, '/picasso');
                         },
                         child: const Text('Picasso'),
@@ -98,6 +107,7 @@ class _HomePageState extends State<HomePage> {
                       child: ElevatedButton(
                         style: raisedButtonStyle,
                         onPressed: () {
+                          createPlannerWrtArtist("SalvadorDali");
                           Navigator.pushNamed(context, '/salvador_dali');
                         },
                         child: const Text('Salvador Dali'),
@@ -108,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                       child: ElevatedButton(
                         style: raisedButtonStyle,
                         onPressed: () async {
-                          createVanGogh();
+                          createPlannerWrtArtist("VanGogh");
                           Navigator.pushNamed(context, '/van_gogh');
                         },
                         child: const Text('Van Gogh'),
@@ -127,8 +137,8 @@ class _HomePageState extends State<HomePage> {
               ),
               SingleChildScrollView(
                 child: SizedBox(
-                  width: deviceWidth * 0.5,
-                  height: deviceHeight * 0.2,
+                  width: deviceWidth * 0.7,
+                  height: deviceHeight * 0.3,
                   child: FutureBuilder<List<Padding>>(
                     future: fetchPlanners(),
                     builder: (context, snapshot) {
@@ -153,23 +163,35 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  void goToVanGogh(int plannerId) {
+  void goToArtist(String artist, int plannerId, String date) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return VanGogh(title: "Van Gogh", plannerId: plannerId);
+      switch (artist) {
+        case "VanGogh":
+          return VanGogh(title: "Van Gogh", plannerId: plannerId, date: date);
+        case "SalvadorDali":
+          return SalvadorDali(title: "Salvador Dali", plannerId: plannerId, date: date);
+        case "Picasso":
+          return Picasso(title: "Picasso", plannerId: plannerId, date: date);
+        case "Monet":
+          return Monet(title: "Monet", plannerId: plannerId, date: date);
+        case "OsmanHamdi":
+          return OsmanHamdi(title: "OsmanHamdi", plannerId: plannerId, date: date);
+        case "GustavKlimt":
+          return GustavKlimt(title: "GustavKlimt", plannerId: plannerId, date: date);
+        default:
+          throw ArgumentError("Unsupported artist: $artist");
+      }
     }));
   }
-
-  Future<void> createVanGogh() async {
+  Future<void> createPlannerWrtArtist(String artistName) async {
     DateTime dateTime = DateTime.now();
     String dayFormat = DateFormat('yMd').format(dateTime).toString();
     Planner planner = Planner(
         creationDate: dayFormat,
-        plannerArtist: "VanGogh"
+        plannerArtist: artistName
     );
     await insertPlanner(planner);
   }
-
   Future<List<Padding>> fetchPlanners() async {
     var planners = await getPlanners();
     List<Padding> plannerContainers = [];
@@ -177,7 +199,6 @@ class _HomePageState extends State<HomePage> {
       foregroundColor: Colors.white,
       backgroundColor: Colors.black,
     );
-
     for (var element in planners) {
       plannerContainers.add(
         Padding(
@@ -185,17 +206,15 @@ class _HomePageState extends State<HomePage> {
           child: ElevatedButton(
             style: raisedButtonStyle,
             onPressed: () async {
-              goToVanGogh(element.id!);
+              goToArtist(element.plannerArtist, element.id!, element.creationDate);
             },
-            child: Text('Van Gogh ${element.id} ${element.creationDate} ${element.plannerArtist}'),
+            child: Text('${element.id}.) at ${element.creationDate} with ${element.plannerArtist}'),
           ),
         ),
       );
     }
     return plannerContainers;
   }
-
-
 }
 
 

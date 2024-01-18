@@ -5,18 +5,28 @@ import '../main.dart';
 import '../image_container.dart';
 
 class Picasso extends StatefulWidget {
-  const Picasso({super.key, required this.title});
+  const Picasso({super.key, required this.title, this.plannerId, this.date});
   final String title;
+  final int? plannerId;
+  final String? date;
 
   @override
   State<Picasso> createState() => _PicassoState();
 }
 
 class _PicassoState extends State<Picasso> {
+  late Future<SingleChildScrollView> taskFuture;
 
   @override
   void initState(){
     super.initState();
+    taskFuture = createPlanner(
+      widget.date!,
+      widget.plannerId!,
+      PicassoVariables.dateColor,
+      PicassoVariables.taskColor,
+      PicassoVariables.textColor,
+    );
 
   }
 
@@ -34,7 +44,20 @@ class _PicassoState extends State<Picasso> {
               imageUrl: 'assets/images/Picasso/2.jpg',
               imageAlignment: Alignment(0, -1),
             ),
-
+            Flexible(
+                child: FutureBuilder<SingleChildScrollView>(
+                  future: taskFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      return snapshot.data ?? Container();
+                    }
+                  },
+                )
+            )
           ],
         ),
       ),

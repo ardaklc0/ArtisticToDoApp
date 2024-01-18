@@ -5,10 +5,11 @@ import 'package:pomodoro2/VanGoghCreation/van_gogh_variables.dart';
 import '../main.dart';
 import '../image_container.dart';
 
-class VanGogh extends StatefulWidget {
-  const VanGogh({super.key, required this.title, this.plannerId});
+class VanGogh extends StatefulWidget{
+  const VanGogh({super.key, required this.title, this.plannerId, this.date});
   final String title;
   final int? plannerId;
+  final String? date;
 
   @override
   State<VanGogh> createState() => _VanGoghState();
@@ -21,7 +22,7 @@ class _VanGoghState extends State<VanGogh> {
   void initState(){
     super.initState();
     taskFuture = createPlanner(
-      "1/18/2024",
+      widget.date!,
       widget.plannerId!,
       VanGoghVariables.dateColor,
       VanGoghVariables.taskColor,
@@ -72,3 +73,5 @@ class _VanGoghState extends State<VanGogh> {
     );
   }
 }
+
+
