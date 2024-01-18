@@ -46,17 +46,16 @@ class MyApp extends StatelessWidget {
 
 Future<SingleChildScrollView> createPlanner(String dateTime, int plannerId, Color dateColor, Color? taskColor, Color? textColor) async {
   List<TaskContainer> newContainer = [];
-  DateTime dateTime = DateTime.now();
+  DateFormat inputFormat = DateFormat("M/d/yyyy");
+  DateTime parsedDateTime = inputFormat.parse(dateTime);
   DateFormat dateFormat = DateFormat('yMd');
   DateFormat dayFormat = DateFormat('EEEE');
   String date = "";
   String day = "";
-
   var tasks = await getTasks(plannerId);
-
   for (int i = 0; i < 7; i++) {
-    date = dateFormat.format(dateTime);
-    day = dayFormat.format(dateTime);
+    date = dateFormat.format(parsedDateTime);
+    day = dayFormat.format(parsedDateTime);
     newContainer.add(TaskContainer(
       dayText: day,
       dateText: date,
@@ -66,7 +65,7 @@ Future<SingleChildScrollView> createPlanner(String dateTime, int plannerId, Colo
       plannerId: plannerId,
       tasks: tasks,
     ));
-    dateTime = dateTime.add(const Duration(days: 1));
+    parsedDateTime = parsedDateTime.add(const Duration(days: 1));
   }
   return SingleChildScrollView(
       child: Column(
