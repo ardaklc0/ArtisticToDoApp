@@ -35,10 +35,9 @@ class _OsmanHamdiState extends State<OsmanHamdi> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ImageContainer(
+            const ImageContainer(
               imageUrl: 'assets/images/Osman Hamdi Bey/1.jpg',
-              imageAlignment: const Alignment(0, -1),
-              scaleOfImage: deviceWidth * 0.003,
+              imageAlignment: Alignment(0, -1),
             ),
             Flexible(
                 child: FutureBuilder<SingleChildScrollView>(

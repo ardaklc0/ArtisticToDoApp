@@ -37,7 +37,6 @@ class _GustavKlimtState extends State<GustavKlimt> {
             ImageContainer(
               imageUrl: 'assets/images/Gustav Klimt/1.jpg',
               imageAlignment: const Alignment(0, -1),
-              scaleOfImage: deviceWidth * 0.003,
             ),
             Flexible(
                 child: FutureBuilder<SingleChildScrollView>(

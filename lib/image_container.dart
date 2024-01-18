@@ -4,8 +4,7 @@ import 'common_variables.dart';
 class ImageContainer extends StatelessWidget {
   final String imageUrl;
   final Alignment imageAlignment;
-  final double scaleOfImage;
-  const ImageContainer({super.key, required this.imageUrl, required this.imageAlignment, required this.scaleOfImage});
+  const ImageContainer({super.key, required this.imageUrl, required this.imageAlignment});
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
@@ -16,8 +15,7 @@ class ImageContainer extends StatelessWidget {
       child: Image.asset(
         imageUrl,
         alignment: imageAlignment,
-        fit: BoxFit.none,
-        scale: scaleOfImage,
+        fit: BoxFit.fitWidth,
       ),
     );
   }

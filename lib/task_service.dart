@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart';
 
 Future<Database> initializeDatabase() async {
   String path = join(await getDatabasesPath(), 'task_database.db');
-  await deleteDatabase(path);
+  //await deleteDatabase(path);
   return openDatabase(
     path,
     onCreate: (db, version) async {

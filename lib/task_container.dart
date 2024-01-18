@@ -61,6 +61,7 @@ class _TaskContainerState extends State<TaskContainer> {
     final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
       foregroundColor: widget.textColor,
       backgroundColor: widget.dateColor,
+      fixedSize: Size(deviceWidth * 0.5, deviceHeight * 0.05),
       padding: EdgeInsets.symmetric(horizontal: deviceWidth * 0.1),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(deviceWidth * 0.05)),
