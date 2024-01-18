@@ -3,12 +3,12 @@ import 'package:pomodoro2/GustavKlimtCreation/gustav_klimt.dart';
 import 'package:pomodoro2/MonetCreation/monet.dart';
 import 'package:pomodoro2/home_page.dart';
 import 'package:pomodoro2/task_container.dart';
-import 'package:pomodoro2/task_entity.dart';
 import 'package:pomodoro2/task_service.dart';
-import 'package:sqflite/sqflite.dart';
 import 'OsmanHamdiCreation/osman_hamdi.dart';
 import 'package:intl/intl.dart';
-import 'package:path/path.dart';
+import 'PicassoCreation/picasso.dart';
+import 'SalvadorDaliCreation/salvador_dali.dart';
+import 'VanGoghCreation/van_gogh.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,7 +31,10 @@ class MyApp extends StatelessWidget {
         '/': (context) => const HomePage(),
         '/gustav_klimt': (context) => const GustavKlimt(title: 'Gustav Klimt Home Page'),
         '/osman_hamdi': (context) => const OsmanHamdi(title: 'Osman Hamdi Page'),
-        '/monet': (context) => const Monet(title: 'Monet Page')
+        '/monet': (context) => const Monet(title: 'Monet Page'),
+        '/picasso': (context) => const Picasso(title: 'Picasso Home Page'),
+        '/salvador-dali': (context) => const SalvadorDali(title: 'Salvador Dali Page'),
+        '/van-gogh': (context) => const VanGogh(title: 'Van Gogh Page')
       },
     );
   }

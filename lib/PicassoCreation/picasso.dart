@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:pomodoro2/MonetCreation/monet_variables.dart';
+import 'package:pomodoro2/PicassoCreation/picasso_variables.dart';
 import '../main.dart';
 import '../image_container.dart';
 
-class Monet extends StatefulWidget {
-  const Monet({super.key, required this.title});
+class Picasso extends StatefulWidget {
+  const Picasso({super.key, required this.title});
   final String title;
 
   @override
-  State<Monet> createState() => _MonetState();
+  State<Picasso> createState() => _PicassoState();
 }
 
-class _MonetState extends State<Monet> {
+class _PicassoState extends State<Picasso> {
   late Future<SingleChildScrollView> taskFuture;
 
   @override
   void initState(){
     super.initState();
     taskFuture = createTask(
-      MonetVariables.dateColor,
-      MonetVariables.taskColor,
-      MonetVariables.textColor,
+      PicassoVariables.dateColor,
+      PicassoVariables.taskColor,
+      PicassoVariables.textColor,
     );
   }
 
@@ -28,14 +29,14 @@ class _MonetState extends State<Monet> {
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: MonetVariables.taskColor,
+      backgroundColor: PicassoVariables.taskColor,
       resizeToAvoidBottomInset: true,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const ImageContainer(
-              imageUrl: 'assets/images/Monet/1.jpg',
+              imageUrl: 'assets/images/Picasso/2.jpg',
               imageAlignment: Alignment(0, -1),
             ),
             Flexible(
@@ -56,7 +57,7 @@ class _MonetState extends State<Monet> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: MonetVariables.dateColor,
+        backgroundColor: PicassoVariables.dateColor,
         child: const Icon(
             Icons.home_filled
         ),

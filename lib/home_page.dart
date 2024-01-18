@@ -51,6 +51,36 @@ class HomePage extends StatelessWidget {
                 child: const Text('Monet'),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ElevatedButton(
+                style: raisedButtonStyle,
+                onPressed: () {
+                  Navigator.pushNamed(context, '/picasso');
+                },
+                child: const Text('Picasso'),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ElevatedButton(
+                style: raisedButtonStyle,
+                onPressed: () {
+                  Navigator.pushNamed(context, '/salvador-dali');
+                },
+                child: const Text('Salvador Dali'),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ElevatedButton(
+                style: raisedButtonStyle,
+                onPressed: () {
+                  Navigator.pushNamed(context, '/van-gogh');
+                },
+                child: const Text('Van Gogh'),
+              ),
+            ),
           ],
         ),
       ),
