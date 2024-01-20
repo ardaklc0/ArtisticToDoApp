@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import '../main.dart';
 import 'gustav_klimt_variables.dart';
@@ -27,7 +29,6 @@ class _GustavKlimtState extends State<GustavKlimt> {
       GustavKlimtVariables.textColor,
     );
   }
-
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
