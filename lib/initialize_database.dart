@@ -1,26 +1,38 @@
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as p;
 
 Future<Database> initializeDatabase() async {
-  String path = join(await getDatabasesPath(), 'task_database.db');
-  //await deleteDatabase(path);
-  return openDatabase(
-    path,
-    onCreate: (db, version) async {
-      await db.execute(
-        'CREATE TABLE IF NOT EXISTS planners('
-            'id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,'
-            'creation_date TEXT,'
-            'planner_artist TEXT)',
-      );
-      await db.execute(
-        'CREATE TABLE IF NOT EXISTS tasks('
-            'id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,'
-            ' creation_date TEXT,'
-            ' task_description TEXT,'
-            ' planner_id INTEGER)',
-      );
-    },
-    version: 2,
-  );
+  try {
+    var databasesPath = await getApplicationDocumentsDirectory();
+    //await deleteDatabase(p.join(await getDatabasesPath(), 'task_database.db'));
+    String path = p.join(databasesPath.path, 'task_database.db');
+    Database database = await openDatabase(
+      path,
+      onCreate: (db, version) async {
+        await db.execute(
+          'CREATE TABLE IF NOT EXISTS planners'
+              '('
+              'id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,'
+              'creation_date TEXT,'
+              'planner_artist TEXT'
+              ')',
+        );
+        await db.execute(
+          'CREATE TABLE IF NOT EXISTS tasks'
+              '('
+              'id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,'
+              'creation_date TEXT,'
+              'task_description TEXT,'
+              'planner_id INTEGER'
+              ')',
+        );
+      },
+      version: 3,
+    );
+    return database;
+  } catch (e) {
+    print('Error initializing database: $e');
+    rethrow;
+  }
 }
