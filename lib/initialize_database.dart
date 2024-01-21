@@ -5,7 +5,7 @@ import 'package:path/path.dart' as p;
 Future<Database> initializeDatabase() async {
   try {
     var databasesPath = await getApplicationDocumentsDirectory();
-    //await deleteDatabase(p.join(await getDatabasesPath(), 'task_database.db'));
+    //await deleteDatabase(p.join(databasesPath.path, 'task_database.db'));
     String path = p.join(databasesPath.path, 'task_database.db');
     Database database = await openDatabase(
       path,
