@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:pomodoro2/GustavKlimtCreation/gustav_klimt.dart';
 import 'package:pomodoro2/MonetCreation/monet.dart';
-import 'package:pomodoro2/home_page.dart';
+import 'package:pomodoro2/PlannerPage/home_page.dart';
 import 'package:pomodoro2/Task/task_container.dart';
 import 'package:pomodoro2/Task/task_service.dart';
 import 'OsmanHamdiCreation/osman_hamdi.dart';
 import 'package:intl/intl.dart';
 import 'PicassoCreation/picasso.dart';
 import 'SalvadorDaliCreation/salvador_dali.dart';
-import 'Task/task_entity.dart';
 import 'VanGoghCreation/van_gogh.dart';
+import 'PlannerPage/created_planners.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const HomePage(),
+        '/created_planners': (context) => const CreatedPlanners(),
         '/gustav_klimt': (context) => const GustavKlimt(title: 'Gustav Klimt Home Page'),
         '/osman_hamdi': (context) => const OsmanHamdi(title: 'Osman Hamdi Page'),
         '/monet': (context) => const Monet(title: 'Monet Page'),
