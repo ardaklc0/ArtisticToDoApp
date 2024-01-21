@@ -6,7 +6,7 @@ import 'package:path/path.dart';
 import '../initialize_database.dart';
 
 
-laFuture<int> insertPlanner(Planner planner) async {
+Future<int> insertPlanner(Planner planner) async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = await initializeDatabase();
   final db = await database;
