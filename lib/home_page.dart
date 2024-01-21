@@ -32,7 +32,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState(){
     super.initState();
-    addCreatedPlanners = fetchPlanners();
   }
   @override
   Widget build(BuildContext context) {
@@ -111,29 +110,42 @@ class _HomePageState extends State<HomePage> {
       }
     }));
   }
-  Future<void> createPlannerWrtArtist(String artistName) async {
+
+  Future<int> createPlannerWrtArtist(String artistName) async {
     DateTime dateTime = DateTime.now();
     String dayFormat = DateFormat('yMd').format(dateTime).toString();
     Planner planner = Planner(
         creationDate: dayFormat,
         plannerArtist: artistName
     );
-    await insertPlanner(planner);
+    return await insertPlanner(planner);
   }
+
   Future<List<ElevatedButton>> fetchPlanners() async {
-    var planners = await getPlanners();
     List<ElevatedButton> plannerContainers = [];
-    for (var element in planners) {
-      plannerContainers.add(
-        ElevatedButton(
-          style: raisedButtonStyle,
-          onPressed: () async {
-            goToArtist(element.plannerArtist, element.id!, element.creationDate);
-          },
-          child: Text('${element.id}.) at ${element.creationDate} with ${element.plannerArtist}'),
-        ),
-      );
+    try {
+      var planners = await getPlanners();
+      if (planners.isEmpty) {
+        var plannerId = await createPlannerWrtArtist("VanGogh");
+        planners = await getPlanners();
+        var existingPlanner = await getPlanner(plannerId);
+        goToArtist("VanGogh", plannerId, existingPlanner!.creationDate);
+      }
+      for (var element in planners) {
+        plannerContainers.add(
+          ElevatedButton(
+            style: raisedButtonStyle,
+            onPressed: () async {
+              goToArtist(element.plannerArtist, element.id!, element.creationDate);
+            },
+            child: Text('${element.id}.) at ${element.creationDate} with ${element.plannerArtist}'),
+          ),
+        );
+      }
+    } catch (e) {
+      print('Error fetching planners: $e');
     }
+
     return plannerContainers;
   }
   List<ElevatedButton> createArtistButton(){
