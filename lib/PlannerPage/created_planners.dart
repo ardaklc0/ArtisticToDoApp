@@ -9,10 +9,6 @@ import '../OsmanHamdiCreation/osman_hamdi.dart';
 import '../PicassoCreation/picasso.dart';
 import '../SalvadorDaliCreation/salvador_dali.dart';
 import '../VanGoghCreation/van_gogh.dart';
-final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
-  foregroundColor: Colors.white,
-  backgroundColor: Colors.black,
-);
 class CreatedPlanners extends StatefulWidget {
   const CreatedPlanners({super.key});
 
@@ -31,16 +27,17 @@ class _CreatedPlannersState extends State<CreatedPlanners> {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(231, 90, 124, 1),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SingleChildScrollView(
               child: SizedBox(
-                width: deviceWidth * 0.7,
-                height: deviceHeight * 0.3,
-                child: FutureBuilder<List<ElevatedButton>>(
-                  future: fetchPlanners(context),
+                width: deviceWidth,
+                height: deviceHeight * 0.8,
+                child: FutureBuilder<List<Container>>(
+                  future: fetchPlanners(context, deviceHeight),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const CircularProgressIndicator();
@@ -62,9 +59,9 @@ class _CreatedPlannersState extends State<CreatedPlanners> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.black,
+        backgroundColor: const Color.fromRGBO(242, 245, 234, 1),
         child: const Icon(
-          color: Colors.white,
+          color: Color.fromRGBO(44, 54, 63, 1),
           Icons.home_filled
         ),
         onPressed: () {

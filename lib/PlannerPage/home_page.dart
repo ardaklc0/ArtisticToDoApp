@@ -19,74 +19,78 @@ final Map<String, String> artists =
   "SalvadorDali":"Salvador Dali",
   "VanGogh":"Van Gogh"
 };
-final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
-  foregroundColor: Colors.white,
-  backgroundColor: Colors.black,
-);
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
 class _HomePageState extends State<HomePage> {
-  late Future<List<ElevatedButton>> addCreatedPlanners;
   @override
   void initState(){
     super.initState();
   }
+  late Future<List<Container>> addCreatedPlanners;
   @override
   Widget build(BuildContext context) {
-    final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: true,
+      backgroundColor: const Color.fromRGBO(231, 90, 124, 1),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              "Choose an artist to start your journey!",
-              style: TextStyle(
-                fontSize: deviceWidth * 0.05,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
             SingleChildScrollView(
               child: Column(
-                children: createArtistButton()
+                children: createArtistButton(deviceHeight)
               ),
             ),
-            ElevatedButton(
-              style: raisedButtonStyle,
-              onPressed: () async {
-                goToCreatedPlanners();
-              },
-              child: const Text("Go To Created Planners"),
+            Container(
+              width: double.infinity,
+              height: deviceHeight * 0.07,
+              padding: const EdgeInsets.all(2),
+              child: ElevatedButton(
+                style: raisedButtonStyle,
+                onPressed: () async {
+                  goToCreatedPlanners();
+                },
+                child: Text(
+                  "Go To Created Planners",
+                  style: TextStyle(
+                    fontSize: deviceHeight * 0.02
+                  ),
+                ),
+              ),
             ),
           ],
         ),
       ),
     );
   }
-  List<ElevatedButton> createArtistButton(){
-    List<ElevatedButton> artistButtons = [];
-    final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
-      foregroundColor: Colors.white,
-      backgroundColor: Colors.black,
-    );
+  List<Container> createArtistButton(double deviceHeight){
+    List<Container> artistButtons = [];
     artists.forEach((key, value) {
       artistButtons.add(
-        ElevatedButton(
-          style: raisedButtonStyle,
-          onPressed: () async {
-            await createPlannerWrtArtist(key);
-            setState(() {
-              addCreatedPlanners = fetchPlanners(context);
-            });
-            goToCreatedPlanners();
-          },
-          child: Text(value),
+        Container(
+          width: double.infinity,
+          height: deviceHeight * 0.08,
+          padding: const EdgeInsets.all(2),
+          child: ElevatedButton(
+            style: raisedButtonStyle,
+            onPressed: () async {
+              await createPlannerWrtArtist(key);
+              setState(() {
+                addCreatedPlanners = fetchPlanners(context, deviceHeight);
+              });
+              goToCreatedPlanners();
+            },
+            child: Text(
+              value,
+              style: TextStyle(
+                fontSize: deviceHeight * 0.02,
+              ),
+            ),
+          ),
         ),
       );
     });
