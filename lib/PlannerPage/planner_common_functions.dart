@@ -9,6 +9,7 @@ import '../OsmanHamdiCreation/osman_hamdi.dart';
 import '../PicassoCreation/picasso.dart';
 import '../SalvadorDaliCreation/salvador_dali.dart';
 import '../VanGoghCreation/van_gogh.dart';
+import '../common_variables.dart';
 final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
   foregroundColor: const Color.fromRGBO(44, 54, 63, 1),
   backgroundColor: const Color.fromRGBO(242, 245, 234, 1),
@@ -63,7 +64,7 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight)
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    backgroundColor:  const Color.fromRGBO(231, 90, 124, 1),
+                    backgroundColor:  Variables.homePageColor,
                     title: Text(
                       "Confirmation",
                       style: TextStyle(

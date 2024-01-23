@@ -4,11 +4,11 @@ import 'package:pomodoro2/Task/task_entity.dart';
 import 'package:pomodoro2/initialize_database.dart';
 import 'package:sqflite/sqflite.dart';
 
-Future<void> insertTask(Task task) async {
+Future<int> insertTask(Task task) async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = await initializeDatabase();
   final db = database;
-  await db.insert(
+  return await db.insert(
     'tasks',
     task.toMap(),
     conflictAlgorithm: ConflictAlgorithm.replace,
@@ -32,11 +32,11 @@ Future<List<Task>> getTasks(int plannerId) async {
     );
   });
 }
-Future<void> updateTask(Task task) async {
+Future<int> updateTask(Task task) async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = await initializeDatabase();
   final db = database;
-  await db.update(
+  return await db.update(
     'tasks',
     task.toMap(),
     where: 'id = ?',

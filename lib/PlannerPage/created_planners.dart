@@ -9,6 +9,7 @@ import '../OsmanHamdiCreation/osman_hamdi.dart';
 import '../PicassoCreation/picasso.dart';
 import '../SalvadorDaliCreation/salvador_dali.dart';
 import '../VanGoghCreation/van_gogh.dart';
+import '../common_variables.dart';
 class CreatedPlanners extends StatefulWidget {
   const CreatedPlanners({super.key});
 
@@ -27,7 +28,7 @@ class _CreatedPlannersState extends State<CreatedPlanners> {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(231, 90, 124, 1),
+      backgroundColor: Variables.homePageColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
