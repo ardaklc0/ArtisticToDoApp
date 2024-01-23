@@ -9,4 +9,5 @@ class Variables {
  static EdgeInsets fixedEdgeInsets = const EdgeInsets.all(10.0);
  static double textSize = 17.0;
  static double inputTextSize = 14.0;
+ static Color homePageColor = const Color.fromRGBO(213, 227, 250, 1.0);
 }

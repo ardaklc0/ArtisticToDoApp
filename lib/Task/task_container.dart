@@ -37,7 +37,7 @@ class _TaskContainerState extends State<TaskContainer> {
           text: element.taskDescription,
           dateText: element.creationDate,
           task: element,
-          plannerId: widget.plannerId
+          plannerId: widget.plannerId,
         );
       }));
     }
@@ -49,7 +49,7 @@ class _TaskContainerState extends State<TaskContainer> {
         textColor: widget.textColor,
         checkboxColor: widget.dateColor,
         dateText: widget.dateText,
-        plannerId: widget.plannerId
+        plannerId: widget.plannerId,
       ));
     });
   }

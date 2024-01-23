@@ -10,6 +10,7 @@ import 'package:pomodoro2/VanGoghCreation/van_gogh.dart';
 import '../CreationPage/planner_entity.dart';
 import '../MonetCreation/monet.dart';
 import '../PicassoCreation/picasso.dart';
+import '../common_variables.dart';
 final Map<String, String> artists =
 {
   "GustavKlimt":"Gustav Klimt",
@@ -35,7 +36,7 @@ class _HomePageState extends State<HomePage> {
     final double deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: const Color.fromRGBO(231, 90, 124, 1),
+      backgroundColor: Variables.homePageColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
