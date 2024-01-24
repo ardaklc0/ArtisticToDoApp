@@ -4,6 +4,7 @@ import 'package:pomodoro2/Task/task_entity.dart';
 import 'package:pomodoro2/Task/task_service.dart';
 import '../common_variables.dart';
 
+
 class TaskRow extends StatefulWidget {
   final Color? textColor;
   final Color checkboxColor;
@@ -60,7 +61,7 @@ class _TaskRowState extends State<TaskRow> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              backgroundColor:  Variables.homePageColor,
+              backgroundColor:  widget.checkboxColor,
               title: Text(
                 "Confirmation",
                 style: TextStyle(
@@ -139,18 +140,6 @@ class _TaskRowState extends State<TaskRow> {
                     );
                     await updateTask(existingTask);
                     print("Updated existing task: $existingTask");
-                  } else {
-                    var newTask = Task(
-                      taskDescription: _controller.text,
-                      creationDate: dayFormat,
-                      plannerId: widget.plannerId,
-                    );
-                    try {
-                      await insertTask(newTask);
-
-                    } catch (error) {
-                      print("Error creating new task: $error");
-                    }
                   }
                   List<Task> tasks = await getTasks(widget.plannerId);
                   for (var element in tasks) {

@@ -28,7 +28,7 @@ class _TaskContainerState extends State<TaskContainer> {
     initializeTasks();
   }
 
-  void initializeTasks() {
+  List<Widget> initializeTasks() {
     if (widget.tasks != null) {
       textFields.addAll(widget.tasks!.where((element) => widget.dateText == element.creationDate).map((element) {
         return TaskRow(
@@ -41,19 +41,28 @@ class _TaskContainerState extends State<TaskContainer> {
         );
       }));
     }
+    return textFields;
   }
 
-  void addTask() {
+  Future<void> addTask() async {
+    Task? newTask = Task(
+      taskDescription: "New Task",
+      creationDate: widget.dateText,
+      plannerId: widget.plannerId,
+    );
+    int taskId = await insertTask(newTask);
+    newTask = await getTask(taskId);
     setState(() {
       textFields.add(TaskRow(
         textColor: widget.textColor,
         checkboxColor: widget.dateColor,
-        dateText: widget.dateText,
+        text: newTask?.taskDescription,
+        dateText: newTask?.creationDate,
+        task: newTask,
         plannerId: widget.plannerId,
       ));
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
