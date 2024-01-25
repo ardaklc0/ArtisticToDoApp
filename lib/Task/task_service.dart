@@ -28,7 +28,8 @@ Future<List<Task>> getTasks(int plannerId) async {
       id: maps[i]['id'] as int,
       taskDescription: maps[i]['task_description'] as String,
       creationDate: maps[i]['creation_date'] as String,
-      plannerId: maps[i]['planner_id'] as int, // Corrected column name
+      plannerId: maps[i]['planner_id'] as int,
+      isDone: maps[i]['is_done'] as int
     );
   });
 }
@@ -47,6 +48,7 @@ Future<Task?> getTask(int taskId) async {
       taskDescription: maps[0]['task_description'] as String,
       creationDate: maps[0]['creation_date'] as String,
       plannerId: maps[0]['planner_id'] as int,
+      isDone: maps[0]['is_done'] as int
     );
   } else {
     return null;

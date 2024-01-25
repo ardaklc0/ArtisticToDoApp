@@ -3,12 +3,14 @@ class Task {
   final String creationDate;
   final String taskDescription;
   final int plannerId;
+  int isDone;
 
-  const Task({
+  Task({
     this.id,
     required this.creationDate,
     required this.taskDescription,
-    required this.plannerId
+    required this.plannerId,
+    required this.isDone
   });
 
   Map<String, dynamic> toMap() {
@@ -16,11 +18,17 @@ class Task {
       'id': id,
       'creation_date': creationDate,
       'task_description': taskDescription,
-      'planner_id': plannerId
+      'planner_id': plannerId,
+      'is_done': isDone
     };
   }
   @override
   String toString() {
-    return 'Task{id: $id, creation_date: $creationDate, task_description: $taskDescription, planner_id: $plannerId}';
+    return
+      'Task{id: $id,'
+      ' creation_date: $creationDate,'
+      ' task_description: $taskDescription,'
+      ' planner_id: $plannerId,'
+      ' is_done: $isDone}';
   }
 }

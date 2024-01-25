@@ -15,17 +15,15 @@ Future<Database> initializeDatabase() async {
               '('
               'id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,'
               'creation_date TEXT,'
-              'planner_artist TEXT'
-              ')',
+              'planner_artist TEXT)',
         );
         await db.execute(
           'CREATE TABLE IF NOT EXISTS tasks'
-              '('
-              'id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,'
+              '(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,'
               'creation_date TEXT,'
               'task_description TEXT,'
-              'planner_id INTEGER'
-              ')',
+              'planner_id INTEGER,'
+              'is_done INT)',
         );
       },
       version: 3,
