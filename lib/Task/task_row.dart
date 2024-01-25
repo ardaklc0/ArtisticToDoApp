@@ -1,5 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'package:pomodoro2/Task/task_entity.dart';
 import 'package:pomodoro2/Task/task_service.dart';
 import '../common_variables.dart';
@@ -136,7 +138,8 @@ class _TaskRowState extends State<TaskRow> {
                       id: widget.task!.id,
                       creationDate: widget.task!.creationDate,
                       taskDescription: _controller.text,
-                      plannerId: widget.plannerId
+                      plannerId: widget.plannerId,
+                      isDone: widget.task!.isDone
                     );
                     await updateTask(existingTask);
                     print("Updated existing task: $existingTask");
@@ -177,7 +180,7 @@ class _TaskRowState extends State<TaskRow> {
                   ),
                   style: TextStyle(
                     fontSize: deviceWidth * 0.035,
-                    decoration: isChecked ? TextDecoration.lineThrough : TextDecoration.none,
+                    decoration: widget.task?.isDone != null ? TextDecoration.lineThrough : TextDecoration.none,
                     color: widget.textColor,
                   ),
                 ),
@@ -191,10 +194,28 @@ class _TaskRowState extends State<TaskRow> {
               child: Checkbox(
                 checkColor: Colors.white,
                 fillColor: MaterialStateProperty.resolveWith(getColor),
-                value: isChecked,
+                value: boolConverter(widget.task!.isDone),
                 onChanged: (bool? value) {
-                  setState(() {
-                    isChecked = value!;
+                  setState(() async {
+                    int intValue = 0;
+                    if (value!) {
+                      intValue = 1;
+                    } else {
+                      intValue = 0;
+                    }
+
+                    if (widget.task != null) {
+                      var existingTask = Task(
+                          id: widget.task!.id,
+                          creationDate: widget.task!.creationDate,
+                          taskDescription: _controller.text,
+                          plannerId: widget.plannerId,
+                          isDone: intValue
+                      );
+                      await updateTask(existingTask);
+                      print("Updated existing task: $existingTask");
+                    }
+
                   });
                 },
               ),
@@ -203,5 +224,12 @@ class _TaskRowState extends State<TaskRow> {
         ],
       ),
     );
+  }
+  bool boolConverter(int isBool){
+    if (isBool == 1) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
