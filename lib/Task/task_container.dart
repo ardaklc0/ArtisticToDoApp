@@ -49,7 +49,6 @@ class _TaskContainerState extends State<TaskContainer> {
       taskDescription: "New Task",
       creationDate: widget.dateText,
       plannerId: widget.plannerId,
-      isDone: 0
     );
     int taskId = await insertTask(newTask);
     newTask = await getTask(taskId);

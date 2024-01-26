@@ -10,7 +10,7 @@ class Task {
     required this.creationDate,
     required this.taskDescription,
     required this.plannerId,
-    required this.isDone
+    this.isDone = 0
   });
 
   Map<String, dynamic> toMap() {
