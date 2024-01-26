@@ -1,12 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'package:pomodoro2/Task/task_entity.dart';
 import 'package:pomodoro2/Task/task_service.dart';
 import '../common_variables.dart';
-
-
 class TaskRow extends StatefulWidget {
   final Color? textColor;
   final Color checkboxColor;
@@ -19,7 +15,6 @@ class TaskRow extends StatefulWidget {
   State<TaskRow> createState() => _TaskRowState();
 }
 class _TaskRowState extends State<TaskRow> {
-  bool isChecked = false;
   final FocusNode _focus = FocusNode();
   final TextEditingController _controller = TextEditingController();
 
@@ -135,11 +130,10 @@ class _TaskRowState extends State<TaskRow> {
                   }
                   if (widget.task != null) {
                     var existingTask = Task(
-                      id: widget.task!.id,
-                      creationDate: widget.task!.creationDate,
-                      taskDescription: _controller.text,
-                      plannerId: widget.plannerId,
-                      isDone: widget.task!.isDone
+                        id: widget.task!.id,
+                        creationDate: widget.task!.creationDate,
+                        taskDescription: _controller.text,
+                        plannerId: widget.plannerId
                     );
                     await updateTask(existingTask);
                     print("Updated existing task: $existingTask");
@@ -174,13 +168,13 @@ class _TaskRowState extends State<TaskRow> {
                     ),
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
-                        color: widget.checkboxColor,
-                        width: 1.5),
+                          color: widget.checkboxColor,
+                          width: 1.5),
                     ),
                   ),
                   style: TextStyle(
                     fontSize: deviceWidth * 0.035,
-                    decoration: widget.task?.isDone != null ? TextDecoration.lineThrough : TextDecoration.none,
+                    decoration: widget.task!.isDone == 1 ? TextDecoration.lineThrough : TextDecoration.none,
                     color: widget.textColor,
                   ),
                 ),
@@ -194,29 +188,24 @@ class _TaskRowState extends State<TaskRow> {
               child: Checkbox(
                 checkColor: Colors.white,
                 fillColor: MaterialStateProperty.resolveWith(getColor),
-                value: boolConverter(widget.task!.isDone),
-                onChanged: (bool? value) {
-                  setState(() async {
-                    int intValue = 0;
-                    if (value!) {
-                      intValue = 1;
-                    } else {
-                      intValue = 0;
-                    }
-
-                    if (widget.task != null) {
-                      var existingTask = Task(
-                          id: widget.task!.id,
-                          creationDate: widget.task!.creationDate,
-                          taskDescription: _controller.text,
-                          plannerId: widget.plannerId,
-                          isDone: intValue
-                      );
-                      await updateTask(existingTask);
-                      print("Updated existing task: $existingTask");
-                    }
-
+                value: intConverter(widget.task!.isDone),
+                onChanged: (bool? value) async {
+                  setState(() {
+                    widget.task!.isDone = boolConverter(value!);
                   });
+                  int intValue = boolConverter(value!);
+                  if (widget.task != null) {
+                    var existingTask = Task(
+                      id: widget.task!.id,
+                      creationDate: widget.task!.creationDate,
+                      taskDescription: _controller.text,
+                      plannerId: widget.plannerId,
+                      isDone: intValue,
+                    );
+
+                    await updateTask(existingTask);
+                    print("Updated existing task: $existingTask");
+                  }
                 },
               ),
             ),
@@ -225,11 +214,14 @@ class _TaskRowState extends State<TaskRow> {
       ),
     );
   }
-  bool boolConverter(int isBool){
-    if (isBool == 1) {
+  int boolConverter(bool boolExp) {
+    if (boolExp) {
+      return 1;
+    } return 0;
+  }
+  bool intConverter(int intExp) {
+    if (intExp == 1) {
       return true;
-    } else {
-      return false;
-    }
+    } return false;
   }
 }
