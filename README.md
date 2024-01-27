@@ -28,7 +28,4 @@ Welcome to Plantist, the ultimate mobile app that combines the essence of planni
 5. **Earn Achievements:** Build daily streaks and unlock achievements for a fulfilling planning experience.
 
 Plantist transforms planning into a delightful and artistic adventure. Download now and elevate your daily routine with a touch of creativity!
-
-\[Download Plantist\](#) | \[Documentation\](#) | \[Report Issues\](#)
-
 Feel free to explore, plan, and create with Plantist!
