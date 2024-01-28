@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../ui/helper/common_variables.dart';
+import '../ui/widgets/common_widgets.dart';
 import '../ui/widgets/pomodoro_widgets/appbar_widgets.dart';
 import '../ui/widgets/pomodoro_widgets/body_widgets.dart';
 
@@ -10,16 +11,6 @@ class Pomodoro extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: homePageColor,
-      appBar: AppBar(
-        backgroundColor: homePageColor,
-        centerTitle: true,
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 10.0),
-            child: SettingsButton(),
-          ),
-        ],
-      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -38,9 +29,18 @@ class Pomodoro extends StatelessWidget {
             ),
             const MediaButtons(),
             const RoundsWidget(),
+            const SettingsButton()
           ],
         ),
       ),
+      floatingActionButton: _floatingActionButton(const Color.fromRGBO(242, 245, 234, 1), context),
     );
   }
 }
+Widget _floatingActionButton(Color floatingActionButtonColor, BuildContext context) => FloatingActionButton(
+  backgroundColor: floatingActionButtonColor,
+  child: homeIconForFloatingActionButton,
+  onPressed: () {
+    Navigator.pop(context);
+  },
+);
