@@ -1,7 +1,6 @@
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
-
 Future<Database> initializeDatabase() async {
   try {
     var databasesPath = await getApplicationDocumentsDirectory();

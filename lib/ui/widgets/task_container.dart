@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pomodoro2/Task/task_entity.dart';
-import 'package:pomodoro2/Task/task_row.dart';
-import 'package:pomodoro2/Task/task_service.dart';
-import '../common_variables.dart';
-
+import 'package:pomodoro2/models/task_model.dart';
+import 'package:pomodoro2/ui/widgets/task_row.dart';
+import 'package:pomodoro2/services/task_service.dart';
+import '../helper/common_variables.dart';
+import '../styles/common_styles.dart';
+import 'common_widgets.dart';
 class TaskContainer extends StatefulWidget {
   final Color dateColor;
   final Color? taskColor;
@@ -14,20 +15,16 @@ class TaskContainer extends StatefulWidget {
   final List<Task>? tasks;
   final int plannerId;
   const TaskContainer({super.key, required this.dateColor, required this.taskColor, required this.textColor, required this.dayText, required this.dateText, this.tasks, required this.plannerId});
-
   @override
   State<TaskContainer> createState() => _TaskContainerState();
 }
-
 class _TaskContainerState extends State<TaskContainer> {
   List<Widget> textFields = [];
-
   @override
   void initState() {
     super.initState();
     initializeTasks();
   }
-
   List<Widget> initializeTasks() {
     if (widget.tasks != null) {
       textFields.addAll(widget.tasks!.where((element) => widget.dateText == element.creationDate).map((element) {
@@ -43,7 +40,6 @@ class _TaskContainerState extends State<TaskContainer> {
     }
     return textFields;
   }
-
   Future<void> addTask() async {
     Task? newTask = Task(
       taskDescription: "New Task",
@@ -63,72 +59,34 @@ class _TaskContainerState extends State<TaskContainer> {
       ));
     });
   }
-
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
-    final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
-      foregroundColor: widget.textColor,
-      backgroundColor: widget.dateColor,
-      fixedSize: Size(deviceWidth * 0.5, deviceHeight * 0.05),
-      padding: EdgeInsets.symmetric(horizontal: deviceWidth * 0.1),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(deviceWidth * 0.05)),
-      ),
-    );
-
     return Column(
       children: [
-
         SizedBox(
-          height: MediaQuery.of(context).size.height * Variables.heightProportionOfDateContainer,
+          height: MediaQuery.of(context).size.height * heightProportionOfDateContainer,
           width: MediaQuery.of(context).size.width,
           child: DecoratedBox(
-              decoration: BoxDecoration(
-                  border: const Border(
-                      top: BorderSide(
-                          width: 2.5
-                      )
-                  ),
-                  color: widget.dateColor
-              ),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: Variables.fixedEdgeInsets,
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * Variables.widthOfDayInDateContainer,
-                      child: Text(
-                        widget.dayText,
-                        style: TextStyle(
-                          color: widget.textColor,
-                          fontSize: deviceWidth * 0.04,
-                        ),
-                        overflow: TextOverflow.fade,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: Variables.fixedEdgeInsets,
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * Variables.widthOfDateInDateContainer,
-                      child: Text(
-                        widget.dateText,
-                        style: TextStyle(
-                          color: widget.textColor,
-                          fontSize: deviceWidth * 0.04 ,
-                        ),
-                        overflow: TextOverflow.fade,
-                      ),
-                    ),
-                  ),
-                ],
-              )
+            decoration: BoxDecoration(
+                border: const Border(
+                    top: BorderSide(
+                        width: 2.5
+                    )
+                ),
+                color: widget.dateColor
+            ),
+            child: Row(
+              children: [
+                partOfTaskContainer(deviceWidth, widthOfDayInDateContainer, widget.dayText, widget.textColor),
+                partOfTaskContainer(deviceWidth, widthOfDateInDateContainer, widget.dateText, widget.textColor),
+              ],
+            )
           ),
         ), //DateContainer
         SizedBox(
-          height: deviceHeight * Variables.heightProportionOfTaskContainer,
+          height: deviceHeight * heightProportionOfTaskContainer,
           width: deviceWidth,
           child: DecoratedBox(
           decoration: BoxDecoration(color: widget.taskColor),
@@ -140,7 +98,7 @@ class _TaskContainerState extends State<TaskContainer> {
               }
             },
             child: Padding(
-              padding: Variables.fixedEdgeInsets,
+              padding: fixedEdgeInsets,
               child: SingleChildScrollView(
                 keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                 child: Column(
@@ -152,12 +110,10 @@ class _TaskContainerState extends State<TaskContainer> {
                       padding: const EdgeInsets.all(15.0),
                       child: ElevatedButton(
                         onPressed: addTask,
-                        style: raisedButtonStyle,
+                        style: raisedButtonStyle(widget.textColor, widget.dateColor, deviceHeight, deviceWidth),
                         child: Text(
                           "Create A Task",
-                          style: TextStyle(
-                            fontSize: deviceWidth * 0.035,
-                          ),
+                          style: buttonTextStyle(deviceWidth)
                         ),
                       ),
                     ),

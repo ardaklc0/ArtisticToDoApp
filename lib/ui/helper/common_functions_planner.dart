@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-import '../CreationPage/planner_entity.dart';
-import '../CreationPage/planner_service.dart';
-import '../GustavKlimtCreation/gustav_klimt.dart';
-import '../MonetCreation/monet.dart';
-import '../OsmanHamdiCreation/osman_hamdi.dart';
-import '../PicassoCreation/picasso.dart';
-import '../SalvadorDaliCreation/salvador_dali.dart';
-import '../VanGoghCreation/van_gogh.dart';
-import '../common_variables.dart';
-final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
-  foregroundColor: const Color.fromRGBO(44, 54, 63, 1),
-  backgroundColor: const Color.fromRGBO(242, 245, 234, 1),
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(0.0), // Adjust the radius as needed
-  ),
-);
+import 'package:pomodoro2/ui/styles/common_styles.dart';
+import '../../models/planner_model.dart';
+import '../../screens/gustav_klimt.dart';
+import '../../screens/monet.dart';
+import '../../screens/osman_hamdi.dart';
+import '../../screens/picasso.dart';
+import '../../screens/salvador_dali.dart';
+import '../../screens/van_gogh.dart';
+import '../../services/planner_service.dart';
+import 'common_variables.dart';
 void goToArtist(BuildContext context, String artist, int plannerId, String date) {
   Navigator.of(context).push(MaterialPageRoute(builder: (context) {
     switch (artist) {
@@ -64,7 +57,7 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight)
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    backgroundColor:  Variables.homePageColor,
+                    backgroundColor:  homePageColor,
                     title: Text(
                       "Confirmation",
                       style: TextStyle(
@@ -126,7 +119,7 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight)
               height: deviceHeight * 0.08,
               padding: const EdgeInsets.all(2),
               child: ElevatedButton(
-                style: raisedButtonStyle,
+                style: mainUiRaisedButtonStyle,
                 onPressed: () async {
                   goToArtist(context, element.plannerArtist, element.id!, element.creationDate);
                 },

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'common_variables.dart';
+import '../helper/common_variables.dart';
 
 class ImageContainer extends StatelessWidget {
   final String imageUrl;
@@ -10,7 +10,7 @@ class ImageContainer extends StatelessWidget {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
     return SizedBox(
-      height: deviceHeight * Variables.heightProportionOfImageBox,
+      height: deviceHeight * heightProportionOfImageBox,
       width: deviceWidth,
       child: Image.asset(
         imageUrl,

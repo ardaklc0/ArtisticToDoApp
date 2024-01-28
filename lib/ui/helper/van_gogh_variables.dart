@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:pomodoro2/VanGoghCreation/van_gogh.dart';
 
 class VanGoghVariables {
   static Color dateColor = const Color.fromRGBO(4, 40, 147, 1.0);
