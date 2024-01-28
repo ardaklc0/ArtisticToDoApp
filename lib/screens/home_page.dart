@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pomodoro2/screens/created_planners.dart';
+import 'package:pomodoro2/screens/pomodoro.dart';
 import 'package:pomodoro2/ui/helper/common_functions.dart';
 import 'package:pomodoro2/ui/styles/common_styles.dart';
 import '../ui/helper/common_variables.dart';
@@ -20,7 +21,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: homePageColor,
-      body: _body(deviceHeight, createArtistButton, goToCreatedPlanners)
+      body: _body(deviceHeight, createArtistButton, goToCreatedPlanners, goToPomodoro)
     );
   }
   List<Container> createArtistButton(double deviceHeight){
@@ -52,6 +53,11 @@ class _HomePageState extends State<HomePage> {
     });
     return artistButtons;
   }
+  void goToPomodoro() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return Pomodoro();
+    }));
+  }
   void goToCreatedPlanners() {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return const CreatedPlanners();
@@ -59,7 +65,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Widget _body(double deviceHeight, Function createArtistButton, Function goToCreatedPlanners) => Center(
+Widget _body(double deviceHeight, Function createArtistButton, Function goToCreatedPlanners, Function goToPomodoro) => Center(
   child: Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -79,6 +85,23 @@ Widget _body(double deviceHeight, Function createArtistButton, Function goToCrea
           },
           child: Text(
             "Go To Created Planners",
+            style: TextStyle(
+                fontSize: deviceHeight * 0.02
+            ),
+          ),
+        ),
+      ),
+      Container(
+        width: double.infinity,
+        height: deviceHeight * 0.07,
+        padding: const EdgeInsets.all(2),
+        child: ElevatedButton(
+          style: mainUiRaisedButtonStyle,
+          onPressed: () async {
+            goToPomodoro();
+          },
+          child: Text(
+            "Go To Pomodoro",
             style: TextStyle(
                 fontSize: deviceHeight * 0.02
             ),
