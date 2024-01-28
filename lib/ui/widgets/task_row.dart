@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pomodoro2/Task/task_entity.dart';
-import 'package:pomodoro2/Task/task_service.dart';
-import '../common_variables.dart';
+import 'package:pomodoro2/models/task_model.dart';
+import 'package:pomodoro2/services/task_service.dart';
+import 'package:pomodoro2/ui/widgets/common_widgets.dart';
+import '../helper/common_variables.dart';
 class TaskRow extends StatefulWidget {
   final Color? textColor;
   final Color checkboxColor;
@@ -17,7 +18,6 @@ class TaskRow extends StatefulWidget {
 class _TaskRowState extends State<TaskRow> {
   final FocusNode _focus = FocusNode();
   final TextEditingController _controller = TextEditingController();
-
   @override
   void initState() {
     super.initState();
@@ -27,14 +27,12 @@ class _TaskRowState extends State<TaskRow> {
       _controller.text = "";
     }
   }
-
   @override
   void dispose() {
     super.dispose();
     _focus.dispose();
     _controller.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     final double deviceHeight = MediaQuery.of(context).size.height;
@@ -50,7 +48,6 @@ class _TaskRowState extends State<TaskRow> {
       }
       return widget.checkboxColor;
     }
-
     return Dismissible(
       key: UniqueKey(),
       confirmDismiss: (direction) async {
@@ -59,50 +56,16 @@ class _TaskRowState extends State<TaskRow> {
           builder: (BuildContext context) {
             return AlertDialog(
               backgroundColor:  widget.checkboxColor,
-              title: Text(
-                "Confirmation",
-                style: TextStyle(
-                    fontSize: deviceHeight * 0.02,
-                    color: const Color.fromRGBO(242, 245, 234, 1)
-                ),
-              ),
-              content: Text(
-                "Are you sure you want to delete this item?",
-                style: TextStyle(
-                    fontSize: deviceHeight * 0.02,
-                    color: const Color.fromRGBO(242, 245, 234, 1)
-                ),
-              ),
+              title: dismissibleText("Confirmation", deviceHeight, dismissibleColor),
+              content: dismissibleText("Are you sure you want to delete this item?", deviceHeight, dismissibleColor),
               actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                  child: Text(
-                    "Cancel",
-                    style: TextStyle(
-                        fontSize: deviceHeight * 0.017,
-                        color: const Color.fromRGBO(242, 245, 234, 1)
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                  child: Text(
-                    "Delete",
-                    style: TextStyle(
-                        fontSize: deviceHeight * 0.017,
-                        color: const Color.fromRGBO(242, 245, 234, 1)
-                    ),
-                  ),
-                ),
+                dismissibleButton("Cancel", deviceHeight, dismissibleColor, false, context),
+                dismissibleButton("Delete", deviceHeight, dismissibleColor, true, context)
               ],
             );
           },
         );
-        return confirm ??false;
+        return confirm;
       },
       onDismissed: (direction) async {
         await deleteTask(widget.task!.id!);
@@ -120,14 +83,7 @@ class _TaskRowState extends State<TaskRow> {
             width: deviceWidth * 0.80,
             child: Focus(
               onFocusChange: (value) async {
-                String dayFormat = "";
                 if (_controller.text.isNotEmpty) {
-                  if (widget.dateText == null) {
-                    DateTime dateTime = DateTime.now();
-                    dayFormat = DateFormat('yMd').format(dateTime).toString();
-                  } else {
-                    dayFormat = widget.dateText!;
-                  }
                   if (widget.task != null) {
                     var existingTask = Task(
                         id: widget.task!.id,
@@ -136,12 +92,14 @@ class _TaskRowState extends State<TaskRow> {
                         plannerId: widget.plannerId
                     );
                     await updateTask(existingTask);
-                    print("Updated existing task: $existingTask");
+                    // print("Updated existing task: $existingTask");
                   }
+                  """
                   List<Task> tasks = await getTasks(widget.plannerId);
                   for (var element in tasks) {
                     print(element);
                   }
+                  """;
                 }
               },
               focusNode: _focus,
@@ -157,7 +115,6 @@ class _TaskRowState extends State<TaskRow> {
                   textCapitalization: TextCapitalization.sentences,
                   keyboardType: TextInputType.multiline,
                   controller: _controller,
-
                   maxLines: null,
                   autofocus: false,
                   decoration: InputDecoration(
@@ -182,7 +139,7 @@ class _TaskRowState extends State<TaskRow> {
             ),
           ),
           Padding(
-            padding: Variables.fixedEdgeInsets,
+            padding: fixedEdgeInsets,
             child: SizedBox(
               width: deviceWidth * 0.10,
               child: Checkbox(
@@ -202,7 +159,6 @@ class _TaskRowState extends State<TaskRow> {
                       plannerId: widget.plannerId,
                       isDone: intValue,
                     );
-
                     await updateTask(existingTask);
                     print("Updated existing task: $existingTask");
                   }
@@ -215,13 +171,9 @@ class _TaskRowState extends State<TaskRow> {
     );
   }
   int boolConverter(bool boolExp) {
-    if (boolExp) {
-      return 1;
-    } return 0;
+    return (boolExp == true) ? 1 : 0;
   }
   bool intConverter(int intExp) {
-    if (intExp == 1) {
-      return true;
-    } return false;
+    return (intExp == 1) ? true : false;
   }
 }

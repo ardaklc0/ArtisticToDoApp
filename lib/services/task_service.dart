@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
-import 'package:pomodoro2/Task/task_entity.dart';
-import 'package:pomodoro2/initialize_database.dart';
+import 'package:pomodoro2/models/task_model.dart';
+import 'package:pomodoro2/services/initialize_database.dart';
 import 'package:sqflite/sqflite.dart';
 
 Future<int> insertTask(Task task) async {

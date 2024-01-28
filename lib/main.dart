@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:pomodoro2/GustavKlimtCreation/gustav_klimt.dart';
-import 'package:pomodoro2/MonetCreation/monet.dart';
-import 'package:pomodoro2/PlannerPage/home_page.dart';
-import 'package:pomodoro2/Task/task_container.dart';
-import 'package:pomodoro2/Task/task_service.dart';
-import 'OsmanHamdiCreation/osman_hamdi.dart';
+import 'package:pomodoro2/screens/gustav_klimt.dart';
+import 'package:pomodoro2/screens/home_page.dart';
+import 'package:pomodoro2/screens/monet.dart';
+import 'package:pomodoro2/screens/osman_hamdi.dart';
+import 'package:pomodoro2/screens/picasso.dart';
+import 'package:pomodoro2/screens/salvador_dali.dart';
+import 'package:pomodoro2/screens/van_gogh.dart';
+import 'package:pomodoro2/ui/widgets/task_container.dart';
+import 'package:pomodoro2/services/task_service.dart';
 import 'package:intl/intl.dart';
-import 'PicassoCreation/picasso.dart';
-import 'SalvadorDaliCreation/salvador_dali.dart';
-import 'VanGoghCreation/van_gogh.dart';
-import 'PlannerPage/created_planners.dart';
+import 'screens/created_planners.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 

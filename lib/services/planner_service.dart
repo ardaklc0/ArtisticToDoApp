@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:pomodoro2/CreationPage/planner_entity.dart';
+import 'package:pomodoro2/models/planner_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-import '../initialize_database.dart';
+import 'initialize_database.dart';
 
 
 Future<int> insertPlanner(Planner planner) async {
