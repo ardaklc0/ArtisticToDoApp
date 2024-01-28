@@ -4,7 +4,6 @@ import 'package:pomodoro2/ui/helper/common_functions.dart';
 import 'package:pomodoro2/ui/widgets/common_widgets.dart';
 import '../main.dart';
 import '../ui/widgets/image_container.dart';
-import '../ui/helper/gustav_klimt_variables.dart';
 class GustavKlimt extends StatefulWidget {
   const GustavKlimt({super.key, required this.title, this.plannerId, this.date, required this.randomImage});
   final String title;

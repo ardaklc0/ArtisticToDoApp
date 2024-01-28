@@ -1,21 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:pomodoro2/provider/audio_provider.dart';
+import 'package:pomodoro2/provider/audio_start_provider.dart';
+import 'package:pomodoro2/provider/notification_provider.dart';
+import 'package:pomodoro2/provider/slider_provider.dart';
+import 'package:pomodoro2/provider/theme_provider.dart';
+import 'package:pomodoro2/provider/time_provider.dart';
 import 'package:pomodoro2/screens/gustav_klimt.dart';
 import 'package:pomodoro2/screens/home_page.dart';
 import 'package:pomodoro2/screens/monet.dart';
 import 'package:pomodoro2/screens/osman_hamdi.dart';
 import 'package:pomodoro2/screens/picasso.dart';
+import 'package:pomodoro2/screens/pomodoro.dart';
 import 'package:pomodoro2/screens/salvador_dali.dart';
 import 'package:pomodoro2/screens/van_gogh.dart';
 import 'package:pomodoro2/ui/helper/common_functions.dart';
 import 'package:pomodoro2/ui/widgets/task_container.dart';
 import 'package:pomodoro2/services/task_service.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'screens/created_planners.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final sliderProvider = SliderProvider();
+  final autoStartProvider = AutoStartProvider();
+  final themeProvider = ThemeProvider();
+  final notificationProvider = NotificationProvider();
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: themeProvider),
+        ChangeNotifierProvider(create: (context) => TimerProvider()),
+        ChangeNotifierProvider.value(value: sliderProvider),
+        ChangeNotifierProvider.value(value: notificationProvider),
+        ChangeNotifierProvider(create: (context) => SoundSelectionProvider()),
+        ChangeNotifierProvider.value(value: autoStartProvider)
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -41,6 +66,7 @@ class MyApp extends StatelessWidget {
         '/picasso': (context) => Picasso(title: 'Picasso Home Page', randomImage: randomImageChooser("Picasso", 12)),
         '/salvador_dali': (context) => SalvadorDali(title: 'Salvador Dali Page', randomImage: randomImageChooser("Dali", 9)),
         '/van_gogh': (context) => VanGogh(title: 'Van Gogh Page', randomImage: randomImageChooser("Van Gogh", 17)),
+        '/pomodoro': (context) => const Pomodoro()
       },
     );
   }

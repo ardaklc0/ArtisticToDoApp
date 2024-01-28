@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import '../ui/helper/common_functions.dart';
-import '../ui/helper/osman_hamdi_variables.dart';
 import '../ui/widgets/common_widgets.dart';
 import '../ui/widgets/image_container.dart';
 import '../main.dart';
