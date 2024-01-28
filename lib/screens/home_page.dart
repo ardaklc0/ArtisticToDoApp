@@ -4,6 +4,7 @@ import 'package:pomodoro2/screens/pomodoro.dart';
 import 'package:pomodoro2/ui/helper/common_functions.dart';
 import 'package:pomodoro2/ui/styles/common_styles.dart';
 import '../ui/helper/common_variables.dart';
+import '../ui/widgets/common_widgets.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
   @override
@@ -112,3 +113,10 @@ Widget _body(double deviceHeight, Function createArtistButton, Function goToCrea
   ),
 );
 
+Widget _floatingActionButton(Color floatingActionButtonColor, BuildContext context) => FloatingActionButton(
+  backgroundColor: floatingActionButtonColor,
+  child: homeIconForFloatingActionButton,
+  onPressed: () {
+    Navigator.pop(context);
+  },
+);

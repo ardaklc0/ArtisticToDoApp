@@ -17,7 +17,7 @@ class TimeIndicatorWidget extends StatelessWidget {
     return CircularProgressIndicator(
       strokeWidth: 15.0,
       valueColor: const AlwaysStoppedAnimation<Color>(Colors.red),
-      backgroundColor: Colors.green,
+      backgroundColor: const Color.fromRGBO(242, 245, 234, 1),
       value: progress,
     );
   }
