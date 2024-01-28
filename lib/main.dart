@@ -6,6 +6,7 @@ import 'package:pomodoro2/screens/osman_hamdi.dart';
 import 'package:pomodoro2/screens/picasso.dart';
 import 'package:pomodoro2/screens/salvador_dali.dart';
 import 'package:pomodoro2/screens/van_gogh.dart';
+import 'package:pomodoro2/ui/helper/common_functions.dart';
 import 'package:pomodoro2/ui/widgets/task_container.dart';
 import 'package:pomodoro2/services/task_service.dart';
 import 'package:intl/intl.dart';
@@ -34,12 +35,12 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const HomePage(),
         '/created_planners': (context) => const CreatedPlanners(),
-        '/gustav_klimt': (context) => const GustavKlimt(title: 'Gustav Klimt Home Page'),
-        '/osman_hamdi': (context) => const OsmanHamdi(title: 'Osman Hamdi Page'),
-        '/monet': (context) => const Monet(title: 'Monet Page'),
-        '/picasso': (context) => const Picasso(title: 'Picasso Home Page'),
-        '/salvador_dali': (context) => const SalvadorDali(title: 'Salvador Dali Page'),
-        '/van_gogh': (context) => const VanGogh(title: 'Van Gogh Page'),
+        '/gustav_klimt': (context) => GustavKlimt(title: 'Gustav Klimt Home Page', randomImage: randomImageChooser("Gustav Klimt", 20)),
+        '/osman_hamdi': (context) => OsmanHamdi(title: 'Osman Hamdi Page', randomImage: randomImageChooser("Osman Hamdi Bey", 11)),
+        '/monet': (context) => Monet(title: 'Monet Page', randomImage: randomImageChooser("Monet", 22)),
+        '/picasso': (context) => Picasso(title: 'Picasso Home Page', randomImage: randomImageChooser("Picasso", 12)),
+        '/salvador_dali': (context) => SalvadorDali(title: 'Salvador Dali Page', randomImage: randomImageChooser("Dali", 9)),
+        '/van_gogh': (context) => VanGogh(title: 'Van Gogh Page', randomImage: randomImageChooser("Van Gogh", 17)),
       },
     );
   }
