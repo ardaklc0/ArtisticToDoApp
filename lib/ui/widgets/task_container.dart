@@ -4,6 +4,7 @@ import 'package:pomodoro2/models/task_model.dart';
 import 'package:pomodoro2/ui/widgets/task_row.dart';
 import 'package:pomodoro2/services/task_service.dart';
 import '../helper/common_variables.dart';
+import '../helper/task_function.dart';
 import '../styles/common_styles.dart';
 import 'common_widgets.dart';
 class TaskContainer extends StatefulWidget {
@@ -23,22 +24,7 @@ class _TaskContainerState extends State<TaskContainer> {
   @override
   void initState() {
     super.initState();
-    initializeTasks();
-  }
-  List<Widget> initializeTasks() {
-    if (widget.tasks != null) {
-      textFields.addAll(widget.tasks!.where((element) => widget.dateText == element.creationDate).map((element) {
-        return TaskRow(
-          textColor: widget.textColor,
-          checkboxColor: widget.dateColor,
-          text: element.taskDescription,
-          dateText: element.creationDate,
-          task: element,
-          plannerId: widget.plannerId,
-        );
-      }));
-    }
-    return textFields;
+    initializeTasks(widget.tasks, textFields, widget.dateText, widget.textColor, widget.dateColor, widget.plannerId);
   }
   Future<void> addTask() async {
     Task? newTask = Task(

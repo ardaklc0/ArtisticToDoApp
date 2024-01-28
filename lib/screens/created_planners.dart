@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pomodoro2/ui/helper/common_functions_planner.dart';
+import 'package:pomodoro2/ui/helper/common_functions.dart';
 import '../ui/helper/common_variables.dart';
 import 'package:pomodoro2/ui/widgets/common_widgets.dart';
 import '../ui/helper/created_planner_variables.dart';

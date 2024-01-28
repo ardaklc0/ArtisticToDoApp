@@ -118,15 +118,19 @@ class _TaskRowState extends State<TaskRow> {
                   maxLines: null,
                   autofocus: false,
                   decoration: InputDecoration(
+                    filled: true,
+                    fillColor: widget.checkboxColor,
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                           color: widget.checkboxColor,
-                          width: 1.5),
+                          width: 1.5
+                      ),
                     ),
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                           color: widget.checkboxColor,
-                          width: 1.5),
+                          width: 1.5
+                      ),
                     ),
                   ),
                   style: TextStyle(
@@ -141,7 +145,7 @@ class _TaskRowState extends State<TaskRow> {
           Padding(
             padding: fixedEdgeInsets,
             child: SizedBox(
-              width: deviceWidth * 0.10,
+              width: deviceWidth * 0.1,
               child: Checkbox(
                 checkColor: Colors.white,
                 fillColor: MaterialStateProperty.resolveWith(getColor),

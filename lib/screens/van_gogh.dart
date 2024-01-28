@@ -1,12 +1,14 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import '../main.dart';
-import '../ui/helper/van_gogh_variables.dart';
+import '../ui/helper/common_functions.dart';
 import '../ui/widgets/common_widgets.dart';
 import '../ui/widgets/image_container.dart';
 
 class VanGogh extends StatefulWidget{
-  const VanGogh({super.key, required this.title, this.plannerId, this.date});
+  const VanGogh({super.key, required this.title, this.plannerId, this.date,  required this.randomImage});
   final String title;
+  final String randomImage;
   final int? plannerId;
   final String? date;
 
@@ -16,38 +18,52 @@ class VanGogh extends StatefulWidget{
 
 class _VanGoghState extends State<VanGogh> {
   late Future<SingleChildScrollView> taskFuture;
-
+  late List<Color> colorList;
   @override
-  void initState(){
+  void initState() {
     super.initState();
+    Random random = Random();
+    int chosenBackground = random.nextInt(4) + 1;
+    colorList = [Colors.transparent, Colors.transparent];
     taskFuture = createPlanner(
       widget.date!,
       widget.plannerId!,
-      VanGoghVariables.dateColor,
-      VanGoghVariables.taskColor,
-      VanGoghVariables.textColor,
+      Colors.transparent,
+      Colors.transparent,
+      Colors.black,
     );
+    sortedColors(widget.randomImage).then((List<Color> colors) {
+      setState(() {
+        colorList = colors;
+        taskFuture = createPlanner(
+          widget.date!,
+          widget.plannerId!,
+          colorList.last,
+          colorList.elementAt(chosenBackground),
+          Colors.black,
+        );
+      });
+    });
   }
-
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: VanGoghVariables.taskColor,
-      resizeToAvoidBottomInset: true,
-      body: _body(deviceWidth, taskFuture, context),
-      floatingActionButton: _floatingActionButton(context)
+        backgroundColor: colorList.last,
+        resizeToAvoidBottomInset: true,
+        body: _body(deviceWidth, taskFuture, widget.randomImage, context),
+        floatingActionButton: _floatingActionButton(colorList.last, context)
     );
   }
 }
 
-Widget _body(double deviceWidth, Future<SingleChildScrollView> taskFuture, BuildContext context) => Center(
+Widget _body(double deviceWidth, Future<SingleChildScrollView> taskFuture, String randomImage, BuildContext context) => Center(
   child: Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
-      const ImageContainer(
-        imageUrl: 'assets/images/Van Gogh/6.jpg',
-        imageAlignment: Alignment(0, -1),
+      ImageContainer(
+        imageUrl: randomImage,
+        imageAlignment: const Alignment(0, -1),
       ),
       Flexible(
           child: FutureBuilder<SingleChildScrollView>(
@@ -66,8 +82,8 @@ Widget _body(double deviceWidth, Future<SingleChildScrollView> taskFuture, Build
     ],
   ),
 );
-Widget _floatingActionButton(BuildContext context) => FloatingActionButton(
-  backgroundColor: VanGoghVariables.dateColor,
+Widget _floatingActionButton(Color floatingActionButtonColor, BuildContext context) => FloatingActionButton(
+  backgroundColor: floatingActionButtonColor,
   child: homeIconForFloatingActionButton,
   onPressed: () {
     Navigator.pop(context);
