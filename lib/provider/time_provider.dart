@@ -12,9 +12,11 @@ class TimerProvider with ChangeNotifier {
   int _currentRound = 1;
 
   late int _currentTimeInSeconds;
+  DateTime _currentDateTime = DateTime.now();
 
   bool _isRunning = false;
   bool _isBreakTime = false;
+  bool _isCancel = false;
 
   TimerProvider() {
     resetTimer();
@@ -24,7 +26,13 @@ class TimerProvider with ChangeNotifier {
 
   bool get isBreakTime => _isBreakTime;
 
+  bool get isCancel => _isCancel;
+
   int get currentTimeInSeconds => _currentTimeInSeconds;
+
+  DateTime get currentDateTime {
+    return _currentDateTime;
+  }
 
   int get maxTimeInSeconds =>
       (_isBreakTime
@@ -57,6 +65,23 @@ class TimerProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void cancelState() {
+    if (!isRunning) {
+      if (maxTimeInSeconds - currentTimeInSeconds >= 10) {
+        _isCancel = true;
+        notifyListeners();
+      } else {
+        _isCancel = false;
+        notifyListeners();
+      }
+    } else {
+      _timer.cancel();
+      _isRunning = false;
+      notifyListeners();
+    }
+  }
+
 
   void jumpNextRound() {
     if (_isRunning) {
@@ -122,6 +147,12 @@ class TimerProvider with ChangeNotifier {
 
   void resetTimer() {
     _currentTimeInSeconds = maxTimeInSeconds;
+    _currentDateTime = DateTime.now();
+    notifyListeners();
+  }
+
+  void resetDateTime() {
+    _currentDateTime = DateTime.now();
     notifyListeners();
   }
 }

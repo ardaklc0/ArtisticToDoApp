@@ -17,10 +17,11 @@ class TimeandRoundWidget extends StatelessWidget {
           title: 'Study Duration',
           sliderValue: SliderProvider.studyDurationSliderValue,
           max: 60,
-          min: 5,
+          min: 1,
           updateValue: (newValue) {
             sliderProvider.updateWorkDurationSliderValue(newValue);
           },
+
           minText: 'min',
         ),
         DurationWidget(
@@ -115,11 +116,15 @@ class DurationWidget extends StatelessWidget {
                   label: "$sliderValue",
                   max: max,
                   min: min,
-                  value: sliderValue.toDouble(),
+                  value: (sliderValue.toDouble() >= min && sliderValue.toDouble() <= max)
+                      ? sliderValue.toDouble()
+                      : min, // Set the initial value to min if it's outside the valid range
                   onChanged: (value) {
-                    sliderValue = value.toInt();
-                    updateValue(sliderValue);
-                    timerProvider.resetTimer();
+                    if (value >= min && value <= max) {
+                      sliderValue = value.toInt();
+                      updateValue(sliderValue);
+                      timerProvider.resetTimer();
+                    }
                   },
                 ),
                 Align(

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:pomodoro2/ui/helper/common_variables.dart';
+import 'package:pomodoro2/ui/styles/common_styles.dart';
 import 'package:provider/provider.dart';
 import '../../../provider/time_provider.dart';
+import '../common_widgets.dart';
 
 class TimeIndicatorWidget extends StatelessWidget {
   const TimeIndicatorWidget({
@@ -10,9 +14,11 @@ class TimeIndicatorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final timerProvider = Provider.of<TimerProvider>(context);
-
     double progress = 1 -
-        timerProvider.currentTimeInSeconds / (timerProvider.maxTimeInSeconds);
+        (timerProvider.maxTimeInSeconds != 0
+            ? timerProvider.currentTimeInSeconds / timerProvider.maxTimeInSeconds
+            : 5);
+
 
     return CircularProgressIndicator(
       strokeWidth: 15.0,
@@ -94,6 +100,9 @@ class MediaButtons extends StatelessWidget {
         IconButton(
           onPressed: () {
             timerProvider.toggleTimer();
+            if (!timerProvider.isRunning) {
+              timerProvider.cancelState();
+            }
           },
           icon: Icon(
             timerProvider.isRunning ? Icons.pause : Icons.play_arrow,
@@ -103,6 +112,7 @@ class MediaButtons extends StatelessWidget {
         IconButton(
           onPressed: () {
             timerProvider.jumpNextRound();
+            timerProvider.resetDateTime();
           },
           icon: const Icon(Icons.fast_forward, size: 30.0),
         ),
@@ -123,5 +133,38 @@ class RoundsWidget extends StatelessWidget {
       timerProvider.currentRoundDisplay,
       style: Theme.of(context).textTheme.titleMedium,
     );
+  }
+}
+
+
+class TaskDropdownWidget extends StatelessWidget {
+  const TaskDropdownWidget({
+    super.key,
+  });
+  @override
+  Widget build(BuildContext context) {
+    final timerProvider = Provider.of<TimerProvider>(context);
+    if (timerProvider.isRunning && !timerProvider.isBreakTime) {
+      return Text("${timerProvider.currentTimeInSeconds} STUDY TIME RUNNING");
+    } else if (timerProvider.isRunning && timerProvider.isBreakTime) {
+      return Text("${timerProvider.currentTimeInSeconds} BREAK TIME RUNNING");
+    } else if (!timerProvider.isRunning && !timerProvider.isBreakTime) {
+      return Column(
+        children: [
+          Text("${timerProvider.maxTimeInSeconds - timerProvider.currentTimeInSeconds} STUDY TIME NOT RUNNING"),
+          ElevatedButton(
+            onPressed: () {
+              DateFormat formatter = DateFormat.Hms();
+              print("Now: ${formatter.format(timerProvider.currentDateTime)}");
+              print("Start: ${formatter.format(timerProvider.currentDateTime.add(Duration(seconds: timerProvider.maxTimeInSeconds - timerProvider.currentTimeInSeconds)))}");
+            },
+            style: mainUiRaisedButtonStyle,
+            child: Text("Save : ${timerProvider.isCancel}"),
+          )
+        ],
+      );
+    } else if (!timerProvider.isRunning && timerProvider.isBreakTime){
+      return Text("${timerProvider.maxTimeInSeconds - timerProvider.currentTimeInSeconds} BREAK TIME NOT RUNNING");
+    } return const Text("BOS");
   }
 }

@@ -28,8 +28,9 @@ class Pomodoro extends StatelessWidget {
               ),
             ),
             const MediaButtons(),
+            const TaskDropdownWidget(),
             const RoundsWidget(),
-            const SettingsButton()
+            const SettingsButton(),
           ],
         ),
       ),
