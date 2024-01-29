@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pomodoro2/provider/audio_provider.dart';
-import 'package:pomodoro2/provider/audio_start_provider.dart';
+import 'package:pomodoro2/provider/auto_start_provider.dart';
 import 'package:pomodoro2/provider/notification_provider.dart';
 import 'package:pomodoro2/provider/slider_provider.dart';
 import 'package:pomodoro2/provider/theme_provider.dart';

@@ -5,15 +5,10 @@ class SliderProvider with ChangeNotifier {
   late SharedPreferences _sharedPreferences;
 
   static late int _studyDurationSliderValue;
-  static late int _shortBreakDurationSliderValue;
-  static late int _longBreakDurationSliderValue;
-  static late int _roundSliderValue;
+
 
   static int get studyDurationSliderValue => _studyDurationSliderValue;
-  static int get shortBreakDurationSliderValue =>
-      _shortBreakDurationSliderValue;
-  static int get longBreakDurationSliderValue => _longBreakDurationSliderValue;
-  static int get roundSliderValue => _roundSliderValue;
+
 
   SliderProvider() {
     loadSliderFromSharedPref();
@@ -27,25 +22,6 @@ class SliderProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateShortBreakDurationSliderValue(int newValue) {
-    _shortBreakDurationSliderValue = newValue;
-    saveSliderToSharedPref(
-        'shortBreakDurationSliderValue', _shortBreakDurationSliderValue);
-    notifyListeners();
-  }
-
-  void updateLongBreakDurationSliderValue(int newValue) {
-    _longBreakDurationSliderValue = newValue;
-    saveSliderToSharedPref(
-        "longBreakDurationSliderValue", _longBreakDurationSliderValue);
-    notifyListeners();
-  }
-
-  void updateRoundSliderValue(int newValue) {
-    _roundSliderValue = newValue;
-    saveSliderToSharedPref("roundSliderValue", _roundSliderValue);
-    notifyListeners();
-  }
 
   Future<void> createSharedPrefObject() async {
     _sharedPreferences = await SharedPreferences.getInstance();
@@ -59,11 +35,7 @@ class SliderProvider with ChangeNotifier {
     await createSharedPrefObject();
     _studyDurationSliderValue =
         _sharedPreferences.getInt('studyDurationSliderValue') ?? 25;
-    _shortBreakDurationSliderValue =
-        _sharedPreferences.getInt('shortBreakDurationSliderValue') ?? 5;
-    _longBreakDurationSliderValue =
-        _sharedPreferences.getInt('longBreakDurationSliderValue') ?? 15;
-    _roundSliderValue = _sharedPreferences.getInt('roundSliderValue') ?? 4;
+
 
     notifyListeners();
   }
