@@ -14,23 +14,24 @@ class Pomodoro extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.shortestSide * 0.5,
-              width: MediaQuery.of(context).size.shortestSide * 0.5,
-              child: const Stack(
-                fit: StackFit.expand,
-                children: [
-                  TimeIndicatorWidget(),
-                  StudyBreakWidget(),
-                ],
+            Padding(
+              padding: const EdgeInsets.all(50),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.shortestSide * 0.5,
+                width: MediaQuery.of(context).size.shortestSide * 0.5,
+                child: const Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    TimeIndicatorWidget(),
+                    StudyBreakWidget(),
+                  ],
+                ),
               ),
             ),
             const MediaButtons(),
             const TaskDropdownWidget(),
-            const RoundsWidget(),
-            const SettingsButton(),
           ],
         ),
       ),

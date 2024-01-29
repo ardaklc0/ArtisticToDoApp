@@ -16,43 +16,13 @@ class TimeandRoundWidget extends StatelessWidget {
         DurationWidget(
           title: 'Study Duration',
           sliderValue: SliderProvider.studyDurationSliderValue,
-          max: 60,
+          max: 240,
           min: 1,
           updateValue: (newValue) {
             sliderProvider.updateWorkDurationSliderValue(newValue);
           },
 
           minText: 'min',
-        ),
-        DurationWidget(
-          title: 'Short break duration',
-          sliderValue: SliderProvider.shortBreakDurationSliderValue,
-          max: 30,
-          min: 1,
-          updateValue: (newValue) {
-            sliderProvider.updateShortBreakDurationSliderValue(newValue);
-          },
-          minText: 'min',
-        ),
-        DurationWidget(
-          title: 'Long break duration',
-          sliderValue: SliderProvider.longBreakDurationSliderValue,
-          max: 45,
-          min: 1,
-          updateValue: (newValue) {
-            sliderProvider.updateLongBreakDurationSliderValue(newValue);
-          },
-          minText: 'min',
-        ),
-        DurationWidget(
-          title: 'Rounds',
-          sliderValue: SliderProvider.roundSliderValue,
-          max: 15,
-          min: 2,
-          updateValue: (newValue) {
-            sliderProvider.updateRoundSliderValue(newValue);
-          },
-          minText: '',
         ),
       ],
     );

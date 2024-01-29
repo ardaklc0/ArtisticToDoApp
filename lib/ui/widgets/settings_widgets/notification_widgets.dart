@@ -25,28 +25,31 @@ class NotificationSoundWidget extends StatelessWidget {
           ),
         ],
       ),
-    child: Consumer<SoundSelectionProvider>(
-      builder: (context, provider, child) {
-        return DropdownButtonFormField<String>(
-          dropdownColor: const Color.fromRGBO(242, 245, 234, 1),
-          value: provider.selectedAudioFile,
-          decoration: const InputDecoration(
-            labelText: 'Notification sound',
-          ),
-          items: provider.audioFiles.map((audioFile) {
-            return DropdownMenuItem<String>(
-              value: audioFile,
-              child: Text(
-                textAlign: TextAlign.center,
-                audioFile,
-              ),
-            );
-          }).toList(),
-          onChanged: (value) {
-            provider.setSelectedAudioFile(value!);
-          },
-        );
-      }),
+    child: Padding(
+      padding: EdgeInsets.all(10),
+      child: Consumer<SoundSelectionProvider>(
+        builder: (context, provider, child) {
+          return DropdownButtonFormField<String>(
+            dropdownColor: const Color.fromRGBO(242, 245, 234, 1),
+            value: provider.selectedAudioFile,
+            decoration: const InputDecoration(
+              labelText: 'Notification sound',
+            ),
+            items: provider.audioFiles.map((audioFile) {
+              return DropdownMenuItem<String>(
+                value: audioFile,
+                child: Text(
+                  textAlign: TextAlign.center,
+                  audioFile,
+                ),
+              );
+            }).toList(),
+            onChanged: (value) {
+              provider.setSelectedAudioFile(value!);
+            },
+          );
+        }),
+    ),
     );
   }
 }

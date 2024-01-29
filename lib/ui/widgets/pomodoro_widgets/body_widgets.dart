@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pomodoro2/services/planner_service.dart';
+import 'package:pomodoro2/services/task_service.dart';
 import 'package:pomodoro2/ui/helper/common_variables.dart';
 import 'package:pomodoro2/ui/styles/common_styles.dart';
+import 'package:pomodoro2/ui/widgets/pomodoro_widgets/appbar_widgets.dart';
 import 'package:provider/provider.dart';
+import '../../../models/planner_model.dart';
+import '../../../models/task_model.dart';
 import '../../../provider/time_provider.dart';
 import '../common_widgets.dart';
 
@@ -102,6 +107,9 @@ class MediaButtons extends StatelessWidget {
             timerProvider.toggleTimer();
             if (!timerProvider.isRunning) {
               timerProvider.cancelState();
+              if (timerProvider.isCancel) {
+                _dialogBuilder(context);
+              }
             }
           },
           icon: Icon(
@@ -109,32 +117,12 @@ class MediaButtons extends StatelessWidget {
             size: 45.0,
           ),
         ),
-        IconButton(
-          onPressed: () {
-            timerProvider.jumpNextRound();
-            timerProvider.resetDateTime();
-          },
-          icon: const Icon(Icons.fast_forward, size: 30.0),
-        ),
+        SettingsButton()
       ],
     );
   }
 }
 
-class RoundsWidget extends StatelessWidget {
-  const RoundsWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final timerProvider = Provider.of<TimerProvider>(context);
-    return Text(
-      timerProvider.currentRoundDisplay,
-      style: Theme.of(context).textTheme.titleMedium,
-    );
-  }
-}
 
 
 class TaskDropdownWidget extends StatelessWidget {
@@ -144,27 +132,150 @@ class TaskDropdownWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final timerProvider = Provider.of<TimerProvider>(context);
-    if (timerProvider.isRunning && !timerProvider.isBreakTime) {
-      return Text("${timerProvider.currentTimeInSeconds} STUDY TIME RUNNING");
-    } else if (timerProvider.isRunning && timerProvider.isBreakTime) {
-      return Text("${timerProvider.currentTimeInSeconds} BREAK TIME RUNNING");
-    } else if (!timerProvider.isRunning && !timerProvider.isBreakTime) {
+    final isTenSeconds = (timerProvider.maxTimeInSeconds - timerProvider.currentTimeInSeconds != 0);
+    final shouldShowDropdown = (!timerProvider.isRunning);
+
+    //Consumer<TimerProvider> kullan!
+    //TimerProvider yerine PlannerProvider ve TaskProvider kullan!
+    Future<DropdownButtonFormField<String>>? retrievePlanners() async {
+      List<String> plannerIds = [];
+      List<Planner> planners = await getPlanners();
+      for (var element in planners) {
+        plannerIds.add(element.id.toString());
+      }
+      if (timerProvider.plannerId == null) {
+        timerProvider.setPlannerId(int.parse( plannerIds.first));
+      }
+      List<DropdownMenuItem<String>> dropdownItems = plannerIds
+          .map((String id) => DropdownMenuItem<String>(value: id, child: Text(id)))
+          .toList();
+      return DropdownButtonFormField<String>(
+        value: timerProvider.plannerId.toString(),
+        items: dropdownItems,
+        onChanged: (value) {
+          timerProvider.setPlannerId(int.parse(value!));
+        },
+      );
+    }
+
+    Future<DropdownButtonFormField<String>>? retrieveTasks() async {
+      List<String> taskDescriptions = [];
+      List<Task> tasks = await getUncheckedTasks(timerProvider.plannerId!);
+      for (var element in tasks) {
+        taskDescriptions.add(element.taskDescription);
+      }
+      List<DropdownMenuItem<String>> dropdownItems = taskDescriptions
+          .map((String id) => DropdownMenuItem<String>(value: id, child: Text(id)))
+          .toList();
+      return DropdownButtonFormField<String>(
+        value: timerProvider.taskDescription,
+        items: dropdownItems,
+        onChanged: (value) {
+          timerProvider.setTaskDescription(value!);
+        },
+      );
+    }
+
+    if (!timerProvider.isRunning) {
+      return Column(
+        children: [
+          FutureBuilder<DropdownButtonFormField<String>>(
+            future: retrievePlanners(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return shouldShowDropdown ? snapshot.data! : const Text("");
+              } else {
+                return const CircularProgressIndicator();
+              }
+            },
+          ),
+          FutureBuilder<DropdownButtonFormField<String>>(
+            future: retrieveTasks(),
+            builder: (context, snapshot) {
+              try {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return shouldShowDropdown ? snapshot.data! : const Text("");
+                } else {
+                  return const CircularProgressIndicator();
+                }
+              } catch (error) {
+                return const Text("There is no open tasks");
+              }
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: ElevatedButton(
+              onPressed: () {
+              },
+              style: mainUiRaisedButtonStyle,
+              child: const Text("Start"),
+            ),
+          )
+        ],
+      );
+    }
+    if (!timerProvider.isRunning && isTenSeconds) {
       return Column(
         children: [
           Text("${timerProvider.maxTimeInSeconds - timerProvider.currentTimeInSeconds} STUDY TIME NOT RUNNING"),
           ElevatedButton(
             onPressed: () {
               DateFormat formatter = DateFormat.Hms();
-              print("Now: ${formatter.format(timerProvider.currentDateTime)}");
-              print("Start: ${formatter.format(timerProvider.currentDateTime.add(Duration(seconds: timerProvider.maxTimeInSeconds - timerProvider.currentTimeInSeconds)))}");
+              print("Start: ${formatter.format(timerProvider.currentDateTime)}");
+              print("Now: ${formatter.format(timerProvider.currentDateTime.add(Duration(seconds: timerProvider.maxTimeInSeconds - timerProvider.currentTimeInSeconds)))}");
             },
             style: mainUiRaisedButtonStyle,
             child: Text("Save : ${timerProvider.isCancel}"),
           )
         ],
       );
-    } else if (!timerProvider.isRunning && timerProvider.isBreakTime){
-      return Text("${timerProvider.maxTimeInSeconds - timerProvider.currentTimeInSeconds} BREAK TIME NOT RUNNING");
-    } return const Text("BOS");
+    }
+    return const Text("");
   }
+}
+
+Future<void> _dialogBuilder(BuildContext context) {
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Are you sure?'),
+        content: const Text(
+          'Your progress will be deleted. Do you really want to cancel?',
+        ),
+        backgroundColor: homePageColor,
+        actions: <Widget>[
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+            ),
+            child: const Text(
+              'Yes',
+              style: TextStyle(
+                color: Colors.black
+              ),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+            ),
+            child: const Text(
+              "No, let's continue",
+              style: TextStyle(
+                  color: Colors.black
+              )
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

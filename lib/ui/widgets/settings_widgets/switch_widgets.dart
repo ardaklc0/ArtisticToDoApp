@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pomodoro2/ui/helper/common_variables.dart';
 import 'package:provider/provider.dart';
-import '../../../provider/audio_start_provider.dart';
+import '../../../provider/auto_start_provider.dart';
 import '../../../provider/notification_provider.dart';
 import '../../../provider/theme_provider.dart';
 
