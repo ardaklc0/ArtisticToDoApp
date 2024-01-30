@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'package:pomodoro2/models/task_model.dart';
 import 'audio_provider.dart';
 import 'auto_start_provider.dart';
 import 'notification_provider.dart';
@@ -14,6 +15,8 @@ class TimerProvider with ChangeNotifier {
   bool _isBreakTime = false;
   int? _plannerId;
   String? _taskDescription;
+  List<String> _tasks = [];
+  List<String> _planners = [];
   bool _isCancel = false;
   TimerProvider() {
     resetTimer();
@@ -22,6 +25,8 @@ class TimerProvider with ChangeNotifier {
   bool get isBreakTime => _isBreakTime;
   bool get isCancel => _isCancel;
   int? get plannerId => _plannerId;
+  List<String> get tasks => _tasks;
+  List<String> get planners => _planners;
   String? get taskDescription => _taskDescription;
   int get currentTimeInSeconds => _currentTimeInSeconds;
   DateTime get currentDateTime => _currentDateTime;
@@ -38,6 +43,14 @@ class TimerProvider with ChangeNotifier {
   }
   void setTaskDescription(String value) {
     _taskDescription = value;
+    notifyListeners();
+  }
+  void setTasks(List<String> values) {
+    _tasks = values;
+    notifyListeners();
+  }
+  void setPlanners(List<String> values) {
+    _planners = values;
     notifyListeners();
   }
   void toggleTimer() {

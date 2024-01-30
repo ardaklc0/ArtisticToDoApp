@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pomodoro2/services/planner_service.dart';
@@ -9,13 +11,11 @@ import 'package:provider/provider.dart';
 import '../../../models/planner_model.dart';
 import '../../../models/task_model.dart';
 import '../../../provider/time_provider.dart';
-import '../common_widgets.dart';
 
 class TimeIndicatorWidget extends StatelessWidget {
   const TimeIndicatorWidget({
     super.key,
   });
-
   @override
   Widget build(BuildContext context) {
     final timerProvider = Provider.of<TimerProvider>(context);
@@ -23,8 +23,6 @@ class TimeIndicatorWidget extends StatelessWidget {
         (timerProvider.maxTimeInSeconds != 0
             ? timerProvider.currentTimeInSeconds / timerProvider.maxTimeInSeconds
             : 5);
-
-
     return CircularProgressIndicator(
       strokeWidth: 15.0,
       valueColor: const AlwaysStoppedAnimation<Color>(Colors.red),
@@ -33,12 +31,10 @@ class TimeIndicatorWidget extends StatelessWidget {
     );
   }
 }
-
 class StudyBreakWidget extends StatelessWidget {
   const StudyBreakWidget({
     super.key,
   });
-
   @override
   Widget build(BuildContext context) {
     return const Column(
@@ -50,12 +46,10 @@ class StudyBreakWidget extends StatelessWidget {
     );
   }
 }
-
 class TimeModeWidget extends StatelessWidget {
   const TimeModeWidget({
     super.key,
   });
-
   @override
   Widget build(BuildContext context) {
     final timerProvider = Provider.of<TimerProvider>(context);
@@ -68,12 +62,10 @@ class TimeModeWidget extends StatelessWidget {
     );
   }
 }
-
 class TimeWidget extends StatelessWidget {
   const TimeWidget({
     super.key,
   });
-
   @override
   Widget build(BuildContext context) {
     final timerProvider = Provider.of<TimerProvider>(context);
@@ -86,12 +78,10 @@ class TimeWidget extends StatelessWidget {
     );
   }
 }
-
 class MediaButtons extends StatelessWidget {
   const MediaButtons({
     super.key,
   });
-
   @override
   Widget build(BuildContext context) {
     final timerProvider = Provider.of<TimerProvider>(context);
@@ -117,13 +107,11 @@ class MediaButtons extends StatelessWidget {
             size: 45.0,
           ),
         ),
-        SettingsButton()
+        const SettingsButton()
       ],
     );
   }
 }
-
-
 
 class TaskDropdownWidget extends StatelessWidget {
   const TaskDropdownWidget({
@@ -133,89 +121,81 @@ class TaskDropdownWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final timerProvider = Provider.of<TimerProvider>(context);
     final isTenSeconds = (timerProvider.maxTimeInSeconds - timerProvider.currentTimeInSeconds != 0);
-    final shouldShowDropdown = (!timerProvider.isRunning);
 
     //Consumer<TimerProvider> kullan!
     //TimerProvider yerine PlannerProvider ve TaskProvider kullan!
-    Future<DropdownButtonFormField<String>>? retrievePlanners() async {
-      List<String> plannerIds = [];
-      List<Planner> planners = await getPlanners();
-      for (var element in planners) {
-        plannerIds.add(element.id.toString());
-      }
-      if (timerProvider.plannerId == null) {
-        timerProvider.setPlannerId(int.parse( plannerIds.first));
-      }
-      List<DropdownMenuItem<String>> dropdownItems = plannerIds
-          .map((String id) => DropdownMenuItem<String>(value: id, child: Text(id)))
-          .toList();
-      return DropdownButtonFormField<String>(
-        value: timerProvider.plannerId.toString(),
-        items: dropdownItems,
-        onChanged: (value) {
-          timerProvider.setPlannerId(int.parse(value!));
-        },
-      );
-    }
 
-    Future<DropdownButtonFormField<String>>? retrieveTasks() async {
-      List<String> taskDescriptions = [];
-      List<Task> tasks = await getUncheckedTasks(timerProvider.plannerId!);
-      for (var element in tasks) {
-        taskDescriptions.add(element.taskDescription);
-      }
-      List<DropdownMenuItem<String>> dropdownItems = taskDescriptions
-          .map((String id) => DropdownMenuItem<String>(value: id, child: Text(id)))
-          .toList();
-      return DropdownButtonFormField<String>(
-        value: timerProvider.taskDescription,
-        items: dropdownItems,
-        onChanged: (value) {
-          timerProvider.setTaskDescription(value!);
-        },
-      );
-    }
 
     if (!timerProvider.isRunning) {
       return Column(
         children: [
-          FutureBuilder<DropdownButtonFormField<String>>(
-            future: retrievePlanners(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return shouldShowDropdown ? snapshot.data! : const Text("");
-              } else {
-                return const CircularProgressIndicator();
-              }
+          Consumer<TimerProvider>(
+            builder: (BuildContext context, TimerProvider provider, Widget? child) {
+              return FutureBuilder<List<int?>>(
+                future: getPlannerIds(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    List<int?> plannerIds = snapshot.data ?? [];
+                    return DropdownButtonFormField<int?>(
+                      value: provider.plannerId,
+                      items: plannerIds.map((plannerId) {
+                        return DropdownMenuItem<int?>(
+                          value: plannerId,
+                          child: Text(
+                            plannerId.toString(),
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        timerProvider.setPlannerId(value!);
+                        print("Selected plannerId: $value");
+                      },
+                    );
+                  }
+                },
+              );
             },
           ),
-          FutureBuilder<DropdownButtonFormField<String>>(
-            future: retrieveTasks(),
-            builder: (context, snapshot) {
-              try {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return shouldShowDropdown ? snapshot.data! : const Text("");
-                } else {
-                  return const CircularProgressIndicator();
-                }
-              } catch (error) {
-                return const Text("There is no open tasks");
-              }
+          Consumer<TimerProvider>(
+            builder: (BuildContext context, TimerProvider provider, Widget? child) {
+              return FutureBuilder<List<String>>(
+                future: getTaskDescriptions(provider.plannerId ?? 1),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else if (!snapshot.hasData || snapshot.data == null) {
+                    return const Text('No task descriptions available.');
+                  } else {
+                    List<String> taskDescriptions = snapshot.data!;
+                    return DropdownButtonFormField<String>(
+                      items: taskDescriptions.map((taskDescription) {
+                        return DropdownMenuItem<String>(
+                          value: taskDescription,
+                          child: Text(
+                            taskDescription,
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        print("Selected taskDescription: $value");
+                      },
+                    );
+                  }
+                },
+              );
             },
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: ElevatedButton(
-              onPressed: () {
-              },
-              style: mainUiRaisedButtonStyle,
-              child: const Text("Start"),
-            ),
           )
         ],
       );
-    }
-    if (!timerProvider.isRunning && isTenSeconds) {
+    } else {
       return Column(
         children: [
           Text("${timerProvider.maxTimeInSeconds - timerProvider.currentTimeInSeconds} STUDY TIME NOT RUNNING"),
@@ -231,8 +211,17 @@ class TaskDropdownWidget extends StatelessWidget {
         ],
       );
     }
-    return const Text("");
   }
+}
+
+Future<List<String>> getTaskDescriptions(int plannerId) async {
+  List<Task> tasks = await getUncheckedTasks(plannerId);
+  return tasks.map((task) => task.taskDescription).toList();
+}
+
+Future<List<int?>> getPlannerIds() async {
+  List<Planner> planners = await getPlanners();
+  return planners.map((planner) => planner.id).toList();
 }
 
 Future<void> _dialogBuilder(BuildContext context) {
