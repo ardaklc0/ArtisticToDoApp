@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pomodoro2/provider/audio_provider.dart';
 import 'package:pomodoro2/provider/auto_start_provider.dart';
 import 'package:pomodoro2/provider/notification_provider.dart';
+import 'package:pomodoro2/provider/planner_provider.dart';
 import 'package:pomodoro2/provider/slider_provider.dart';
+import 'package:pomodoro2/provider/task_provider.dart';
 import 'package:pomodoro2/provider/theme_provider.dart';
 import 'package:pomodoro2/provider/time_provider.dart';
 import 'package:pomodoro2/screens/gustav_klimt.dart';
@@ -28,6 +30,8 @@ void main() async {
   final autoStartProvider = AutoStartProvider();
   final themeProvider = ThemeProvider();
   final notificationProvider = NotificationProvider();
+  final plannerProvider = PlannerProvider();
+  final taskProvider = TaskProvider();
   runApp(
     MultiProvider(
       providers: [
@@ -36,7 +40,9 @@ void main() async {
         ChangeNotifierProvider.value(value: sliderProvider),
         ChangeNotifierProvider.value(value: notificationProvider),
         ChangeNotifierProvider(create: (context) => SoundSelectionProvider()),
-        ChangeNotifierProvider.value(value: autoStartProvider)
+        ChangeNotifierProvider.value(value: autoStartProvider),
+        ChangeNotifierProvider.value(value: plannerProvider),
+        ChangeNotifierProvider.value(value: taskProvider)
       ],
       child: const MyApp(),
     ),

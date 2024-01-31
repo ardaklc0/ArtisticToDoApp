@@ -13,10 +13,6 @@ class TimerProvider with ChangeNotifier {
   DateTime _currentDateTime = DateTime.now();
   bool _isRunning = false;
   bool _isBreakTime = false;
-  int? _plannerId;
-  String? _taskDescription;
-  List<String> _tasks = [];
-  List<String> _planners = [];
   bool _isCancel = false;
   TimerProvider() {
     resetTimer();
@@ -24,10 +20,6 @@ class TimerProvider with ChangeNotifier {
   bool get isRunning => _isRunning;
   bool get isBreakTime => _isBreakTime;
   bool get isCancel => _isCancel;
-  int? get plannerId => _plannerId;
-  List<String> get tasks => _tasks;
-  List<String> get planners => _planners;
-  String? get taskDescription => _taskDescription;
   int get currentTimeInSeconds => _currentTimeInSeconds;
   DateTime get currentDateTime => _currentDateTime;
   int get maxTimeInSeconds => SliderProvider.studyDurationSliderValue * 60;
@@ -36,22 +28,6 @@ class TimerProvider with ChangeNotifier {
     int minutes = _currentTimeInSeconds ~/ 60;
     int seconds = _currentTimeInSeconds % 60;
     return '$minutes:${seconds.toString().padLeft(2, '0')}';
-  }
-  void setPlannerId(int value) {
-    _plannerId = value;
-    notifyListeners();
-  }
-  void setTaskDescription(String value) {
-    _taskDescription = value;
-    notifyListeners();
-  }
-  void setTasks(List<String> values) {
-    _tasks = values;
-    notifyListeners();
-  }
-  void setPlanners(List<String> values) {
-    _planners = values;
-    notifyListeners();
   }
   void toggleTimer() {
     if (!_isRunning) {
