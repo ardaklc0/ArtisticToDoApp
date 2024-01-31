@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pomodoro2/provider/task_provider.dart';
 import 'package:pomodoro2/services/planner_service.dart';
 import 'package:pomodoro2/services/task_service.dart';
 import 'package:pomodoro2/ui/helper/common_variables.dart';
@@ -10,6 +12,7 @@ import 'package:pomodoro2/ui/widgets/pomodoro_widgets/appbar_widgets.dart';
 import 'package:provider/provider.dart';
 import '../../../models/planner_model.dart';
 import '../../../models/task_model.dart';
+import '../../../provider/planner_provider.dart';
 import '../../../provider/time_provider.dart';
 
 class TimeIndicatorWidget extends StatelessWidget {
@@ -85,6 +88,8 @@ class MediaButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final timerProvider = Provider.of<TimerProvider>(context);
+    final taskProvider = Provider.of<TaskProvider>(context);
+    final plannerProvider = Provider.of<PlannerProvider>(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -93,14 +98,18 @@ class MediaButtons extends StatelessWidget {
           icon: const Icon(Icons.replay, size: 30.0),
         ),
         IconButton(
-          onPressed: () {
+          onPressed: () async {
             timerProvider.toggleTimer();
+            print("plannerId: ${plannerProvider.plannerId} <=> taskId: ${taskProvider.taskId}");
             if (!timerProvider.isRunning) {
               timerProvider.cancelState();
               if (timerProvider.isCancel) {
-                _dialogBuilder(context);
+                await _dialogBuilder(context) ?
+                timerProvider.resetTimer() :
+                timerProvider.toggleTimer();
               }
             }
+            
           },
           icon: Icon(
             timerProvider.isRunning ? Icons.pause : Icons.play_arrow,
@@ -120,77 +129,69 @@ class TaskDropdownWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final timerProvider = Provider.of<TimerProvider>(context);
-    final isTenSeconds = (timerProvider.maxTimeInSeconds - timerProvider.currentTimeInSeconds != 0);
-
+    final taskProvider = Provider.of<TaskProvider>(context);
+    final plannerProvider = Provider.of<PlannerProvider>(context);
     //Consumer<TimerProvider> kullan!
     //TimerProvider yerine PlannerProvider ve TaskProvider kullan!
-
-
-    if (!timerProvider.isRunning) {
+    if (!timerProvider.isRunning && plannerProvider.plannerId != null) {
       return Column(
         children: [
-          Consumer<TimerProvider>(
-            builder: (BuildContext context, TimerProvider provider, Widget? child) {
-              return FutureBuilder<List<int?>>(
-                future: getPlannerIds(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    List<int?> plannerIds = snapshot.data ?? [];
-                    return DropdownButtonFormField<int?>(
-                      value: provider.plannerId,
-                      items: plannerIds.map((plannerId) {
-                        return DropdownMenuItem<int?>(
-                          value: plannerId,
-                          child: Text(
-                            plannerId.toString(),
-                            textAlign: TextAlign.center,
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        timerProvider.setPlannerId(value!);
-                        print("Selected plannerId: $value");
-                      },
+          FutureBuilder<List<int?>>(
+            future: getPlannerIds(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                List<int?> plannerIds = snapshot.data ?? [];
+                return DropdownButtonFormField<int?>(
+                  value: plannerProvider.plannerId,
+                  items: plannerIds.map((plannerId) {
+                    return DropdownMenuItem<int?>(
+                      value: plannerId,
+                      child: Text(
+                        plannerId.toString(),
+                        textAlign: TextAlign.center,
+                      ),
                     );
-                  }
-                },
-              );
+                  }).toList(),
+                  onChanged: (value) {
+                    taskProvider.resetTask();
+                    plannerProvider.setPlannerId(value!);
+                  },
+                );
+              }
             },
           ),
-          Consumer<TimerProvider>(
-            builder: (BuildContext context, TimerProvider provider, Widget? child) {
-              return FutureBuilder<List<String>>(
-                future: getTaskDescriptions(provider.plannerId ?? 1),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else if (!snapshot.hasData || snapshot.data == null) {
-                    return const Text('No task descriptions available.');
-                  } else {
-                    List<String> taskDescriptions = snapshot.data!;
-                    return DropdownButtonFormField<String>(
-                      items: taskDescriptions.map((taskDescription) {
-                        return DropdownMenuItem<String>(
-                          value: taskDescription,
-                          child: Text(
-                            taskDescription,
-                            textAlign: TextAlign.center,
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        print("Selected taskDescription: $value");
-                      },
+          FutureBuilder<Map<String, String>>(
+            future: getTaskDescriptionAndId(plannerProvider.plannerId ?? 0),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else if (!snapshot.hasData || snapshot.data == null) {
+                return const Text('No task descriptions available.');
+              } else {
+                Map<String, String> tasks = (snapshot.data as Map<String, String>);
+                return DropdownButtonFormField<int>(
+                  value: taskProvider.taskId,
+                  items: tasks.entries.map((task) {
+                    return DropdownMenuItem<int>(
+                      value: int.parse(task.key),
+                      child: Text(
+                        task.value,
+                      ),
                     );
-                  }
-                },
-              );
+                  }).toList(),
+                  onChanged: (value) {
+                    print("value: $value");
+                    taskProvider.setTaskId(value!);
+                    print("timerProvider.taskId: ${taskProvider.taskId}");
+                  },
+                );
+              }
             },
           )
         ],
@@ -200,10 +201,14 @@ class TaskDropdownWidget extends StatelessWidget {
         children: [
           Text("${timerProvider.maxTimeInSeconds - timerProvider.currentTimeInSeconds} STUDY TIME NOT RUNNING"),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               DateFormat formatter = DateFormat.Hms();
               print("Start: ${formatter.format(timerProvider.currentDateTime)}");
               print("Now: ${formatter.format(timerProvider.currentDateTime.add(Duration(seconds: timerProvider.maxTimeInSeconds - timerProvider.currentTimeInSeconds)))}");
+
+              var planners = await getPlannerIds();
+              var firstPlanner = planners.first;
+              plannerProvider.setPlannerId(firstPlanner!);
             },
             style: mainUiRaisedButtonStyle,
             child: Text("Save : ${timerProvider.isCancel}"),
@@ -218,14 +223,28 @@ Future<List<String>> getTaskDescriptions(int plannerId) async {
   List<Task> tasks = await getUncheckedTasks(plannerId);
   return tasks.map((task) => task.taskDescription).toList();
 }
-
+Future<Map<String, String>> getTaskDescriptionAndId(int plannerId) async {
+  List<Task> tasks = await getUncheckedTasks(plannerId);
+  Map<String, String> taskMap = {};
+  for (var task in tasks) {
+    taskMap[task.id.toString()] = task.taskDescription;
+  }
+  return taskMap;
+}
+Future<List<Task>> getTasks(int plannerId) async {
+  return await getUncheckedTasks(plannerId);
+}
 Future<List<int?>> getPlannerIds() async {
   List<Planner> planners = await getPlanners();
   return planners.map((planner) => planner.id).toList();
 }
-
-Future<void> _dialogBuilder(BuildContext context) {
-  return showDialog<void>(
+Future<List<int?>> getTaskIds(int plannerId) async {
+  List<Task> tasks = await getTasks(plannerId);
+  return tasks.map((task) => task.id).toList();
+}
+Future<bool> _dialogBuilder(BuildContext context) async {
+  bool confirm = false;
+  confirm = await showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
@@ -246,7 +265,7 @@ Future<void> _dialogBuilder(BuildContext context) {
               ),
             ),
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).pop(true);
             },
           ),
           TextButton(
@@ -260,11 +279,12 @@ Future<void> _dialogBuilder(BuildContext context) {
               )
             ),
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).pop(false);
             },
           ),
         ],
       );
     },
   );
+  return confirm;
 }
