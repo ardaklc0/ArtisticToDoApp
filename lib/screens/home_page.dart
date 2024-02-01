@@ -25,14 +25,14 @@ class _HomePageState extends State<HomePage> {
       body: _body(deviceHeight, createArtistButton, goToCreatedPlanners, goToPomodoro)
     );
   }
-  List<Container> createArtistButton(double deviceHeight){
+  List<Container> createArtistButton(double deviceHeight) {
     List<Container> artistButtons = [];
     artists.forEach((key, value) {
       artistButtons.add(
         Container(
           width: double.infinity,
-          height: deviceHeight * 0.08,
-          padding: const EdgeInsets.all(2),
+          height: deviceHeight * 0.25,
+          padding: EdgeInsets.zero,
           child: ElevatedButton(
             style: mainUiRaisedButtonStyle,
             onPressed: () async {
@@ -42,11 +42,23 @@ class _HomePageState extends State<HomePage> {
               });
               goToCreatedPlanners();
             },
-            child: Text(
-              value,
-              style: TextStyle(
-                fontSize: deviceHeight * 0.02,
-              ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.asset(
+                  'assets/images/Thumbnail/4.jpg',
+                  fit: BoxFit.fill,
+                  width: deviceHeight * 0.2,
+                  height: deviceHeight * 0.2,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: deviceHeight * 0.02,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -54,9 +66,12 @@ class _HomePageState extends State<HomePage> {
     });
     return artistButtons;
   }
+
+
+
   void goToPomodoro() {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return Pomodoro();
+      return const Pomodoro();
     }));
   }
   void goToCreatedPlanners() {
@@ -67,49 +82,49 @@ class _HomePageState extends State<HomePage> {
 }
 
 Widget _body(double deviceHeight, Function createArtistButton, Function goToCreatedPlanners, Function goToPomodoro) => Center(
-  child: Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      SingleChildScrollView(
-        child: Column(
+  child: SingleChildScrollView(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Column(
             children: createArtistButton(deviceHeight)
         ),
-      ),
-      Container(
-        width: double.infinity,
-        height: deviceHeight * 0.07,
-        padding: const EdgeInsets.all(2),
-        child: ElevatedButton(
-          style: mainUiRaisedButtonStyle,
-          onPressed: () async {
-            goToCreatedPlanners();
-          },
-          child: Text(
-            "Go To Created Planners",
-            style: TextStyle(
-                fontSize: deviceHeight * 0.02
+        Container(
+          width: double.infinity,
+          height: deviceHeight * 0.07,
+          padding: const EdgeInsets.all(2),
+          child: ElevatedButton(
+            style: mainUiRaisedButtonStyle,
+            onPressed: () async {
+              goToCreatedPlanners();
+            },
+            child: Text(
+              "Go To Created Planners",
+              style: TextStyle(
+                  fontSize: deviceHeight * 0.02
+              ),
             ),
           ),
         ),
-      ),
-      Container(
-        width: double.infinity,
-        height: deviceHeight * 0.07,
-        padding: const EdgeInsets.all(2),
-        child: ElevatedButton(
-          style: mainUiRaisedButtonStyle,
-          onPressed: () async {
-            goToPomodoro();
-          },
-          child: Text(
-            "Go To Pomodoro",
-            style: TextStyle(
-                fontSize: deviceHeight * 0.02
+        Container(
+          width: double.infinity,
+          height: deviceHeight * 0.07,
+          padding: const EdgeInsets.all(1),
+          child: ElevatedButton(
+            style: mainUiRaisedButtonStyle,
+            onPressed: () async {
+              goToPomodoro();
+            },
+            child: Text(
+              "Go To Pomodoro",
+              style: TextStyle(
+                  fontSize: deviceHeight * 0.02
+              ),
             ),
           ),
         ),
-      ),
-    ],
+      ],
+    ),
   ),
 );
 

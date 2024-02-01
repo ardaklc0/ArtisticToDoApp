@@ -14,7 +14,7 @@ import '../../../models/planner_model.dart';
 import '../../../models/task_model.dart';
 import '../../../provider/planner_provider.dart';
 import '../../../provider/time_provider.dart';
-
+final _formKey = GlobalKey<FormState>();
 class TimeIndicatorWidget extends StatelessWidget {
   const TimeIndicatorWidget({
     super.key,
@@ -94,12 +94,20 @@ class MediaButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         IconButton(
-          onPressed: timerProvider.isEqual ? null : timerProvider.resetTimer,
+          onPressed: () {
+            timerProvider.resetTimer();
+            taskProvider.resetTask();
+            plannerProvider.resetPlanner();
+          },
           icon: const Icon(Icons.replay, size: 30.0),
         ),
         IconButton(
           onPressed: () async {
-            timerProvider.toggleTimer();
+            if(_formKey.currentState!.validate()){
+              timerProvider.toggleTimer();
+            } else {
+              // Form validasyonu ekle
+            }
             print("plannerId: ${plannerProvider.plannerId} <=> taskId: ${taskProvider.taskId}");
             if (!timerProvider.isRunning) {
               timerProvider.cancelState();
@@ -109,7 +117,6 @@ class MediaButtons extends StatelessWidget {
                 timerProvider.toggleTimer();
               }
             }
-            
           },
           icon: Icon(
             timerProvider.isRunning ? Icons.pause : Icons.play_arrow,
@@ -131,87 +138,92 @@ class TaskDropdownWidget extends StatelessWidget {
     final timerProvider = Provider.of<TimerProvider>(context);
     final taskProvider = Provider.of<TaskProvider>(context);
     final plannerProvider = Provider.of<PlannerProvider>(context);
-    //Consumer<TimerProvider> kullan!
-    //TimerProvider yerine PlannerProvider ve TaskProvider kullan!
+
     if (!timerProvider.isRunning && plannerProvider.plannerId != null) {
-      return Column(
-        children: [
-          FutureBuilder<List<int?>>(
-            future: getPlannerIds(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } else {
-                List<int?> plannerIds = snapshot.data ?? [];
-                return DropdownButtonFormField<int?>(
-                  value: plannerProvider.plannerId,
-                  items: plannerIds.map((plannerId) {
-                    return DropdownMenuItem<int?>(
-                      value: plannerId,
-                      child: Text(
-                        plannerId.toString(),
-                        textAlign: TextAlign.center,
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    taskProvider.resetTask();
-                    plannerProvider.setPlannerId(value!);
-                  },
-                );
-              }
-            },
-          ),
-          FutureBuilder<Map<String, String>>(
-            future: getTaskDescriptionAndId(plannerProvider.plannerId ?? 0),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } else if (!snapshot.hasData || snapshot.data == null) {
-                return const Text('No task descriptions available.');
-              } else {
-                Map<String, String> tasks = (snapshot.data as Map<String, String>);
-                return DropdownButtonFormField<int>(
-                  value: taskProvider.taskId,
-                  items: tasks.entries.map((task) {
-                    return DropdownMenuItem<int>(
-                      value: int.parse(task.key),
-                      child: Text(
-                        task.value,
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    print("value: $value");
-                    taskProvider.setTaskId(value!);
-                    print("timerProvider.taskId: ${taskProvider.taskId}");
-                  },
-                );
-              }
-            },
-          )
-        ],
+      return Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            FutureBuilder<List<int?>>(
+              future: getPlannerIds(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  List<int?> plannerIds = snapshot.data ?? [];
+                  return DropdownButtonFormField<int?>(
+                    value: plannerProvider.plannerId,
+                    items: plannerIds.map((plannerId) {
+                      return DropdownMenuItem<int?>(
+                        value: plannerId,
+                        child: Text(
+                          plannerId.toString(),
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      taskProvider.resetTask();
+                      plannerProvider.setPlannerId(value!);
+                    },
+                  );
+                }
+              },
+            ),
+            FutureBuilder<Map<String, String>>(
+              future: getTaskDescriptionAndId(plannerProvider.plannerId ?? 0),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (!snapshot.hasData || snapshot.data == null) {
+                  return const Text('No task descriptions available.');
+                } else {
+                  Map<String, String> tasks = (snapshot.data as Map<String, String>);
+                  return DropdownButtonFormField<int>(
+                    value: taskProvider.taskId,
+                    items: tasks.entries.map((task) {
+                      return DropdownMenuItem<int>(
+                        value: int.parse(task.key),
+                        child: Text(
+                          task.value,
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      print("value: $value");
+                      taskProvider.setTaskId(value!);
+                      print("timerProvider.taskId: ${taskProvider.taskId}");
+                    },
+                  );
+                }
+              },
+            )
+          ],
+        ),
       );
     } else {
       return Column(
         children: [
-          Text("${timerProvider.maxTimeInSeconds - timerProvider.currentTimeInSeconds} STUDY TIME NOT RUNNING"),
+          //Text("${timerProvider.maxTimeInSeconds - timerProvider.currentTimeInSeconds} STUDY TIME NOT RUNNING"),
           ElevatedButton(
             onPressed: () async {
               DateFormat formatter = DateFormat.Hms();
               print("Start: ${formatter.format(timerProvider.currentDateTime)}");
               print("Now: ${formatter.format(timerProvider.currentDateTime.add(Duration(seconds: timerProvider.maxTimeInSeconds - timerProvider.currentTimeInSeconds)))}");
-
-              var planners = await getPlannerIds();
-              var firstPlanner = planners.first;
-              plannerProvider.setPlannerId(firstPlanner!);
+              try {
+                var planners = await getPlannerIds();
+                var firstPlanner = planners.first;
+                plannerProvider.setPlannerId(firstPlanner!);
+              } catch (error) {
+                print(error);
+              }
             },
             style: mainUiRaisedButtonStyle,
-            child: Text("Save : ${timerProvider.isCancel}"),
+            child: const Text("Choose a task to done"),
           )
         ],
       );
@@ -247,6 +259,8 @@ Future<bool> _dialogBuilder(BuildContext context) async {
   confirm = await showDialog(
     context: context,
     builder: (BuildContext context) {
+      final taskProvider = Provider.of<TaskProvider>(context);
+      final plannerProvider = Provider.of<PlannerProvider>(context);
       return AlertDialog(
         title: const Text('Are you sure?'),
         content: const Text(
@@ -266,6 +280,8 @@ Future<bool> _dialogBuilder(BuildContext context) async {
             ),
             onPressed: () {
               Navigator.of(context).pop(true);
+              taskProvider.resetTask();
+              plannerProvider.resetPlanner();
             },
           ),
           TextButton(

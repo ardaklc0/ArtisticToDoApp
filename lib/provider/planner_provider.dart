@@ -15,4 +15,9 @@ class PlannerProvider with ChangeNotifier {
     _planners = values;
     notifyListeners();
   }
+
+  void resetPlanner() {
+    _plannerId = null;
+    notifyListeners();
+  }
 }

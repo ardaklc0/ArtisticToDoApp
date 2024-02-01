@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pomodoro2/provider/planner_provider.dart';
+import 'package:pomodoro2/provider/task_provider.dart';
+import 'package:pomodoro2/provider/time_provider.dart';
+import 'package:provider/provider.dart';
 import '../ui/helper/common_variables.dart';
 import '../ui/widgets/common_widgets.dart';
 import '../ui/widgets/pomodoro_widgets/appbar_widgets.dart';
@@ -39,10 +43,19 @@ class Pomodoro extends StatelessWidget {
     );
   }
 }
-Widget _floatingActionButton(Color floatingActionButtonColor, BuildContext context) => FloatingActionButton(
-  backgroundColor: floatingActionButtonColor,
-  child: homeIconForFloatingActionButton,
-  onPressed: () {
-    Navigator.pop(context);
-  },
-);
+Widget _floatingActionButton(Color floatingActionButtonColor, BuildContext context) {
+  final taskProvider = Provider.of<TaskProvider>(context);
+  final plannerProvider = Provider.of<PlannerProvider>(context);
+  final timerProvider = Provider.of<TimerProvider>(context);
+  return FloatingActionButton(
+    backgroundColor: floatingActionButtonColor,
+    child: homeIconForFloatingActionButton,
+    onPressed: () {
+      Navigator.pop(context);
+      if (!timerProvider.isRunning) {
+        plannerProvider.resetPlanner();
+        taskProvider.resetTask();
+      }
+    },
+  );
+}
