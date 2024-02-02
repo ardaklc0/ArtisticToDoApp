@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:pomodoro2/provider/audio_provider.dart';
 import 'package:pomodoro2/provider/auto_start_provider.dart';
 import 'package:pomodoro2/provider/notification_provider.dart';
@@ -54,26 +56,33 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    return OverlaySupport.global(
+      child: MaterialApp(
+        navigatorKey: navigatorKey,
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const HomePage(),
+          '/created_planners': (context) => const CreatedPlanners(),
+          '/gustav_klimt': (context) => GustavKlimt(title: 'Gustav Klimt Home Page', randomImage: randomImageChooser("Gustav Klimt", 20)),
+          '/osman_hamdi': (context) => OsmanHamdi(title: 'Osman Hamdi Page', randomImage: randomImageChooser("Osman Hamdi Bey", 11)),
+          '/monet': (context) => Monet(title: 'Monet Page', randomImage: randomImageChooser("Monet", 22)),
+          '/picasso': (context) => Picasso(title: 'Picasso Home Page', randomImage: randomImageChooser("Picasso", 12)),
+          '/salvador_dali': (context) => SalvadorDali(title: 'Salvador Dali Page', randomImage: randomImageChooser("Dali", 9)),
+          '/van_gogh': (context) => VanGogh(title: 'Van Gogh Page', randomImage: randomImageChooser("Van Gogh", 17)),
+          '/pomodoro': (context) => const Pomodoro()
+        },
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const HomePage(),
-        '/created_planners': (context) => const CreatedPlanners(),
-        '/gustav_klimt': (context) => GustavKlimt(title: 'Gustav Klimt Home Page', randomImage: randomImageChooser("Gustav Klimt", 20)),
-        '/osman_hamdi': (context) => OsmanHamdi(title: 'Osman Hamdi Page', randomImage: randomImageChooser("Osman Hamdi Bey", 11)),
-        '/monet': (context) => Monet(title: 'Monet Page', randomImage: randomImageChooser("Monet", 22)),
-        '/picasso': (context) => Picasso(title: 'Picasso Home Page', randomImage: randomImageChooser("Picasso", 12)),
-        '/salvador_dali': (context) => SalvadorDali(title: 'Salvador Dali Page', randomImage: randomImageChooser("Dali", 9)),
-        '/van_gogh': (context) => VanGogh(title: 'Van Gogh Page', randomImage: randomImageChooser("Van Gogh", 17)),
-        '/pomodoro': (context) => const Pomodoro()
-      },
     );
   }
 }

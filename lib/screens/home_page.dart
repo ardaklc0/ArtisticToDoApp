@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
       artistButtons.add(
         Container(
           width: double.infinity,
-          height: deviceHeight * 0.25,
+          height: deviceHeight * 0.12,
           padding: EdgeInsets.zero,
           child: ElevatedButton(
             style: mainUiRaisedButtonStyle,
@@ -48,8 +48,8 @@ class _HomePageState extends State<HomePage> {
                 Image.asset(
                   'assets/images/Thumbnail/4.jpg',
                   fit: BoxFit.fill,
-                  width: deviceHeight * 0.2,
-                  height: deviceHeight * 0.2,
+                  width: deviceHeight * 0.1,
+                  height: deviceHeight * 0.1,
                 ),
                 const SizedBox(width: 8),
                 Text(

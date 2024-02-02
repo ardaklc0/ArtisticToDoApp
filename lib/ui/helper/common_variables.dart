@@ -20,4 +20,4 @@ const Map<String, String> artists =
   "SalvadorDali":"Salvador Dali",
   "VanGogh":"Van Gogh"
 };
-const dismissibleColor = Color.fromRGBO(242, 245, 234, 1);
+const dismissibleColor = Colors.black;

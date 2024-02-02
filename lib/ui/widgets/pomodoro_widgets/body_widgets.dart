@@ -12,7 +12,7 @@ import '../../../models/planner_model.dart';
 import '../../../models/task_model.dart';
 import '../../../provider/planner_provider.dart';
 import '../../../provider/time_provider.dart';
-
+import '../../helper/common_functions.dart';
 class TimeIndicatorWidget extends StatelessWidget {
   const TimeIndicatorWidget({
     super.key,
@@ -22,7 +22,7 @@ class TimeIndicatorWidget extends StatelessWidget {
     final timerProvider = Provider.of<TimerProvider>(context);
     double progress = 1 -
         (timerProvider.maxTimeInSeconds != 0
-            ? timerProvider.currentTimeInSeconds / timerProvider.maxTimeInSeconds
+            ? TimerProvider.currentTimeInSeconds / timerProvider.maxTimeInSeconds
             : 5);
     return CircularProgressIndicator(
       strokeWidth: 15.0,
@@ -53,9 +53,8 @@ class TimeModeWidget extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    final timerProvider = Provider.of<TimerProvider>(context);
     return Text(
-      timerProvider.isBreakTime ? 'RELAX' : 'STUDY',
+      'STUDY',
       style: Theme.of(context)
           .textTheme
           .titleMedium!
@@ -96,27 +95,30 @@ class MediaButtons extends StatelessWidget {
             timerProvider.resetTimer();
             taskProvider.resetTask();
             plannerProvider.resetPlanner();
+            if (timerProvider.isRunning){
+              timerProvider.toggleTimer();
+            }
           },
           icon: const Icon(Icons.replay, size: 30.0),
         ),
         IconButton(
           onPressed: () async {
-            if (taskProvider.taskId == null && plannerProvider.plannerId == null) {
+            if (TaskProvider.taskId == null && plannerProvider.plannerId == null) {
               timerProvider.toggleTimer();
             } else if (plannerProvider.plannerId != null) {
-              if (taskProvider.taskId != null) {
+              if (TaskProvider.taskId != null) {
                 timerProvider.toggleTimer();
               }
             }
             if (!timerProvider.isRunning) {
               timerProvider.cancelState();
               if (timerProvider.isCancel) {
-                await _dialogBuilder(context) ?
+                await dialogBuilder(context) ?
                 timerProvider.resetTimer() :
                 timerProvider.toggleTimer();
               }
             }
-            print("plannerId: ${plannerProvider.plannerId} <=> taskId: ${taskProvider.taskId}");
+            print("plannerId: ${plannerProvider.plannerId} <=> taskId: ${TaskProvider.taskId}");
           },
           icon: Icon(
             timerProvider.isRunning ? Icons.pause : Icons.play_arrow,
@@ -128,7 +130,6 @@ class MediaButtons extends StatelessWidget {
     );
   }
 }
-
 class TaskDropdownWidget extends StatelessWidget {
   const TaskDropdownWidget({
     super.key,
@@ -182,7 +183,7 @@ class TaskDropdownWidget extends StatelessWidget {
               } else {
                 List<Task> tasks = snapshot.data ?? [];
                 return DropdownButtonFormField<int>(
-                  value: taskProvider.taskId,
+                  value: TaskProvider.taskId,
                   items: tasks.map((task) {
                     return DropdownMenuItem<int>(
                       value: task.id,
@@ -195,7 +196,7 @@ class TaskDropdownWidget extends StatelessWidget {
                   onChanged: (value) {
                     taskProvider.setTaskId(value!);
                     print("value: $value");
-                    print("timerProvider.taskId: ${taskProvider.taskId}");
+                    print("timerProvider.taskId: ${TaskProvider.taskId}");
                   },
                 );
               }
@@ -206,29 +207,33 @@ class TaskDropdownWidget extends StatelessWidget {
     } else {
       return Column(
         children: [
-          ElevatedButton(
-            onPressed: () async {
-              try {
-                var planners = await getPlanners();
-                var firstPlanner = planners.first.id;
-                plannerProvider.setPlannerId(firstPlanner!);
-              } catch (error) {
-                print(error);
-              }
-            },
-            style: mainUiRaisedButtonStyle,
-            child: const Text("Choose a task to done"),
+          Visibility(
+            visible: !timerProvider.isRunning,
+            child: ElevatedButton(
+              onPressed: () async {
+                try {
+                  var planners = await getPlanners();
+                  var firstPlanner = planners.first.id;
+                  plannerProvider.setPlannerId(firstPlanner!);
+                } catch (error) {
+                  print(error);
+                }
+              },
+              style: mainUiRaisedButtonStyle,
+              child: const Text("Choose a task to done"),
+            ),
           ),
         ],
       );
     }
   }
 }
-Future<bool> _dialogBuilder(BuildContext context) async {
+Future<bool> dialogBuilder(BuildContext context) async {
   bool confirm = false;
   confirm = await showDialog(
     context: context,
     builder: (BuildContext context) {
+      final timerProvider = Provider.of<TimerProvider>(context);
       final taskProvider = Provider.of<TaskProvider>(context);
       final plannerProvider = Provider.of<PlannerProvider>(context);
       return AlertDialog(

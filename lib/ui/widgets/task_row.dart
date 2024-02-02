@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:pomodoro2/models/task_model.dart';
 import 'package:pomodoro2/services/task_service.dart';
 import 'package:pomodoro2/ui/widgets/common_widgets.dart';
@@ -69,15 +68,17 @@ class _TaskRowState extends State<TaskRow> {
             },
           );
         } else if (direction == DismissDirection.startToEnd) {
-          // Show another dialog for left swipe
+          Task? task = await getTask(widget.task!.id!);
+          if (!context.mounted) return false;
+          int? workedMinutes = task?.totalWorkMinutes;
           confirm = await showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
                 backgroundColor: widget.checkboxColor,
                 title: dismissibleText("Left Swipe Confirmation", deviceHeight, dismissibleColor),
-                content: dismissibleText("Do you want to perform a different action?", deviceHeight, dismissibleColor),
-                actions: <Widget>[
+                content: dismissibleText("This task have $workedMinutes worked minutes.", deviceHeight, dismissibleColor),
+                actions: [
                   dismissibleButton("Close", deviceHeight, dismissibleColor, false, context)
                 ],
               );
@@ -97,20 +98,20 @@ class _TaskRowState extends State<TaskRow> {
         color: widget.checkboxColor,
         child: const Icon(
           Icons.delete,
-          color: Colors.white,
+          color: Colors.black,
         ),
       ),
       background: Container(
         color: widget.checkboxColor,
         child: const Icon(
           Icons.info,
-          color: Colors.white,
+          color: Colors.black,
         ),
       ),
       child: Row(
         children: [
           Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: SizedBox(
               width: deviceWidth * 0.80,
               child: Focus(
@@ -124,14 +125,7 @@ class _TaskRowState extends State<TaskRow> {
                           plannerId: widget.plannerId
                       );
                       await updateTask(existingTask);
-                      // print("Updated existing task: $existingTask");
                     }
-                    """
-                  List<Task> tasks = await getTasks(widget.plannerId);
-                  for (var element in tasks) {
-                    print(element);
-                  }
-                  """;
                   }
                 },
                 focusNode: _focus,
@@ -180,7 +174,7 @@ class _TaskRowState extends State<TaskRow> {
             child: SizedBox(
               width: deviceWidth * 0.05,
               child: Checkbox(
-                checkColor: Colors.white,
+                checkColor: Colors.black,
                 fillColor: MaterialStateProperty.resolveWith(getColor),
                 value: intConverter(widget.task!.isDone),
                 onChanged: (bool? value) async {
