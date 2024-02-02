@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
-import 'package:pomodoro2/models/task_model.dart';
+import 'package:pomodoro2/ui/helper/common_functions.dart';
 import 'audio_provider.dart';
 import 'auto_start_provider.dart';
 import 'notification_provider.dart';
@@ -9,7 +9,7 @@ import 'slider_provider.dart';
 class TimerProvider with ChangeNotifier {
   final SoundSelectionProvider _audioProvider = SoundSelectionProvider();
   late Timer _timer;
-  late int _currentTimeInSeconds;
+  static late int _currentTimeInSeconds;
   DateTime _currentDateTime = DateTime.now();
   bool _isRunning = false;
   bool _isBreakTime = false;
@@ -20,7 +20,7 @@ class TimerProvider with ChangeNotifier {
   bool get isRunning => _isRunning;
   bool get isBreakTime => _isBreakTime;
   bool get isCancel => _isCancel;
-  int get currentTimeInSeconds => _currentTimeInSeconds;
+  static int get currentTimeInSeconds => _currentTimeInSeconds;
   DateTime get currentDateTime => _currentDateTime;
   int get maxTimeInSeconds => SliderProvider.studyDurationSliderValue * 60;
   bool get isEqual => currentTimeInSeconds == maxTimeInSeconds;
@@ -55,13 +55,14 @@ class TimerProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-  void _updateTimer(Timer timer) {
+  Future<void> _updateTimer(Timer timer) async {
     if (_currentTimeInSeconds > 0) {
       _currentTimeInSeconds--;
       notifyListeners();
     } else {
       _timer.cancel(); // previous timer
       _isRunning = false;
+      await saveWorkedMinutes();
       if (AutoStartProvider.autoStart == false) {
         _timer.cancel(); // next timer
         _isRunning = false;

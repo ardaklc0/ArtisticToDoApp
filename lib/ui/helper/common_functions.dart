@@ -2,9 +2,16 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:pomodoro2/ui/styles/common_styles.dart';
+import 'package:provider/provider.dart';
 import '../../models/planner_model.dart';
+import '../../provider/notification_provider.dart';
+import '../../provider/planner_provider.dart';
+import '../../provider/slider_provider.dart';
+import '../../provider/task_provider.dart';
+import '../../provider/time_provider.dart';
 import '../../screens/gustav_klimt.dart';
 import '../../screens/monet.dart';
 import '../../screens/osman_hamdi.dart';
@@ -12,6 +19,7 @@ import '../../screens/picasso.dart';
 import '../../screens/salvador_dali.dart';
 import '../../screens/van_gogh.dart';
 import '../../services/planner_service.dart';
+import '../../services/task_service.dart';
 import '../widgets/common_widgets.dart';
 import 'common_variables.dart';
 void goToArtist(BuildContext context, String artist, int plannerId, String date) {
@@ -71,7 +79,7 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight)
                   );
                 },
               );
-              return confirm ?? false;
+              return confirm;
             },
             onDismissed: (direction) async {
               await deletePlanner(element.id!);
@@ -145,4 +153,24 @@ Future<List<Color>> sortedColors(String randomImage) async {
     return hslA.lightness.compareTo(hslB.lightness);
   });
   return colorPalettes;
+}
+
+Future<void> saveWorkedMinutes() async {
+  if (TimerProvider.currentTimeInSeconds <= 0) {
+    if (TaskProvider.taskId != null) {
+      final task = await getTask(TaskProvider.taskId!);
+      int totalWork = task!.totalWorkMinutes;
+      totalWork += SliderProvider.studyDurationSliderValue + totalWork;
+      task.totalWorkMinutes = totalWork;
+      await _showCompletionDialog();
+      await updateTask(task);
+      print("Updated!");
+    }
+  }
+}
+Future<void> _showCompletionDialog() async {
+  showSimpleNotification(
+      const Text("Working minutes saved successfully!"),
+      background: homePageColor,
+  );
 }

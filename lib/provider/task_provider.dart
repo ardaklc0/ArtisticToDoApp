@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 
 class TaskProvider with ChangeNotifier {
-  int? _taskId;
+  static int? _taskId;
   List<String> _tasks = [];
 
-  int? get taskId => _taskId;
+  static int? get taskId => _taskId;
   List<String> get tasks => _tasks;
 
   void setTasks(List<String> values) {
