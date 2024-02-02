@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:pomodoro2/provider/task_provider.dart';
 import 'package:pomodoro2/services/planner_service.dart';
 import 'package:pomodoro2/services/task_service.dart';
@@ -14,7 +12,7 @@ import '../../../models/planner_model.dart';
 import '../../../models/task_model.dart';
 import '../../../provider/planner_provider.dart';
 import '../../../provider/time_provider.dart';
-final _formKey = GlobalKey<FormState>();
+
 class TimeIndicatorWidget extends StatelessWidget {
   const TimeIndicatorWidget({
     super.key,
@@ -103,12 +101,13 @@ class MediaButtons extends StatelessWidget {
         ),
         IconButton(
           onPressed: () async {
-            if(_formKey.currentState!.validate()){
+            if (taskProvider.taskId == null && plannerProvider.plannerId == null) {
               timerProvider.toggleTimer();
-            } else {
-              // Form validasyonu ekle
+            } else if (plannerProvider.plannerId != null) {
+              if (taskProvider.taskId != null) {
+                timerProvider.toggleTimer();
+              }
             }
-            print("plannerId: ${plannerProvider.plannerId} <=> taskId: ${taskProvider.taskId}");
             if (!timerProvider.isRunning) {
               timerProvider.cancelState();
               if (timerProvider.isCancel) {
@@ -117,6 +116,7 @@ class MediaButtons extends StatelessWidget {
                 timerProvider.toggleTimer();
               }
             }
+            print("plannerId: ${plannerProvider.plannerId} <=> taskId: ${taskProvider.taskId}");
           },
           icon: Icon(
             timerProvider.isRunning ? Icons.pause : Icons.play_arrow,
@@ -140,83 +140,77 @@ class TaskDropdownWidget extends StatelessWidget {
     final plannerProvider = Provider.of<PlannerProvider>(context);
 
     if (!timerProvider.isRunning && plannerProvider.plannerId != null) {
-      return Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            FutureBuilder<List<int?>>(
-              future: getPlannerIds(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  List<int?> plannerIds = snapshot.data ?? [];
-                  return DropdownButtonFormField<int?>(
-                    value: plannerProvider.plannerId,
-                    items: plannerIds.map((plannerId) {
-                      return DropdownMenuItem<int?>(
-                        value: plannerId,
-                        child: Text(
-                          plannerId.toString(),
-                          textAlign: TextAlign.center,
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      taskProvider.resetTask();
-                      plannerProvider.setPlannerId(value!);
-                    },
-                  );
-                }
-              },
-            ),
-            FutureBuilder<Map<String, String>>(
-              future: getTaskDescriptionAndId(plannerProvider.plannerId ?? 0),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else if (!snapshot.hasData || snapshot.data == null) {
-                  return const Text('No task descriptions available.');
-                } else {
-                  Map<String, String> tasks = (snapshot.data as Map<String, String>);
-                  return DropdownButtonFormField<int>(
-                    value: taskProvider.taskId,
-                    items: tasks.entries.map((task) {
-                      return DropdownMenuItem<int>(
-                        value: int.parse(task.key),
-                        child: Text(
-                          task.value,
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      print("value: $value");
-                      taskProvider.setTaskId(value!);
-                      print("timerProvider.taskId: ${taskProvider.taskId}");
-                    },
-                  );
-                }
-              },
-            )
-          ],
-        ),
+      return Column(
+        children: [
+          FutureBuilder<List<Planner>>(
+            future: getPlanners(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                List<Planner> planners = snapshot.data ?? [];
+                return DropdownButtonFormField<String>(
+                  value: plannerProvider.plannerId.toString(),
+                  items: planners.map((planner) {
+                    return DropdownMenuItem<String>(
+                      value: planner.id.toString(),
+                      child: Text(
+                        '${planner.id}.) at ${planner.creationDate} with ${planner.plannerArtist}',
+                        textAlign: TextAlign.center,
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    taskProvider.resetTask();
+                    plannerProvider.setPlannerId(int.parse(value!));
+                  },
+                );
+              }
+            },
+          ),
+          FutureBuilder<List<Task>>(
+            future: getUncheckedTasks(plannerProvider.plannerId ?? 0),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else if (!snapshot.hasData || snapshot.data == null) {
+                return const Text('No task descriptions available.');
+              } else {
+                List<Task> tasks = snapshot.data ?? [];
+                return DropdownButtonFormField<int>(
+                  value: taskProvider.taskId,
+                  items: tasks.map((task) {
+                    return DropdownMenuItem<int>(
+                      value: task.id,
+                      child: Text(
+                        task.taskDescription,
+                        textAlign: TextAlign.center,
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    taskProvider.setTaskId(value!);
+                    print("value: $value");
+                    print("timerProvider.taskId: ${taskProvider.taskId}");
+                  },
+                );
+              }
+            },
+          )
+        ],
       );
     } else {
       return Column(
         children: [
-          //Text("${timerProvider.maxTimeInSeconds - timerProvider.currentTimeInSeconds} STUDY TIME NOT RUNNING"),
           ElevatedButton(
             onPressed: () async {
-              DateFormat formatter = DateFormat.Hms();
-              print("Start: ${formatter.format(timerProvider.currentDateTime)}");
-              print("Now: ${formatter.format(timerProvider.currentDateTime.add(Duration(seconds: timerProvider.maxTimeInSeconds - timerProvider.currentTimeInSeconds)))}");
               try {
-                var planners = await getPlannerIds();
-                var firstPlanner = planners.first;
+                var planners = await getPlanners();
+                var firstPlanner = planners.first.id;
                 plannerProvider.setPlannerId(firstPlanner!);
               } catch (error) {
                 print(error);
@@ -224,35 +218,11 @@ class TaskDropdownWidget extends StatelessWidget {
             },
             style: mainUiRaisedButtonStyle,
             child: const Text("Choose a task to done"),
-          )
+          ),
         ],
       );
     }
   }
-}
-
-Future<List<String>> getTaskDescriptions(int plannerId) async {
-  List<Task> tasks = await getUncheckedTasks(plannerId);
-  return tasks.map((task) => task.taskDescription).toList();
-}
-Future<Map<String, String>> getTaskDescriptionAndId(int plannerId) async {
-  List<Task> tasks = await getUncheckedTasks(plannerId);
-  Map<String, String> taskMap = {};
-  for (var task in tasks) {
-    taskMap[task.id.toString()] = task.taskDescription;
-  }
-  return taskMap;
-}
-Future<List<Task>> getTasks(int plannerId) async {
-  return await getUncheckedTasks(plannerId);
-}
-Future<List<int?>> getPlannerIds() async {
-  List<Planner> planners = await getPlanners();
-  return planners.map((planner) => planner.id).toList();
-}
-Future<List<int?>> getTaskIds(int plannerId) async {
-  List<Task> tasks = await getTasks(plannerId);
-  return tasks.map((task) => task.id).toList();
 }
 Future<bool> _dialogBuilder(BuildContext context) async {
   bool confirm = false;
