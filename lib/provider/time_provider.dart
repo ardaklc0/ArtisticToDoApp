@@ -105,14 +105,15 @@ class TimerProvider with ChangeNotifier {
   static void _entryPoint(Map map) async {
     int initialTime = map['initial_duration'];
     SendPort port = map['port'];
+    _currentTimeInSeconds = initialTime;
     Timer.periodic(const Duration(seconds: 1), (timer) {
         if (timer.tick == initialTime) {
           timer.cancel();
           port.send(timer.tick);
           port.send('Timer finished');
         } else {
-
           print(timer.tick);
+          _currentTimeInSeconds --;
           port.send(timer.tick);
         }
       },
