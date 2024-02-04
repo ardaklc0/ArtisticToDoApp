@@ -1,17 +1,12 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:pomodoro2/ui/styles/common_styles.dart';
-import 'package:provider/provider.dart';
 import '../../models/planner_model.dart';
-import '../../provider/notification_provider.dart';
-import '../../provider/planner_provider.dart';
 import '../../provider/slider_provider.dart';
 import '../../provider/task_provider.dart';
-import '../../provider/time_provider.dart';
 import '../../screens/gustav_klimt.dart';
 import '../../screens/monet.dart';
 import '../../screens/osman_hamdi.dart';
@@ -156,16 +151,13 @@ Future<List<Color>> sortedColors(String randomImage) async {
 }
 
 Future<void> saveWorkedMinutes() async {
-  if (TimerProvider.currentTimeInSeconds <= 0) {
-    if (TaskProvider.taskId != null) {
-      final task = await getTask(TaskProvider.taskId!);
-      int totalWork = task!.totalWorkMinutes;
-      totalWork += SliderProvider.studyDurationSliderValue + totalWork;
-      task.totalWorkMinutes = totalWork;
-      await _showCompletionDialog();
-      await updateTask(task);
-      print("Updated!");
-    }
+  if (TaskProvider.taskId != null) {
+    final task = await getTask(TaskProvider.taskId!);
+    int totalWork = task!.totalWorkMinutes;
+    totalWork += SliderProvider.studyDurationSliderValue;
+    task.totalWorkMinutes = totalWork;
+    await _showCompletionDialog();
+    await updateTask(task);
   }
 }
 Future<void> _showCompletionDialog() async {

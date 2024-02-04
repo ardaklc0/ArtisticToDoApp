@@ -15,6 +15,7 @@ import 'package:pomodoro2/screens/monet.dart';
 import 'package:pomodoro2/screens/osman_hamdi.dart';
 import 'package:pomodoro2/screens/picasso.dart';
 import 'package:pomodoro2/screens/pomodoro.dart';
+import 'package:pomodoro2/screens/pomodoro_migration.dart';
 import 'package:pomodoro2/screens/salvador_dali.dart';
 import 'package:pomodoro2/screens/van_gogh.dart';
 import 'package:pomodoro2/ui/helper/common_functions.dart';
@@ -80,7 +81,8 @@ class MyApp extends StatelessWidget {
           '/picasso': (context) => Picasso(title: 'Picasso Home Page', randomImage: randomImageChooser("Picasso", 12)),
           '/salvador_dali': (context) => SalvadorDali(title: 'Salvador Dali Page', randomImage: randomImageChooser("Dali", 9)),
           '/van_gogh': (context) => VanGogh(title: 'Van Gogh Page', randomImage: randomImageChooser("Van Gogh", 17)),
-          '/pomodoro': (context) => const Pomodoro()
+          '/pomodoro': (context) => const Pomodoro(),
+          '/pomodoro_migration': (context) => const CountDownTimerPage(),
         },
       ),
     );
