@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:isolate';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_isolate/flutter_isolate.dart';
 import 'package:pomodoro2/ui/helper/common_functions.dart';
 import 'audio_provider.dart';
 import 'auto_start_provider.dart';
@@ -11,19 +9,14 @@ import 'slider_provider.dart';
 class TimerProvider with ChangeNotifier {
   final SoundSelectionProvider _audioProvider = SoundSelectionProvider();
   late Timer _timer;
-  static late int _currentTimeInSeconds;
+  static int _currentTimeInSeconds = 60;
   DateTime _currentDateTime = DateTime.now();
   bool _isRunning = false;
-  bool _isBreakTime = false;
   bool _isCancel = false;
-  Isolate? _isolate;
-  final receivePort = ReceivePort();
   TimerProvider() {
     resetTimer();
   }
-  Isolate? get isolate => _isolate;
   bool get isRunning => _isRunning;
-  bool get isBreakTime => _isBreakTime;
   bool get isCancel => _isCancel;
   static int get currentTimeInSeconds => _currentTimeInSeconds;
   DateTime get currentDateTime => _currentDateTime;
@@ -37,10 +30,10 @@ class TimerProvider with ChangeNotifier {
   void toggleTimer() {
     if (!_isRunning) {
       _isRunning = true;
-      start();
+      _timer = Timer.periodic(const Duration(seconds: 1), _updateTimer);
       notifyListeners();
     } else {
-      stop();
+      _timer.cancel();
       _isRunning = false;
       notifyListeners();
     }
@@ -68,6 +61,7 @@ class TimerProvider with ChangeNotifier {
       _timer.cancel(); // previous timer
       _isRunning = false;
       await saveWorkedMinutes();
+      notifyListeners();
       if (AutoStartProvider.autoStart == false) {
         _timer.cancel(); // next timer
         _isRunning = false;
@@ -87,36 +81,5 @@ class TimerProvider with ChangeNotifier {
   void resetDateTime() {
     _currentDateTime = DateTime.now();
     notifyListeners();
-  }
-
-  void stop() {
-    receivePort.close();
-    _isolate!.kill(priority: Isolate.immediate);
-  }
-  Future<void> start() async {
-    Map map = {
-      'port': receivePort.sendPort,
-      'initial_duration': maxTimeInSeconds,
-    };
-
-    _isolate = await Isolate.spawn(_entryPoint, map);
-    receivePort.sendPort.send(maxTimeInSeconds);
-  }
-  static void _entryPoint(Map map) async {
-    int initialTime = map['initial_duration'];
-    SendPort port = map['port'];
-    _currentTimeInSeconds = initialTime;
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-        if (timer.tick == initialTime) {
-          timer.cancel();
-          port.send(timer.tick);
-          port.send('Timer finished');
-        } else {
-          print(timer.tick);
-          _currentTimeInSeconds --;
-          port.send(timer.tick);
-        }
-      },
-    );
   }
 }

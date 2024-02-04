@@ -139,7 +139,7 @@ class TaskDropdownWidget extends StatelessWidget {
     final timerProvider = Provider.of<TimerProvider>(context);
     final taskProvider = Provider.of<TaskProvider>(context);
     final plannerProvider = Provider.of<PlannerProvider>(context);
-
+    double deviceHeight = MediaQuery.of(context).size.height;
     if (!timerProvider.isRunning && plannerProvider.plannerId != null) {
       return Column(
         children: [
@@ -160,6 +160,9 @@ class TaskDropdownWidget extends StatelessWidget {
                       child: Text(
                         '${planner.id}.) at ${planner.creationDate} with ${planner.plannerArtist}',
                         textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: deviceHeight * 0.02
+                        ),
                       ),
                     );
                   }).toList(),
@@ -190,6 +193,9 @@ class TaskDropdownWidget extends StatelessWidget {
                       child: Text(
                         task.taskDescription,
                         textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: deviceHeight * 0.02
+                        ),
                       ),
                     );
                   }).toList(),
@@ -205,22 +211,36 @@ class TaskDropdownWidget extends StatelessWidget {
         ],
       );
     } else {
+
       return Column(
         children: [
-          Visibility(
-            visible: !timerProvider.isRunning,
-            child: ElevatedButton(
-              onPressed: () async {
-                try {
-                  var planners = await getPlanners();
-                  var firstPlanner = planners.first.id;
-                  plannerProvider.setPlannerId(firstPlanner!);
-                } catch (error) {
-                  print(error);
-                }
-              },
-              style: mainUiRaisedButtonStyle,
-              child: const Text("Choose a task to done"),
+          AnimatedOpacity(
+            opacity: timerProvider.isRunning ? 0.0 : 1.0,
+            duration: const Duration(milliseconds: 300),
+            child: SizedBox(
+              width: double.infinity,
+              height: deviceHeight * 0.07,
+              child: Visibility(
+                visible: !timerProvider.isRunning,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    try {
+                      var planners = await getPlanners();
+                      var firstPlanner = planners.first.id;
+                      plannerProvider.setPlannerId(firstPlanner!);
+                    } catch (error) {
+                      print(error);
+                    }
+                  },
+                  style: mainUiRaisedButtonStyle,
+                  child: Text(
+                    "Choose a task to done",
+                    style: TextStyle(
+                        fontSize: deviceHeight * 0.02
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
         ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pomodoro2/screens/created_planners.dart';
 import 'package:pomodoro2/screens/pomodoro.dart';
+import 'package:pomodoro2/screens/pomodoro_migration.dart';
 import 'package:pomodoro2/ui/helper/common_functions.dart';
 import 'package:pomodoro2/ui/styles/common_styles.dart';
 import '../ui/helper/common_variables.dart';
@@ -22,7 +23,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: homePageColor,
-      body: _body(deviceHeight, createArtistButton, goToCreatedPlanners, goToPomodoro)
+      body: _body(deviceHeight, createArtistButton, goToCreatedPlanners, goToPomodoro, goToPomodoroMig)
     );
   }
   List<Container> createArtistButton(double deviceHeight) {
@@ -66,9 +67,11 @@ class _HomePageState extends State<HomePage> {
     });
     return artistButtons;
   }
-
-
-
+  void goToPomodoroMig() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return const CountDownTimerPage();
+    }));
+  }
   void goToPomodoro() {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return const Pomodoro();
@@ -81,7 +84,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Widget _body(double deviceHeight, Function createArtistButton, Function goToCreatedPlanners, Function goToPomodoro) => Center(
+Widget _body(double deviceHeight, Function createArtistButton, Function goToCreatedPlanners, Function goToPomodoro, Function goToPomodoroMig) => Center(
   child: SingleChildScrollView(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -113,16 +116,34 @@ Widget _body(double deviceHeight, Function createArtistButton, Function goToCrea
           child: ElevatedButton(
             style: mainUiRaisedButtonStyle,
             onPressed: () async {
-              goToPomodoro();
+              goToPomodoroMig();
             },
             child: Text(
-              "Go To Pomodoro",
+              "Go To Pomodoro Migration",
               style: TextStyle(
                   fontSize: deviceHeight * 0.02
               ),
             ),
           ),
         ),
+        Container(
+          width: double.infinity,
+          height: deviceHeight * 0.07,
+          padding: const EdgeInsets.all(1),
+          child: ElevatedButton(
+            style: mainUiRaisedButtonStyle,
+            onPressed: () async {
+              goToPomodoro();
+            },
+            child: Text(
+              "Go To Pomodoro Old",
+              style: TextStyle(
+                  fontSize: deviceHeight * 0.02
+              ),
+            ),
+          ),
+        ),
+
       ],
     ),
   ),
