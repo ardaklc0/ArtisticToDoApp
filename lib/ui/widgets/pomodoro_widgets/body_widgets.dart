@@ -142,13 +142,13 @@ class TaskDropdownWidget extends StatelessWidget {
     final taskProvider = Provider.of<TaskProvider>(context);
     final plannerProvider = Provider.of<PlannerProvider>(context);
     double deviceHeight = MediaQuery.of(context).size.height;
-    if (!timerProvider.isRunning && plannerProvider.plannerId != null) {
-      return SizedBox(
-        height: deviceHeight * 0.2,
-        child: AnimatedSlide(
-          curve: Curves.easeInOut,
-          offset: timerProvider.isRunning ? const Offset(0, 10) : const Offset(0, 0),
-          duration: const Duration(milliseconds: 400),
+    if (plannerProvider.plannerId != null) {
+      return AnimatedSlide(
+        curve: Curves.easeInOut,
+        duration: const Duration(milliseconds: 500),
+        offset: timerProvider.isRunning ? const Offset(0, 10) : const Offset(0, 0),
+        child: SizedBox(
+          height: deviceHeight * 0.2,
           child: Column(
             children: [
               FutureBuilder<List<Planner>>(
@@ -241,34 +241,40 @@ class PlannerChooserWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final plannerProvider = Provider.of<PlannerProvider>(context);
+    final timerProvider = Provider.of<TimerProvider>(context);
     double deviceHeight = MediaQuery.of(context).size.height;
-    return SizedBox(
-      height: deviceHeight * 0.2,
-      child: Column(
-        children: [
-          SizedBox(
-            height: deviceHeight * 0.07,
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () async {
-                try {
-                  var planners = await getPlanners();
-                  var firstPlanner = planners.first.id;
-                  plannerProvider.setPlannerId(firstPlanner!);
-                } catch (error) {
-                  print(error);
-                }
-              },
-              style: mainUiRaisedButtonStyle,
-              child: Text(
-                "Choose a task to done",
-                style: TextStyle(
-                    fontSize: deviceHeight * 0.02
+    return AnimatedSlide(
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+      offset: timerProvider.isRunning ? const Offset(0, 10) : const Offset(0, 0),
+      child: SizedBox(
+        height: deviceHeight * 0.2,
+        child: Column(
+          children: [
+            SizedBox(
+              height: deviceHeight * 0.07,
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () async {
+                  try {
+                    var planners = await getPlanners();
+                    var firstPlanner = planners.first.id;
+                    plannerProvider.setPlannerId(firstPlanner!);
+                  } catch (error) {
+                    print(error);
+                  }
+                },
+                style: mainUiRaisedButtonStyle,
+                child: Text(
+                  "Choose a task to done",
+                  style: TextStyle(
+                      fontSize: deviceHeight * 0.02
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
