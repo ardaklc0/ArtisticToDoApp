@@ -165,7 +165,16 @@ Future<void> saveWorkedMinutes() async {
 }
 Future<void> _showCompletionDialog() async {
   showSimpleNotification(
-      const Text("Working minutes saved successfully!"),
-      background: homePageColor,
+      duration: const Duration(seconds: 5),
+      slideDismissDirection: DismissDirection.vertical,
+      elevation: 4,
+      const Text(
+        "Working minutes saved successfully!",
+        style: TextStyle(
+          fontSize: 15,
+          color: Colors.black,
+        ),
+      ),
+      background: const Color.fromRGBO(242, 245, 234, 1),
   );
 }

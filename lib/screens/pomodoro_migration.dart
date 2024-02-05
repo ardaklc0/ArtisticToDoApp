@@ -43,9 +43,9 @@ class _CountDownTimerPageState extends State<CountDownTimerPage> {
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: AnimatedSlide(
-            curve: Curves.easeInOut,
-            offset: timerProvider.isRunning ? const Offset(0, 0.2) : const Offset(0, 0.15),
             duration: const Duration(milliseconds: 500),
+            offset: timerProvider.isRunning ? const Offset(0, 0.25) : const Offset(0, 0.15),
+            curve: Curves.easeInOut,
             child: Column(
               children: <Widget>[
                 const Text("Migration"),
@@ -82,13 +82,13 @@ class _CountDownTimerPageState extends State<CountDownTimerPage> {
                 ),
                 const MediaButtons(),
                 const SizedBox(height: 20),
-                AnimatedSlide(
-                  curve: Curves.easeInOut,
-                  offset: timerProvider.isRunning ? const Offset(0, 10) : const Offset(0, 0),
+                AnimatedSwitcher(
                   duration: const Duration(milliseconds: 500),
+                  switchInCurve: Curves.easeInOut,
+                  switchOutCurve: Curves.easeInOut,
+                  reverseDuration: const Duration(milliseconds: 500),
                   child: (plannerProvider.plannerId != null) ? const TaskDropdownWidget() : const PlannerChooserWidget(),
                 ),
-
               ],
             ),
           ),
