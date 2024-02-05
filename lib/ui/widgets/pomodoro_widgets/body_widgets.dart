@@ -42,7 +42,6 @@ class StudyBreakWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         TimeWidget(),
-        TimeModeWidget(),
       ],
     );
   }
@@ -68,13 +67,14 @@ class TimeWidget extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
+    final deviceHeight = MediaQuery.of(context).size.height;
     final timerProvider = Provider.of<TimerProvider>(context);
     return Text(
       timerProvider.currentTimeDisplay,
-      style: Theme.of(context)
-          .textTheme
-          .headlineMedium!
-          .copyWith(fontWeight: FontWeight.bold),
+      style: TextStyle(
+        fontSize: deviceHeight * 0.035,
+        fontWeight: FontWeight.bold,
+      ),
     );
   }
 }
@@ -87,6 +87,7 @@ class MediaButtons extends StatelessWidget {
     final timerProvider = Provider.of<TimerProvider>(context);
     final taskProvider = Provider.of<TaskProvider>(context);
     final plannerProvider = Provider.of<PlannerProvider>(context);
+    final deviceHeight = MediaQuery.of(context).size.height;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -99,7 +100,8 @@ class MediaButtons extends StatelessWidget {
               timerProvider.toggleTimer();
             }
           },
-          icon: const Icon(Icons.replay, size: 30.0),
+          icon: Icon(Icons.replay,
+              size: deviceHeight * 0.04),
         ),
         IconButton(
           onPressed: () async {
@@ -122,7 +124,7 @@ class MediaButtons extends StatelessWidget {
           },
           icon: Icon(
             timerProvider.isRunning ? Icons.pause : Icons.play_arrow,
-            size: 45.0,
+            size: deviceHeight * 0.04,
           ),
         ),
         const SettingsButton()
@@ -141,113 +143,137 @@ class TaskDropdownWidget extends StatelessWidget {
     final plannerProvider = Provider.of<PlannerProvider>(context);
     double deviceHeight = MediaQuery.of(context).size.height;
     if (!timerProvider.isRunning && plannerProvider.plannerId != null) {
-      return Column(
-        children: [
-          FutureBuilder<List<Planner>>(
-            future: getPlanners(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } else {
-                List<Planner> planners = snapshot.data ?? [];
-                return DropdownButtonFormField<String>(
-                  value: plannerProvider.plannerId.toString(),
-                  items: planners.map((planner) {
-                    return DropdownMenuItem<String>(
-                      value: planner.id.toString(),
-                      child: Text(
-                        '${planner.id}.) at ${planner.creationDate} with ${planner.plannerArtist}',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: deviceHeight * 0.02
-                        ),
+      return SizedBox(
+        height: deviceHeight * 0.2,
+        child: AnimatedSlide(
+          curve: Curves.easeInOut,
+          offset: timerProvider.isRunning ? const Offset(0, 10) : const Offset(0, 0),
+          duration: const Duration(milliseconds: 400),
+          child: Column(
+            children: [
+              FutureBuilder<List<Planner>>(
+                future: getPlanners(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    List<Planner> planners = snapshot.data ?? [];
+                    return DropdownButtonFormField<String>(
+                      style: TextStyle(
+                        fontSize: deviceHeight * 0.05,
+                        color: Colors.black
                       ),
+                      itemHeight: deviceHeight * 0.08,
+                      value: plannerProvider.plannerId.toString(),
+                      items: planners.map((planner) {
+                        return DropdownMenuItem<String>(
+                          value: planner.id.toString(),
+                          child: Text(
+                            '${planner.id}.) at ${planner.creationDate} with ${planner.plannerArtist}',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: deviceHeight * 0.02
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        taskProvider.resetTask();
+                        plannerProvider.setPlannerId(int.parse(value!));
+                      },
                     );
-                  }).toList(),
-                  onChanged: (value) {
-                    taskProvider.resetTask();
-                    plannerProvider.setPlannerId(int.parse(value!));
-                  },
-                );
-              }
-            },
+                  }
+                },
+              ),
+              FutureBuilder<List<Task>>(
+                future: getUncheckedTasks(plannerProvider.plannerId ?? 0),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else if (!snapshot.hasData || snapshot.data == null) {
+                    return const Text('No task descriptions available.');
+                  } else {
+                    List<Task> tasks = snapshot.data ?? [];
+                    return DropdownButtonFormField<int>(
+                      style: TextStyle(
+                          fontSize: deviceHeight * 0.05,
+                          color: Colors.black
+                      ),
+                      itemHeight: deviceHeight * 0.08,
+                      value: TaskProvider.taskId,
+                      items: tasks.map((task) {
+                        return DropdownMenuItem<int>(
+                          value: task.id,
+                          child: Text(
+                            task.taskDescription,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: deviceHeight * 0.02
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        taskProvider.setTaskId(value!);
+                        print("value: $value");
+                        print("timerProvider.taskId: ${TaskProvider.taskId}");
+                      },
+                    );
+                  }
+                },
+              )
+            ],
           ),
-          FutureBuilder<List<Task>>(
-            future: getUncheckedTasks(plannerProvider.plannerId ?? 0),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } else if (!snapshot.hasData || snapshot.data == null) {
-                return const Text('No task descriptions available.');
-              } else {
-                List<Task> tasks = snapshot.data ?? [];
-                return DropdownButtonFormField<int>(
-                  value: TaskProvider.taskId,
-                  items: tasks.map((task) {
-                    return DropdownMenuItem<int>(
-                      value: task.id,
-                      child: Text(
-                        task.taskDescription,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: deviceHeight * 0.02
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    taskProvider.setTaskId(value!);
-                    print("value: $value");
-                    print("timerProvider.taskId: ${TaskProvider.taskId}");
-                  },
-                );
-              }
-            },
-          )
-        ],
+        ),
       );
     } else {
+      return Container();
+    }
+  }
+}
+class PlannerChooserWidget extends StatelessWidget {
+  const PlannerChooserWidget({super.key});
 
-      return Column(
+  @override
+  Widget build(BuildContext context) {
+    final plannerProvider = Provider.of<PlannerProvider>(context);
+    double deviceHeight = MediaQuery.of(context).size.height;
+    return SizedBox(
+      height: deviceHeight * 0.2,
+      child: Column(
         children: [
-          AnimatedOpacity(
-            opacity: timerProvider.isRunning ? 0.0 : 1.0,
-            duration: const Duration(milliseconds: 300),
-            child: SizedBox(
-              width: double.infinity,
-              height: deviceHeight * 0.07,
-              child: Visibility(
-                visible: !timerProvider.isRunning,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    try {
-                      var planners = await getPlanners();
-                      var firstPlanner = planners.first.id;
-                      plannerProvider.setPlannerId(firstPlanner!);
-                    } catch (error) {
-                      print(error);
-                    }
-                  },
-                  style: mainUiRaisedButtonStyle,
-                  child: Text(
-                    "Choose a task to done",
-                    style: TextStyle(
-                        fontSize: deviceHeight * 0.02
-                    ),
-                  ),
+          SizedBox(
+            height: deviceHeight * 0.07,
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () async {
+                try {
+                  var planners = await getPlanners();
+                  var firstPlanner = planners.first.id;
+                  plannerProvider.setPlannerId(firstPlanner!);
+                } catch (error) {
+                  print(error);
+                }
+              },
+              style: mainUiRaisedButtonStyle,
+              child: Text(
+                "Choose a task to done",
+                style: TextStyle(
+                    fontSize: deviceHeight * 0.02
                 ),
               ),
             ),
           ),
         ],
-      );
-    }
+      ),
+    );
   }
 }
+
 Future<bool> dialogBuilder(BuildContext context) async {
   bool confirm = false;
   confirm = await showDialog(

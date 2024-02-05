@@ -63,18 +63,15 @@ Widget _floatingActionButton(Color floatingActionButtonColor, BuildContext conte
   final taskProvider = Provider.of<TaskProvider>(context);
   final plannerProvider = Provider.of<PlannerProvider>(context);
   final timerProvider = Provider.of<TimerProvider>(context);
-  return Visibility(
-    visible: !timerProvider.isRunning,
-    child: FloatingActionButton(
-      backgroundColor: floatingActionButtonColor,
-      child: homeIconForFloatingActionButton,
-      onPressed: () async {
-        if (!timerProvider.isRunning) {
-          plannerProvider.resetPlanner();
-          taskProvider.resetTask();
-          Navigator.pop(context);
-        }
-      },
-    ),
+  return FloatingActionButton(
+    backgroundColor: floatingActionButtonColor,
+    child: homeIconForFloatingActionButton,
+    onPressed: () async {
+      if (!timerProvider.isRunning) {
+        plannerProvider.resetPlanner();
+        taskProvider.resetTask();
+        Navigator.pop(context);
+      }
+    },
   );
 }

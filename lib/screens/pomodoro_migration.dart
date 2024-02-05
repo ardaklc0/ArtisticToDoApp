@@ -21,6 +21,7 @@ class _CountDownTimerPageState extends State<CountDownTimerPage> {
   Widget build(BuildContext context) {
     final SoundSelectionProvider audioProvider = SoundSelectionProvider();
     final TimerProvider timerProvider = Provider.of<TimerProvider>(context);
+    final PlannerProvider plannerProvider = Provider.of<PlannerProvider>(context);
     return PopScope(
       canPop: false,
       onPopInvoked: (bool didPop) async {
@@ -41,47 +42,55 @@ class _CountDownTimerPageState extends State<CountDownTimerPage> {
         backgroundColor: homePageColor,
         body: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              const Text("Migration"),
-              Countdown(
-                controller: _controller,
-                seconds: TimerProvider.currentTimeInSeconds,
-                build: (_, double time) {
-                  print("Time: $time");
-                  print(TimerProvider.currentTimeInSeconds);
-                  return Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(50),
-                          child: SizedBox(
-                            height: MediaQuery.of(context).size.shortestSide * 0.5,
-                            width: MediaQuery.of(context).size.shortestSide * 0.5,
-                            child: const Stack(
-                              fit: StackFit.expand,
-                              children: [
-                                TimeIndicatorWidget(),
-                                StudyBreakWidget(),
-                              ],
+          child: AnimatedSlide(
+            curve: Curves.easeInOut,
+            offset: timerProvider.isRunning ? const Offset(0, 0.2) : const Offset(0, 0.15),
+            duration: const Duration(milliseconds: 500),
+            child: Column(
+              children: <Widget>[
+                const Text("Migration"),
+                Countdown(
+                  controller: _controller,
+                  seconds: TimerProvider.currentTimeInSeconds,
+                  build: (_, double time) {
+                    return Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(50),
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.shortestSide * 0.5,
+                              width: MediaQuery.of(context).size.shortestSide * 0.5,
+                              child: const Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  TimeIndicatorWidget(),
+                                  StudyBreakWidget(),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                interval: const Duration(milliseconds: 100),
-                onFinished: () async {
-                },
-              ),
-              const MediaButtons(),
-              const TaskDropdownWidget(),
-            ],
+                        ],
+                      ),
+                    );
+                  },
+                  interval: const Duration(milliseconds: 100),
+                  onFinished: () async {
+                  },
+                ),
+                const MediaButtons(),
+                const SizedBox(height: 20),
+                AnimatedSlide(
+                  curve: Curves.easeInOut,
+                  offset: timerProvider.isRunning ? const Offset(0, 10) : const Offset(0, 0),
+                  duration: const Duration(milliseconds: 500),
+                  child: (plannerProvider.plannerId != null) ? const TaskDropdownWidget() : const PlannerChooserWidget(),
+                ),
+
+              ],
+            ),
           ),
         ),
         floatingActionButton: _floatingActionButton(const Color.fromRGBO(242, 245, 234, 1), context),
@@ -89,13 +98,15 @@ class _CountDownTimerPageState extends State<CountDownTimerPage> {
     );
   }
 }
+
 Widget _floatingActionButton(Color floatingActionButtonColor, BuildContext context) {
   final taskProvider = Provider.of<TaskProvider>(context);
   final plannerProvider = Provider.of<PlannerProvider>(context);
   final timerProvider = Provider.of<TimerProvider>(context);
 
-  return AnimatedOpacity(
-    opacity: timerProvider.isRunning ? 0.0 : 1.0,
+  return AnimatedSlide(
+    curve: Curves.easeInOut,
+    offset: timerProvider.isRunning ? const Offset(0, 10) : const Offset(0, 0),
     duration: const Duration(milliseconds: 300),
     child: FloatingActionButton(
       backgroundColor: floatingActionButtonColor,
