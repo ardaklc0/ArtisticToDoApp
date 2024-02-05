@@ -26,40 +26,43 @@ class _HomePageState extends State<HomePage> {
       body: _body(deviceHeight, createArtistButton, goToCreatedPlanners, goToPomodoro, goToPomodoroMig)
     );
   }
-  List<Container> createArtistButton(double deviceHeight) {
-    List<Container> artistButtons = [];
+  List<Padding> createArtistButton(double deviceHeight) {
+    List<Padding> artistButtons = [];
     artists.forEach((key, value) {
       artistButtons.add(
-        Container(
-          width: double.infinity,
-          height: deviceHeight * 0.12,
-          padding: EdgeInsets.zero,
-          child: ElevatedButton(
-            style: mainUiRaisedButtonStyle,
-            onPressed: () async {
-              await createPlannerWrtArtist(key);
-              setState(() {
-                addCreatedPlanners = fetchPlanners(context, deviceHeight);
-              });
-              goToCreatedPlanners();
-            },
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.asset(
-                  'assets/images/Thumbnail/4.jpg',
-                  fit: BoxFit.fill,
-                  width: deviceHeight * 0.1,
-                  height: deviceHeight * 0.1,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  value,
-                  style: TextStyle(
-                    fontSize: deviceHeight * 0.02,
+        Padding(
+          padding: const EdgeInsets.all(5),
+          child: Container(
+            width: double.infinity,
+            height: deviceHeight * 0.12,
+            padding: EdgeInsets.zero,
+            child: ElevatedButton(
+              style: mainUiRaisedButtonStyle,
+              onPressed: () async {
+                await createPlannerWrtArtist(key);
+                setState(() {
+                  addCreatedPlanners = fetchPlanners(context, deviceHeight);
+                });
+                goToCreatedPlanners();
+              },
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.asset(
+                    'assets/images/Thumbnail/4.jpg',
+                    fit: BoxFit.fill,
+                    width: deviceHeight * 0.1,
+                    height: deviceHeight * 0.1,
                   ),
-                ),
-              ],
+                  const SizedBox(width: 8),
+                  Text(
+                    value,
+                    style: TextStyle(
+                      fontSize: deviceHeight * 0.02,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -92,53 +95,62 @@ Widget _body(double deviceHeight, Function createArtistButton, Function goToCrea
         Column(
             children: createArtistButton(deviceHeight)
         ),
-        Container(
-          width: double.infinity,
-          height: deviceHeight * 0.07,
-          padding: const EdgeInsets.all(2),
-          child: ElevatedButton(
-            style: mainUiRaisedButtonStyle,
-            onPressed: () async {
-              goToCreatedPlanners();
-            },
-            child: Text(
-              "Go To Created Planners",
-              style: TextStyle(
-                  fontSize: deviceHeight * 0.02
+        Padding(
+          padding: const EdgeInsets.all(5),
+          child: Container(
+            width: double.infinity,
+            height: deviceHeight * 0.07,
+            padding: const EdgeInsets.all(2),
+            child: ElevatedButton(
+              style: mainUiRaisedButtonStyle,
+              onPressed: () async {
+                goToCreatedPlanners();
+              },
+              child: Text(
+                "Go To Created Planners",
+                style: TextStyle(
+                    fontSize: deviceHeight * 0.02
+                ),
               ),
             ),
           ),
         ),
-        Container(
-          width: double.infinity,
-          height: deviceHeight * 0.07,
-          padding: const EdgeInsets.all(1),
-          child: ElevatedButton(
-            style: mainUiRaisedButtonStyle,
-            onPressed: () async {
-              goToPomodoroMig();
-            },
-            child: Text(
-              "Go To Pomodoro Migration",
-              style: TextStyle(
-                  fontSize: deviceHeight * 0.02
+        Padding(
+          padding: const EdgeInsets.all(5),
+          child: Container(
+            width: double.infinity,
+            height: deviceHeight * 0.07,
+            padding: const EdgeInsets.all(1),
+            child: ElevatedButton(
+              style: mainUiRaisedButtonStyle,
+              onPressed: () async {
+                goToPomodoroMig();
+              },
+              child: Text(
+                "Go To Pomodoro Migration",
+                style: TextStyle(
+                    fontSize: deviceHeight * 0.02
+                ),
               ),
             ),
           ),
         ),
-        Container(
-          width: double.infinity,
-          height: deviceHeight * 0.07,
-          padding: const EdgeInsets.all(1),
-          child: ElevatedButton(
-            style: mainUiRaisedButtonStyle,
-            onPressed: () async {
-              goToPomodoro();
-            },
-            child: Text(
-              "Go To Pomodoro Old",
-              style: TextStyle(
-                  fontSize: deviceHeight * 0.02
+        Padding(
+          padding: const EdgeInsets.all(5),
+          child: Container(
+            width: double.infinity,
+            height: deviceHeight * 0.07,
+            padding: const EdgeInsets.all(1),
+            child: ElevatedButton(
+              style: mainUiRaisedButtonStyle,
+              onPressed: () async {
+                goToPomodoro();
+              },
+              child: Text(
+                "Go To Pomodoro Old",
+                style: TextStyle(
+                    fontSize: deviceHeight * 0.02
+                ),
               ),
             ),
           ),

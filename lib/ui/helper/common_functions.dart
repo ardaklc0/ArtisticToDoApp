@@ -86,18 +86,21 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight)
                 color: Colors.white,
               ),
             ),
-            child: Container(
-              width: double.infinity,
-              height: deviceHeight * 0.08,
-              padding: const EdgeInsets.all(2),
-              child: ElevatedButton(
-                style: mainUiRaisedButtonStyle,
-                onPressed: () async {
-                  goToArtist(context, element.plannerArtist, element.id!, element.creationDate);
-                },
-                child: Text(
-                  '${element.id}.) at ${element.creationDate} with ${element.plannerArtist}',
-                  style: TextStyle(fontSize: deviceHeight * 0.02),
+            child: Padding(
+              padding: const EdgeInsets.all(3),
+              child: Container(
+                width: double.infinity,
+                height: deviceHeight * 0.08,
+                padding: const EdgeInsets.all(2),
+                child: ElevatedButton(
+                  style: mainUiRaisedButtonStyle,
+                  onPressed: () async {
+                    goToArtist(context, element.plannerArtist, element.id!, element.creationDate);
+                  },
+                  child: Text(
+                    '${element.id}.) at ${element.creationDate} with ${element.plannerArtist}',
+                    style: TextStyle(fontSize: deviceHeight * 0.02),
+                  ),
                 ),
               ),
             ),
