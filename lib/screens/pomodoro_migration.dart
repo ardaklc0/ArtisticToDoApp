@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:pomodoro2/ui/widgets/settings_widgets/app_retain.dart';
 import 'package:provider/provider.dart';
 import 'package:timer_count_down/timer_controller.dart';
 import 'package:timer_count_down/timer_count_down.dart';
@@ -19,7 +21,6 @@ class _CountDownTimerPageState extends State<CountDownTimerPage> {
   final CountdownController _controller = CountdownController(autoStart: false);
   @override
   Widget build(BuildContext context) {
-    final SoundSelectionProvider audioProvider = SoundSelectionProvider();
     final TimerProvider timerProvider = Provider.of<TimerProvider>(context);
     final PlannerProvider plannerProvider = Provider.of<PlannerProvider>(context);
     return PopScope(

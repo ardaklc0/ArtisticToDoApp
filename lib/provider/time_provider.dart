@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:pomodoro2/ui/helper/common_functions.dart';
+import 'package:workmanager/workmanager.dart';
 import 'audio_provider.dart';
 import 'auto_start_provider.dart';
 import 'notification_provider.dart';

@@ -8,6 +8,7 @@ import 'package:pomodoro2/ui/helper/common_variables.dart';
 import 'package:pomodoro2/ui/styles/common_styles.dart';
 import 'package:pomodoro2/ui/widgets/pomodoro_widgets/appbar_widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:workmanager/workmanager.dart';
 import '../../../models/planner_model.dart';
 import '../../../models/task_model.dart';
 import '../../../provider/planner_provider.dart';
@@ -283,6 +284,7 @@ class PlannerChooserWidget extends StatelessWidget {
 Future<bool> dialogBuilder(BuildContext context) async {
   bool confirm = false;
   confirm = await showDialog(
+    barrierDismissible: false,
     context: context,
     builder: (BuildContext context) {
       final timerProvider = Provider.of<TimerProvider>(context);
