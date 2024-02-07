@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:pomodoro2/ui/helper/common_functions.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:workmanager/workmanager.dart';
 import 'audio_provider.dart';
 import 'auto_start_provider.dart';
@@ -31,11 +32,13 @@ class TimerProvider with ChangeNotifier {
   void toggleTimer() {
     if (!_isRunning) {
       _isRunning = true;
+      WakelockPlus.enable();
       _timer = Timer.periodic(const Duration(seconds: 1), _updateTimer);
       notifyListeners();
     } else {
       _timer.cancel();
       _isRunning = false;
+      WakelockPlus.disable();
       notifyListeners();
     }
   }
@@ -62,6 +65,8 @@ class TimerProvider with ChangeNotifier {
       _timer.cancel(); // previous timer
       _isRunning = false;
       await saveWorkedMinutes();
+      WakelockPlus.disable();
+      WakelockPlus.enabled.then((value) => debugPrint('Wakelock disabled: $value'));
       notifyListeners();
       if (AutoStartProvider.autoStart == false) {
         _timer.cancel(); // next timer

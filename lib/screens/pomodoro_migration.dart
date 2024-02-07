@@ -4,6 +4,7 @@ import 'package:pomodoro2/ui/widgets/settings_widgets/app_retain.dart';
 import 'package:provider/provider.dart';
 import 'package:timer_count_down/timer_controller.dart';
 import 'package:timer_count_down/timer_count_down.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 import '../provider/audio_provider.dart';
 import '../provider/planner_provider.dart';
 import '../provider/task_provider.dart';
@@ -34,9 +35,12 @@ class _CountDownTimerPageState extends State<CountDownTimerPage> {
         if (received) {
           timerProvider.resetTimer();
           if (!context.mounted) return;
+          WakelockPlus.disable();
+          WakelockPlus.enabled.then((value) => debugPrint('POP SCOPE WAKELOCK: $value'));
           Navigator.pop(context);
         } else {
           timerProvider.toggleTimer();
+          WakelockPlus.enabled.then((value) => debugPrint('POP SCOPE WAKELOCK: $value'));
         }
       },
       child: Scaffold(

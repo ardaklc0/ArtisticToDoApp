@@ -46,6 +46,7 @@ dependencies:
   reliable_interval_timer: ^1.0.2
   workmanager: ^0.5.2
   android_alarm_manager_plus: ^3.0.4
+  wakelock_plus: ^1.1.4
 
 dev_dependencies:
   flutter_test:
