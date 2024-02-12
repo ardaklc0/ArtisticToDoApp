@@ -35,12 +35,12 @@ class _CountDownTimerPageState extends State<CountDownTimerPage> {
         if (received) {
           timerProvider.resetTimer();
           if (!context.mounted) return;
-          WakelockPlus.disable();
-          WakelockPlus.enabled.then((value) => debugPrint('POP SCOPE WAKELOCK: $value'));
+          //WakelockPlus.disable();
+          //WakelockPlus.enabled.then((value) => debugPrint('POP SCOPE WAKELOCK: $value'));
           Navigator.pop(context);
         } else {
           timerProvider.toggleTimer();
-          WakelockPlus.enabled.then((value) => debugPrint('POP SCOPE WAKELOCK: $value'));
+          //WakelockPlus.enabled.then((value) => debugPrint('POP SCOPE WAKELOCK: $value'));
         }
       },
       child: Scaffold(
