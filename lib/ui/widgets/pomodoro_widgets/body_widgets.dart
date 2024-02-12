@@ -9,7 +9,6 @@ import 'package:pomodoro2/ui/styles/common_styles.dart';
 import 'package:pomodoro2/ui/widgets/pomodoro_widgets/appbar_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
-import 'package:workmanager/workmanager.dart';
 import '../../../models/planner_model.dart';
 import '../../../models/task_model.dart';
 import '../../../provider/planner_provider.dart';
@@ -109,11 +108,11 @@ class MediaButtons extends StatelessWidget {
           onPressed: () async {
             if (TaskProvider.taskId == null && plannerProvider.plannerId == null) {
               timerProvider.toggleTimer();
-              WakelockPlus.enabled.then((value) => debugPrint('TOGGLE TIMER WAKELOCK: $value'));
+              //WakelockPlus.enabled.then((value) => debugPrint('TOGGLE TIMER WAKELOCK: $value'));
             } else if (plannerProvider.plannerId != null) {
               if (TaskProvider.taskId != null) {
                 timerProvider.toggleTimer();
-                WakelockPlus.enabled.then((value) => debugPrint('TOGGLE TIMER WAKELOCK: $value'));
+                //WakelockPlus.enabled.then((value) => debugPrint('TOGGLE TIMER WAKELOCK: $value'));
               }
             }
             if (!timerProvider.isRunning) {
@@ -122,10 +121,10 @@ class MediaButtons extends StatelessWidget {
                 bool dialogReturn = await dialogBuilder(context);
                 if (dialogReturn) {
                   timerProvider.resetTimer();
-                  WakelockPlus.enabled.then((value) => debugPrint('CANCEL DIALOG WAKELOCK: $value'));
+                  //WakelockPlus.enabled.then((value) => debugPrint('CANCEL DIALOG WAKELOCK: $value'));
                 } else {
                   timerProvider.toggleTimer();
-                  WakelockPlus.enabled.then((value) => debugPrint('CANCEL DIALOG WAKELOCK: $value'));
+                  //WakelockPlus.enabled.then((value) => debugPrint('CANCEL DIALOG WAKELOCK: $value'));
                 }
               }
             }
