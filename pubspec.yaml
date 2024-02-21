@@ -44,6 +44,7 @@ dependencies:
   flutter_isolate: ^2.0.4
   timer_count_down: ^2.2.2
   wakelock_plus: ^1.1.4
+  shake: ^2.2.0
 
 dev_dependencies:
   flutter_test:

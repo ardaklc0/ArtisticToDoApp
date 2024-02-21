@@ -11,6 +11,7 @@ import 'package:pomodoro2/provider/theme_provider.dart';
 import 'package:pomodoro2/provider/time_provider.dart';
 import 'package:pomodoro2/screens/gustav_klimt.dart';
 import 'package:pomodoro2/screens/home_page.dart';
+import 'package:pomodoro2/screens/home_page_test.dart';
 import 'package:pomodoro2/screens/monet.dart';
 import 'package:pomodoro2/screens/osman_hamdi.dart';
 import 'package:pomodoro2/screens/picasso.dart';
@@ -74,7 +75,7 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: '/',
         routes: {
-          '/': (context) => const HomePage(),
+          '/': (context) => const HomePageTest(), //HomePage(),
           '/created_planners': (context) => const CreatedPlanners(),
           '/gustav_klimt': (context) => GustavKlimt(title: 'Gustav Klimt Home Page', randomImage: randomImageChooser("Gustav Klimt", 20)),
           '/osman_hamdi': (context) => OsmanHamdi(title: 'Osman Hamdi Page', randomImage: randomImageChooser("Osman Hamdi Bey", 11)),
@@ -84,6 +85,7 @@ class MyApp extends StatelessWidget {
           '/van_gogh': (context) => VanGogh(title: 'Van Gogh Page', randomImage: randomImageChooser("Van Gogh", 17)),
           '/pomodoro': (context) => const Pomodoro(),
           '/pomodoro_migration': (context) => const CountDownTimerPage(),
+          '/home_page_test': (context) => const HomePageTest()
         },
       ),
     );
