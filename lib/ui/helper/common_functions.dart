@@ -21,17 +21,17 @@ void goToArtist(BuildContext context, String artist, int plannerId, String date)
   Navigator.of(context).push(MaterialPageRoute(builder: (context) {
     switch (artist) {
       case "VanGogh":
-        return VanGogh(title: "Van Gogh", plannerId: plannerId, date: date, randomImage: randomImageChooser("Van Gogh", 17));
+        return VanGogh(title: "Van Gogh", plannerId: plannerId, date: date, randomImage: randomImageChooser("VanGogh", 17));
       case "SalvadorDali":
-        return SalvadorDali(title: "Salvador Dali", plannerId: plannerId, date: date, randomImage: randomImageChooser("Dali", 9));
+        return SalvadorDali(title: "Salvador Dali", plannerId: plannerId, date: date, randomImage: randomImageChooser("SalvadorDali", 9));
       case "Picasso":
         return Picasso(title: "Picasso", plannerId: plannerId, date: date, randomImage: randomImageChooser("Picasso", 12));
       case "Monet":
         return Monet(title: "Monet", plannerId: plannerId, date: date, randomImage: randomImageChooser("Monet", 22));
       case "OsmanHamdi":
-        return OsmanHamdi(title: "OsmanHamdi", plannerId: plannerId, date: date, randomImage: randomImageChooser("Osman Hamdi Bey", 11));
+        return OsmanHamdi(title: "OsmanHamdi", plannerId: plannerId, date: date, randomImage: randomImageChooser("OsmanHamdi", 11));
       case "GustavKlimt":
-        return GustavKlimt(title: "GustavKlimt", plannerId: plannerId, date: date, randomImage: randomImageChooser("Gustav Klimt", 20));
+        return GustavKlimt(title: "GustavKlimt", plannerId: plannerId, date: date, randomImage: randomImageChooser("GustavKlimt", 20));
       default:
         throw ArgumentError("Unsupported artist: $artist");
     }
