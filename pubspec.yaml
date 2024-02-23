@@ -45,6 +45,7 @@ dependencies:
   timer_count_down: ^2.2.2
   wakelock_plus: ^1.1.4
   shake: ^2.2.0
+  google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -71,12 +72,12 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/Dali/
-    - assets/images/Gustav Klimt/
+    - assets/images/SalvadorDali/
+    - assets/images/GustavKlimt/
     - assets/images/Monet/
-    - assets/images/Osman Hamdi Bey/
+    - assets/images/OsmanHamdi/
     - assets/images/Picasso/
-    - assets/images/Van Gogh/
+    - assets/images/VanGogh/
     - assets/sound/
     - assets/images/Thumbnail/
   # An image asset can refer to one or more resolution-specific "variants", see
