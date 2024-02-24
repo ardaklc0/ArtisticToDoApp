@@ -137,32 +137,44 @@ class _TaskRowState extends State<TaskRow> {
                       selectionHandleColor: widget.checkboxColor,
                     ),
                   ),
-                  child: TextField(
-                    textCapitalization: TextCapitalization.sentences,
-                    keyboardType: TextInputType.multiline,
-                    controller: _controller,
-                    maxLines: null,
-                    autofocus: false,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: widget.checkboxColor,
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: widget.checkboxColor,
-                            width: 1.5
+                  child: Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 3,
+                          offset: const Offset(0, 2),
                         ),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: widget.checkboxColor,
-                            width: 1.5
-                        ),
-                      ),
+                      ],
                     ),
-                    style: TextStyle(
-                      fontSize: deviceWidth * 0.035,
-                      decoration: widget.task!.isDone == 1 ? TextDecoration.lineThrough : TextDecoration.none,
-                      color: widget.textColor,
+                    child: TextField(
+                      textCapitalization: TextCapitalization.sentences,
+                      keyboardType: TextInputType.multiline,
+                      controller: _controller,
+                      maxLines: null,
+                      autofocus: false,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: widget.checkboxColor,
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: widget.checkboxColor,
+                              width: 1.5
+                          ),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: widget.checkboxColor,
+                              width: 1.5
+                          ),
+                        ),
+                      ),
+                      style: TextStyle(
+                        fontSize: deviceWidth * 0.035,
+                        decoration: widget.task!.isDone == 1 ? TextDecoration.lineThrough : TextDecoration.none,
+                        color: widget.textColor,
+                      ),
                     ),
                   ),
                 ),

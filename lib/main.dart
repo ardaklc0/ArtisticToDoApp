@@ -23,6 +23,7 @@ import 'package:pomodoro2/ui/helper/common_functions.dart';
 import 'package:pomodoro2/ui/widgets/task_container.dart';
 import 'package:pomodoro2/services/task_service.dart';
 import 'package:intl/intl.dart';
+import 'package:pomodoro2/ui/widgets/task_container_test.dart';
 import 'package:provider/provider.dart';
 import 'screens/created_planners.dart';
 
@@ -93,7 +94,7 @@ class MyApp extends StatelessWidget {
 }
 
 Future<SingleChildScrollView> createPlanner(String dateTime, int plannerId, Color dateColor, Color? taskColor, Color? textColor) async {
-  List<TaskContainer> newContainer = [];
+  List<TaskContainerTest> newContainer = [];
   DateFormat inputFormat = DateFormat("M/d/yyyy");
   DateTime parsedDateTime = inputFormat.parse(dateTime);
   DateFormat dateFormat = DateFormat('yMd');
@@ -105,7 +106,8 @@ Future<SingleChildScrollView> createPlanner(String dateTime, int plannerId, Colo
     date = dateFormat.format(parsedDateTime);
     day = dayFormat.format(parsedDateTime);
     newContainer.add(
-      TaskContainer(
+      // Normally it is "TaskContainer" but for the sake of testing, it is "TaskContainerTest"
+      TaskContainerTest(
         dayText: day,
         dateText: date,
         dateColor: dateColor,
@@ -113,7 +115,7 @@ Future<SingleChildScrollView> createPlanner(String dateTime, int plannerId, Colo
         textColor: textColor,
         plannerId: plannerId,
         tasks: tasks,
-    ));
+      ));
     parsedDateTime = parsedDateTime.add(const Duration(days: 1));
   }
   return SingleChildScrollView(
