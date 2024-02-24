@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../helper/common_variables.dart';
 import '../styles/common_styles.dart';
 const Icon homeIconForFloatingActionButton =  Icon(
@@ -11,8 +12,14 @@ Widget partOfTaskContainer(double deviceWidth, double constantWidth, String dayT
   child: SizedBox(
     width: deviceWidth * widthOfDayInDateContainer,
     child: Text(
+      textAlign: TextAlign.center,
       dayText,
-      style: textStyle(textColor, deviceWidth),
+      style: GoogleFonts.roboto(
+        fontSize: deviceWidth * 0.045,
+        fontStyle: FontStyle.normal,
+        fontWeight: FontWeight.normal,
+        textStyle: textStyle(textColor, deviceWidth)
+      ),
       overflow: TextOverflow.fade,
     ),
   ),

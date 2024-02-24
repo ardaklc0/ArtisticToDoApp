@@ -31,8 +31,9 @@ class _HomePageTestState extends State<HomePageTest> {
                     imagePath: 'assets/images/GustavKlimt/1.jpg',
                     title: Text(
                       'Gustav Klimt',
-                      style: GoogleFonts.figtree(
+                      style: GoogleFonts.roboto(
                         fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w300,
                         textStyle: const TextStyle(
                             fontSize: 25,
                             color: Colors.black
@@ -51,11 +52,12 @@ class _HomePageTestState extends State<HomePageTest> {
                     imagePath: 'assets/images/Monet/1.jpg',
                     title: Text(
                       'Monet',
-                      style: GoogleFonts.figtree(
+                      style: GoogleFonts.roboto(
                         fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w300,
                         textStyle: const TextStyle(
                             fontSize: 25,
-                            color: Colors.black
+                            color: Colors.black,
                         ),
                       ),
                     ),
@@ -71,8 +73,9 @@ class _HomePageTestState extends State<HomePageTest> {
                     imagePath: 'assets/images/Picasso/2.jpg',
                     title: Text(
                       'Picasso',
-                      style: GoogleFonts.figtree(
+                      style: GoogleFonts.roboto(
                         fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w300,
                         textStyle: const TextStyle(
                             fontSize: 25,
                             color: Colors.black
@@ -91,8 +94,9 @@ class _HomePageTestState extends State<HomePageTest> {
                     imagePath: 'assets/images/SalvadorDali/2.jpg',
                     title: Text(
                       'Dali',
-                      style: GoogleFonts.figtree(
+                      style: GoogleFonts.roboto(
                         fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w300,
                         textStyle: const TextStyle(
                             fontSize: 25,
                             color: Colors.black
@@ -111,9 +115,12 @@ class _HomePageTestState extends State<HomePageTest> {
                     imagePath: 'assets/images/OsmanHamdi/3.jpg',
                     title: Text(
                       'Osman Hamdi',
-                      style: GoogleFonts.figtree(
+                      style: GoogleFonts.roboto(
+
                         fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w300,
                         textStyle: const TextStyle(
+
                             fontSize: 25,
                             color: Colors.black
                         ),
@@ -131,8 +138,9 @@ class _HomePageTestState extends State<HomePageTest> {
                     imagePath: 'assets/images/VanGogh/2.jpg',
                     title: Text(
                         'Van Gogh',
-                        style: GoogleFonts.figtree(
+                        style: GoogleFonts.roboto(
                           fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.w300,
                           textStyle: const TextStyle(
                               fontSize: 25,
                               color: Colors.black
@@ -166,7 +174,7 @@ class ArtistButton extends StatefulWidget {
 
   final VoidCallback? onTap;
   final String imagePath;
-  Text title;
+  Widget title;
 
   @override
   State<ArtistButton> createState() => _ArtistButtonState();
