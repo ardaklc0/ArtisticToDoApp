@@ -49,68 +49,96 @@ class _TaskContainerState extends State<TaskContainer> {
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
-    return Column(
-      children: [
-        SizedBox(
-          height: MediaQuery.of(context).size.height * heightProportionOfDateContainer,
-          width: MediaQuery.of(context).size.width,
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-                border: const Border(
-                    top: BorderSide(
-                        width: 2.5
-                    )
+    return Padding(
+      padding: const EdgeInsets.all(7.0),
+      child: Column(
+        children: [
+          SizedBox(
+            height: deviceHeight * heightProportionOfDateContainer,
+            width: deviceWidth * 0.95,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: widget.dateColor,
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15)
                 ),
-                color: widget.dateColor
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.6),
+                    spreadRadius: 2,
+                    blurRadius: 7,
+                    offset: const Offset(0, 0),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  partOfTaskContainer(deviceWidth, widthOfDayInDateContainer, widget.dayText, widget.textColor),
+                  Container(
+                    width: deviceWidth * 0.33,
+                    child: const SizedBox(),
+                  ),
+                  partOfTaskContainer(deviceWidth, widthOfDateInDateContainer, widget.dateText, widget.textColor),
+                ],
+              )
             ),
-            child: Row(
-              children: [
-                partOfTaskContainer(deviceWidth, widthOfDayInDateContainer, widget.dayText, widget.textColor),
-                partOfTaskContainer(deviceWidth, widthOfDateInDateContainer, widget.dateText, widget.textColor),
+          ), //DateContainer
+          SizedBox(
+            height: deviceHeight * heightProportionOfTaskContainer,
+            width: deviceWidth * 0.95,
+            child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: widget.taskColor,
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15)
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 4,
+                  offset: const Offset(0, 1),
+                ),
               ],
-            )
-          ),
-        ), //DateContainer
-        SizedBox(
-          height: deviceHeight * heightProportionOfTaskContainer,
-          width: deviceWidth,
-          child: DecoratedBox(
-          decoration: BoxDecoration(color: widget.taskColor),
-          child: GestureDetector(
-            onTap: () {
-              FocusScopeNode currentFocus = FocusScope.of(context);
-              if (!currentFocus.hasPrimaryFocus) {
-                currentFocus.unfocus();
-              }
-            },
-            child: Padding(
-              padding: fixedEdgeInsets,
-              child: SingleChildScrollView(
-                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                child: Column(
-                  children: [
-                    Column(
-                      children: textFields
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: ElevatedButton(
-                        onPressed: addTask,
-                        style: raisedButtonStyle(widget.textColor, widget.dateColor, deviceHeight, deviceWidth),
-                        child: Text(
-                          "Create A Task",
-                          style: buttonTextStyle(deviceWidth)
+            ),
+            child: GestureDetector(
+              onTap: () {
+                FocusScopeNode currentFocus = FocusScope.of(context);
+                if (!currentFocus.hasPrimaryFocus) {
+                  currentFocus.unfocus();
+                }
+              },
+              child: Padding(
+                padding: fixedEdgeInsets,
+                child: SingleChildScrollView(
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                  child: Column(
+                    children: [
+                      Column(
+                        children: textFields
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: ElevatedButton(
+                          onPressed: addTask,
+                          style: raisedButtonStyle(widget.textColor, widget.dateColor, deviceHeight, deviceWidth),
+                          child: Text(
+                            "Create A Task",
+                            style: buttonTextStyle(deviceWidth)
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ), //TaskContainer
-    ],
+        ), //TaskContainer
+      ],
+    ),
   );
 }
 }

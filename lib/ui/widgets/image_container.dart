@@ -15,7 +15,7 @@ class ImageContainer extends StatelessWidget {
       child: Image.asset(
         imageUrl,
         alignment: imageAlignment,
-        fit: BoxFit.fitWidth,
+        fit: BoxFit.cover,
       ),
     );
   }

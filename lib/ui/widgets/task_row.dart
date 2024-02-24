@@ -111,9 +111,9 @@ class _TaskRowState extends State<TaskRow> {
       child: Row(
         children: [
           Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(5),
             child: SizedBox(
-              width: deviceWidth * 0.80,
+              width: deviceWidth * 0.775,
               child: Focus(
                 onFocusChange: (value) async {
                   if (_controller.text.isNotEmpty) {

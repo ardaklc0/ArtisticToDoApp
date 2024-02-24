@@ -104,14 +104,15 @@ Future<SingleChildScrollView> createPlanner(String dateTime, int plannerId, Colo
   for (int i = 0; i < 7; i++) {
     date = dateFormat.format(parsedDateTime);
     day = dayFormat.format(parsedDateTime);
-    newContainer.add(TaskContainer(
-      dayText: day,
-      dateText: date,
-      dateColor: dateColor,
-      taskColor: taskColor,
-      textColor: textColor,
-      plannerId: plannerId,
-      tasks: tasks,
+    newContainer.add(
+      TaskContainer(
+        dayText: day,
+        dateText: date,
+        dateColor: dateColor,
+        taskColor: taskColor,
+        textColor: textColor,
+        plannerId: plannerId,
+        tasks: tasks,
     ));
     parsedDateTime = parsedDateTime.add(const Duration(days: 1));
   }
