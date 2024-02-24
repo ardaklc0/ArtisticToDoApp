@@ -53,30 +53,37 @@ class _GustavKlimtState extends State<GustavKlimt> {
     );
   }
 }
-Widget _body(double deviceWidth, Future<SingleChildScrollView> taskFuture, String randomImage, BuildContext context) => Center(
-  child: Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: <Widget>[
-      ImageContainer(
-        imageUrl: randomImage,
-        imageAlignment: const Alignment(0,-1),
+Widget _body(double deviceWidth, Future<SingleChildScrollView> taskFuture, String randomImage, BuildContext context) => Stack(
+  fit: StackFit.expand,
+  children: [
+    // Background Image
+    ImageContainer(
+      imageUrl: randomImage, // Replace with your background image asset path or URL
+      imageAlignment: Alignment.center, // Adjust the fit as needed
+    ),
+    // Content
+    Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Flexible(
+            child: FutureBuilder<SingleChildScrollView>(
+              future: taskFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  return snapshot.data ?? Container();
+                }
+              },
+            ),
+          ),
+        ],
       ),
-      Flexible(
-        child: FutureBuilder<SingleChildScrollView>(
-          future: taskFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else {
-              return snapshot.data ?? Container();
-            }
-          },
-        )
-      ),
-    ],
-  ),
+    ),
+  ],
 );
 Widget _floatingActionButton(Color floatingActionButtonColor, BuildContext context) => FloatingActionButton(
   backgroundColor: floatingActionButtonColor,
