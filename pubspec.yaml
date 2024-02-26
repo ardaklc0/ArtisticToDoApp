@@ -46,6 +46,7 @@ dependencies:
   wakelock_plus: ^1.1.4
   shake: ^2.2.0
   google_fonts: ^6.1.0
+  floating_draggable_widget: ^2.1.5
 
 dev_dependencies:
   flutter_test:

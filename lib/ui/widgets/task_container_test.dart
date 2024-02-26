@@ -50,6 +50,7 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
+
     return Padding(
       padding: const EdgeInsets.all(7.0),
       child: Column(
@@ -114,21 +115,27 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                 child: Stack(
                   children: [
                     Padding(
-                      padding: fixedEdgeInsets,
+                      padding: fixedEdgeInsets.copyWith(bottom: deviceHeight * 0.06),
                       child: SingleChildScrollView(
                         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                         child: Column(
-                          children: textFields
+                          children: textFields,
                         ),
                       ),
                     ),
-
                     Positioned(
-                      top: deviceHeight * 0.23,
-                      left: deviceWidth * 0.785,
+                      top: deviceHeight * 0.235,
+                      left: deviceWidth * 0.8,
                       child: ElevatedButton(
                         onPressed: addTask,
                         style: ButtonStyle(
+                          fixedSize: MaterialStateProperty.all<Size>(
+                              Size(deviceHeight * 0.05, deviceHeight * 0.05)
+                          ),
+                          iconSize: MaterialStateProperty.all<double>(deviceHeight * 0.03),
+                          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.zero),
+                          minimumSize: MaterialStateProperty.all<Size>(Size.zero),
+                          alignment: Alignment.center,
                           backgroundColor: MaterialStateProperty.all<Color>(widget.dateColor),
                           shape: MaterialStateProperty.all<CircleBorder>(
                             const CircleBorder(),
@@ -136,7 +143,10 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                           elevation: MaterialStateProperty.all<double>(10.0), // Set the elevation value for the shadow
                           shadowColor: MaterialStateProperty.all<Color>(Colors.black), // Set the shadow color
                         ),
-                        child: const Icon(Icons.add, color: Colors.black), // Use the add icon with widget.dateColor
+                        child: const Icon(
+                          Icons.add,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ],
