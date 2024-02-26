@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pomodoro2/models/task_model.dart';
 import 'package:pomodoro2/services/task_service.dart';
 import 'package:pomodoro2/ui/widgets/common_widgets.dart';
 import '../helper/common_variables.dart';
+import '../styles/common_styles.dart';
 class TaskRow extends StatefulWidget {
   final Color? textColor;
   final Color checkboxColor;
@@ -47,169 +49,168 @@ class _TaskRowState extends State<TaskRow> {
       }
       return widget.checkboxColor;
     }
-    return Dismissible(
-      key: UniqueKey(),
-      confirmDismiss: (direction) async {
-        bool confirm = false;
-        if (direction == DismissDirection.endToStart) {
-          // Show deletion confirmation dialog for right swipe
-          confirm = await showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                backgroundColor: widget.checkboxColor,
-                title: dismissibleText("Confirmation", deviceHeight, dismissibleColor),
-                content: dismissibleText("Are you sure you want to delete this item?", deviceHeight, dismissibleColor),
-                actions: <Widget>[
-                  dismissibleButton("Cancel", deviceHeight, dismissibleColor, false, context),
-                  dismissibleButton("Delete", deviceHeight, dismissibleColor, true, context)
-                ],
-              );
-            },
-          );
-        } else if (direction == DismissDirection.startToEnd) {
-          Task? task = await getTask(widget.task!.id!);
-          if (!context.mounted) return false;
-          int? workedMinutes = task?.totalWorkMinutes;
-          confirm = await showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                backgroundColor: widget.checkboxColor,
-                title: dismissibleText("Left Swipe Confirmation", deviceHeight, dismissibleColor),
-                content: dismissibleText("This task have $workedMinutes worked minutes.", deviceHeight, dismissibleColor),
-                actions: [
-                  dismissibleButton("Close", deviceHeight, dismissibleColor, false, context)
-                ],
-              );
-            },
-          );
-        }
-        return confirm;
-      },
-      onDismissed: (direction) async {
-        if (direction == DismissDirection.endToStart) {
-          await deleteTask(widget.task!.id!);
-        } else if (direction == DismissDirection.startToEnd) {
-          print("Left swipe action");
-        }
-      },
-      secondaryBackground: Container(
-        color: widget.checkboxColor,
-        child: const Icon(
-          Icons.delete,
-          color: Colors.black,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Dismissible(
+        key: UniqueKey(),
+        confirmDismiss: (direction) async {
+          bool confirm = false;
+          if (direction == DismissDirection.endToStart) {
+            // Show deletion confirmation dialog for right swipe
+            confirm = await showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  backgroundColor: widget.checkboxColor,
+                  title: dismissibleText("Confirmation", deviceHeight, dismissibleColor),
+                  content: dismissibleText("Are you sure you want to delete this item?", deviceHeight, dismissibleColor),
+                  actions: <Widget>[
+                    dismissibleButton("Cancel", deviceHeight, dismissibleColor, false, context),
+                    dismissibleButton("Delete", deviceHeight, dismissibleColor, true, context)
+                  ],
+                );
+              },
+            );
+          } else if (direction == DismissDirection.startToEnd) {
+            Task? task = await getTask(widget.task!.id!);
+            if (!context.mounted) return false;
+            int? workedMinutes = task?.totalWorkMinutes;
+            confirm = await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  backgroundColor: widget.checkboxColor,
+                  title: dismissibleText("Left Swipe Confirmation", deviceHeight, dismissibleColor),
+                  content: dismissibleText("This task have $workedMinutes worked minutes.", deviceHeight, dismissibleColor),
+                  actions: [
+                    dismissibleButton("Close", deviceHeight, dismissibleColor, false, context)
+                  ],
+                );
+              },
+            );
+          }
+          return confirm;
+        },
+        onDismissed: (direction) async {
+          if (direction == DismissDirection.endToStart) {
+            await deleteTask(widget.task!.id!);
+          } else if (direction == DismissDirection.startToEnd) {
+            print("Left swipe action");
+          }
+        },
+        secondaryBackground: Container(
+          color: widget.checkboxColor,
+          child: const Icon(
+            Icons.delete,
+            color: Colors.black,
+          ),
         ),
-      ),
-      background: Container(
-        color: widget.checkboxColor,
-        child: const Icon(
-          Icons.info,
-          color: Colors.black,
+        background: Container(
+          color: widget.checkboxColor,
+          child: const Icon(
+            Icons.info,
+            color: Colors.black,
+          ),
         ),
-      ),
-      child: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(5),
-            child: SizedBox(
-              width: deviceWidth * 0.775,
-              child: Focus(
-                onFocusChange: (value) async {
-                  if (_controller.text.isNotEmpty) {
-                    if (widget.task != null) {
-                      var existingTask = Task(
-                          id: widget.task!.id,
-                          creationDate: widget.task!.creationDate,
-                          taskDescription: _controller.text,
-                          plannerId: widget.plannerId
-                      );
-                      await updateTask(existingTask);
+        child: Row(
+          children: [
+            Expanded(
+              child: SizedBox(
+                width: deviceWidth * 0.80,
+                child: Focus(
+                  onFocusChange: (value) async {
+                    if (_controller.text.isNotEmpty) {
+                      if (widget.task != null) {
+                        var existingTask = Task(
+                            id: widget.task!.id,
+                            creationDate: widget.task!.creationDate,
+                            taskDescription: _controller.text,
+                            plannerId: widget.plannerId
+                        );
+                        await updateTask(existingTask);
+                      }
                     }
-                  }
-                },
-                focusNode: _focus,
-                child: Theme(
-                  data: Theme.of(context).copyWith(
-                    textSelectionTheme: TextSelectionThemeData(
-                      cursorColor: widget.checkboxColor,
-                      selectionColor: widget.checkboxColor,
-                      selectionHandleColor: widget.checkboxColor,
-                    ),
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
-                          spreadRadius: 1,
-                          blurRadius: 3,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: TextField(
-                      textCapitalization: TextCapitalization.sentences,
-                      keyboardType: TextInputType.multiline,
-                      controller: _controller,
-                      maxLines: null,
-                      autofocus: false,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: widget.checkboxColor,
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: widget.checkboxColor,
-                              width: 1.5
-                          ),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: widget.checkboxColor,
-                              width: 1.5
-                          ),
-                        ),
+                  },
+                  focusNode: _focus,
+                  child: Theme(
+                    data: Theme.of(context).copyWith(
+                      textSelectionTheme: TextSelectionThemeData(
+                        cursorColor: widget.checkboxColor,
+                        selectionColor: widget.checkboxColor,
+                        selectionHandleColor: widget.checkboxColor,
                       ),
-                      style: TextStyle(
-                        fontSize: deviceWidth * 0.035,
-                        decoration: widget.task!.isDone == 1 ? TextDecoration.lineThrough : TextDecoration.none,
-                        color: widget.textColor,
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 3,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        textCapitalization: TextCapitalization.sentences,
+                        keyboardType: TextInputType.multiline,
+                        controller: _controller,
+                        maxLines: null,
+                        autofocus: false,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: widget.checkboxColor,
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: widget.checkboxColor,
+                                width: 1.5
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: widget.checkboxColor,
+                                width: 1.5
+                            ),
+                          ),
+                        ),
+                        style: GoogleFonts.akatab(
+                          fontSize: deviceWidth * 0.042,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.normal,
+                          textStyle: textStyle(widget.textColor, deviceWidth),
+                          decoration: widget.task!.isDone == 1 ? TextDecoration.lineThrough : TextDecoration.none,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: fixedEdgeInsets,
-            child: SizedBox(
-              width: deviceWidth * 0.05,
-              child: Checkbox(
-                checkColor: Colors.black,
-                fillColor: MaterialStateProperty.resolveWith(getColor),
-                value: intConverter(widget.task!.isDone),
-                onChanged: (bool? value) async {
-                  setState(() {
-                    widget.task!.isDone = boolConverter(value!);
-                  });
-                  int intValue = boolConverter(value!);
-                  if (widget.task != null) {
-                    var existingTask = Task(
-                      id: widget.task!.id,
-                      creationDate: widget.task!.creationDate,
-                      taskDescription: _controller.text,
-                      plannerId: widget.plannerId,
-                      isDone: intValue,
-                    );
-                    await updateTask(existingTask);
-                    print("Updated existing task: $existingTask");
-                  }
-                },
-              ),
+            Checkbox(
+              checkColor: Colors.black,
+              fillColor: MaterialStateProperty.resolveWith(getColor),
+              value: intConverter(widget.task!.isDone),
+              onChanged: (bool? value) async {
+                setState(() {
+                  widget.task!.isDone = boolConverter(value!);
+                });
+                int intValue = boolConverter(value!);
+                if (widget.task != null) {
+                  var existingTask = Task(
+                    id: widget.task!.id,
+                    creationDate: widget.task!.creationDate,
+                    taskDescription: _controller.text,
+                    plannerId: widget.plannerId,
+                    isDone: intValue,
+                  );
+                  await updateTask(existingTask);
+                  print("Updated existing task: $existingTask");
+                }
+              },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
