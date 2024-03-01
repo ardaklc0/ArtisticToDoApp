@@ -99,7 +99,7 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight)
                   },
                   child: Text(
                     '${element.id}.) at ${element.creationDate} with ${element.plannerArtist}',
-                    style: TextStyle(fontSize: deviceHeight * 0.02),
+                    textScaler: const TextScaler.linear(1.3),
                   ),
                 ),
               ),
