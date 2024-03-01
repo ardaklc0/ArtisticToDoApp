@@ -55,30 +55,35 @@ class _PicassoState extends State<Picasso> {
     );
   }
 }
-Widget _body(double deviceWidth, Future<SingleChildScrollView> taskFuture, String randomImage, BuildContext context) =>Center(
-  child: Column(
-    mainAxisAlignment: MainAxisAlignment.center,
+Widget _body(double deviceWidth, Future<SingleChildScrollView> taskFuture, String randomImage, BuildContext context) =>Stack(
+  fit: StackFit.expand,
     children: <Widget>[
       ImageContainer(
         imageUrl: randomImage,
         imageAlignment: const Alignment(0, -1),
       ),
-      Flexible(
-          child: FutureBuilder<SingleChildScrollView>(
-            future: taskFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } else {
-                return snapshot.data ?? Container();
-              }
-            },
-          )
+      Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Flexible(
+                child: FutureBuilder<SingleChildScrollView>(
+                  future: taskFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      return snapshot.data ?? Container();
+                    }
+                  },
+                )
+            ),
+          ],
+        ),
       )
     ],
-  ),
 );
 Widget _floatingActionButton(Color floatingActionButtonColor, BuildContext context) => FloatingActionButton(
   backgroundColor: floatingActionButtonColor,

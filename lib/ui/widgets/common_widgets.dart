@@ -14,7 +14,7 @@ Widget partOfTaskContainer(double deviceWidth, double constantWidth, String dayT
     child: Text(
       textAlign: TextAlign.center,
       dayText,
-      style: GoogleFonts.akatab(
+      style: GoogleFonts.abel(
         fontSize: deviceWidth * 0.048,
         fontStyle: FontStyle.normal,
         fontWeight: FontWeight.normal,
