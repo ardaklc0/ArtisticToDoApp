@@ -52,7 +52,7 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
     final double deviceHeight = MediaQuery.of(context).size.height;
 
     return Padding(
-      padding: const EdgeInsets.all(7.0),
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Column(
         children: [
           SizedBox(
@@ -65,19 +65,11 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                       topLeft: Radius.circular(15),
                       topRight: Radius.circular(15)
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.6),
-                      spreadRadius: 2,
-                      blurRadius: 7,
-                      offset: const Offset(0, 0),
-                    ),
-                  ],
                 ),
                 child: Row(
                   children: [
                     partOfTaskContainer(deviceWidth, widthOfDayInDateContainer, widget.dayText, widget.textColor),
-                    Container(
+                    SizedBox(
                       width: deviceWidth * 0.33,
                       child: const SizedBox(),
                     ),
@@ -96,14 +88,6 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                     bottomLeft: Radius.circular(15),
                     bottomRight: Radius.circular(15)
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 4,
-                    offset: const Offset(0, 1),
-                  ),
-                ],
               ),
               child: GestureDetector(
                 onTap: () {
@@ -124,8 +108,8 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                       ),
                     ),
                     Positioned(
-                      top: deviceHeight * 0.235,
-                      left: deviceWidth * 0.8,
+                      top: deviceHeight * 0.236,
+                      left: deviceWidth * 0.825,
                       child: ElevatedButton(
                         onPressed: addTask,
                         style: ButtonStyle(

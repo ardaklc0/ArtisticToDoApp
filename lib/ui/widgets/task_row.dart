@@ -49,70 +49,70 @@ class _TaskRowState extends State<TaskRow> {
       }
       return widget.checkboxColor;
     }
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
-      child: Dismissible(
-        key: UniqueKey(),
-        confirmDismiss: (direction) async {
-          bool confirm = false;
-          if (direction == DismissDirection.endToStart) {
-            // Show deletion confirmation dialog for right swipe
-            confirm = await showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  backgroundColor: widget.checkboxColor,
-                  title: dismissibleText("Confirmation", deviceHeight, dismissibleColor),
-                  content: dismissibleText("Are you sure you want to delete this item?", deviceHeight, dismissibleColor),
-                  actions: <Widget>[
-                    dismissibleButton("Cancel", deviceHeight, dismissibleColor, false, context),
-                    dismissibleButton("Delete", deviceHeight, dismissibleColor, true, context)
-                  ],
-                );
-              },
-            );
-          } else if (direction == DismissDirection.startToEnd) {
-            Task? task = await getTask(widget.task!.id!);
-            if (!context.mounted) return false;
-            int? workedMinutes = task?.totalWorkMinutes;
-            confirm = await showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  backgroundColor: widget.checkboxColor,
-                  title: dismissibleText("Left Swipe Confirmation", deviceHeight, dismissibleColor),
-                  content: dismissibleText("This task have $workedMinutes worked minutes.", deviceHeight, dismissibleColor),
-                  actions: [
-                    dismissibleButton("Close", deviceHeight, dismissibleColor, false, context)
-                  ],
-                );
-              },
-            );
-          }
-          return confirm;
-        },
-        onDismissed: (direction) async {
-          if (direction == DismissDirection.endToStart) {
-            await deleteTask(widget.task!.id!);
-          } else if (direction == DismissDirection.startToEnd) {
-            print("Left swipe action");
-          }
-        },
-        secondaryBackground: Container(
-          color: widget.checkboxColor,
-          child: const Icon(
-            Icons.delete,
-            color: Colors.black,
-          ),
+    return Dismissible(
+      key: UniqueKey(),
+      confirmDismiss: (direction) async {
+        bool confirm = false;
+        if (direction == DismissDirection.endToStart) {
+          // Show deletion confirmation dialog for right swipe
+          confirm = await showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                backgroundColor: widget.checkboxColor,
+                title: dismissibleText("Confirmation", deviceHeight, dismissibleColor),
+                content: dismissibleText("Are you sure you want to delete this item?", deviceHeight, dismissibleColor),
+                actions: <Widget>[
+                  dismissibleButton("Cancel", deviceHeight, dismissibleColor, false, context),
+                  dismissibleButton("Delete", deviceHeight, dismissibleColor, true, context)
+                ],
+              );
+            },
+          );
+        } else if (direction == DismissDirection.startToEnd) {
+          Task? task = await getTask(widget.task!.id!);
+          if (!context.mounted) return false;
+          int? workedMinutes = task?.totalWorkMinutes;
+          confirm = await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                backgroundColor: widget.checkboxColor,
+                title: dismissibleText("Left Swipe Confirmation", deviceHeight, dismissibleColor),
+                content: dismissibleText("This task have $workedMinutes worked minutes.", deviceHeight, dismissibleColor),
+                actions: [
+                  dismissibleButton("Close", deviceHeight, dismissibleColor, false, context)
+                ],
+              );
+            },
+          );
+        }
+        return confirm;
+      },
+      onDismissed: (direction) async {
+        if (direction == DismissDirection.endToStart) {
+          await deleteTask(widget.task!.id!);
+        } else if (direction == DismissDirection.startToEnd) {
+          print("Left swipe action");
+        }
+      },
+      secondaryBackground: Container(
+        color: widget.checkboxColor,
+        child: const Icon(
+          Icons.delete,
+          color: Colors.black,
         ),
-        background: Container(
-          color: widget.checkboxColor,
-          child: const Icon(
-            Icons.info,
-            color: Colors.black,
-          ),
+      ),
+      background: Container(
+        color: widget.checkboxColor,
+        child: const Icon(
+          Icons.info,
+          color: Colors.black,
         ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6.0),
         child: Row(
           children: [
             Expanded(
@@ -174,10 +174,10 @@ class _TaskRowState extends State<TaskRow> {
                             ),
                           ),
                         ),
-                        style: GoogleFonts.akatab(
+                        style: GoogleFonts.abel(
                           fontSize: deviceWidth * 0.042,
                           fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.normal,
+                          fontWeight: FontWeight.w500,
                           textStyle: textStyle(widget.textColor, deviceWidth),
                           decoration: widget.task!.isDone == 1 ? TextDecoration.lineThrough : TextDecoration.none,
                         ),
