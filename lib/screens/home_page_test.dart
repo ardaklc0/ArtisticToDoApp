@@ -31,13 +31,10 @@ class _HomePageTestState extends State<HomePageTest> {
                     imagePath: 'assets/images/GustavKlimt/1.jpg',
                     title: Text(
                       'Gustav Klimt',
+                      textScaler: const TextScaler.linear(1.7),
                       style: GoogleFonts.roboto(
                         fontStyle: FontStyle.italic,
                         fontWeight: FontWeight.w300,
-                        textStyle: const TextStyle(
-                            fontSize: 25,
-                            color: Colors.black
-                        ),
                       ),
                     ),
                     onTap: () async {
@@ -52,13 +49,10 @@ class _HomePageTestState extends State<HomePageTest> {
                     imagePath: 'assets/images/Monet/1.jpg',
                     title: Text(
                       'Monet',
+                      textScaler: const TextScaler.linear(1.7),
                       style: GoogleFonts.roboto(
                         fontStyle: FontStyle.italic,
                         fontWeight: FontWeight.w300,
-                        textStyle: const TextStyle(
-                            fontSize: 25,
-                            color: Colors.black,
-                        ),
                       ),
                     ),
                     onTap: () async {
@@ -73,13 +67,10 @@ class _HomePageTestState extends State<HomePageTest> {
                     imagePath: 'assets/images/Picasso/2.jpg',
                     title: Text(
                       'Picasso',
+                      textScaler: const TextScaler.linear(1.7),
                       style: GoogleFonts.roboto(
                         fontStyle: FontStyle.italic,
                         fontWeight: FontWeight.w300,
-                        textStyle: const TextStyle(
-                            fontSize: 25,
-                            color: Colors.black
-                        ),
                       ),
                     ),
                     onTap: () async {
@@ -94,13 +85,10 @@ class _HomePageTestState extends State<HomePageTest> {
                     imagePath: 'assets/images/SalvadorDali/2.jpg',
                     title: Text(
                       'Dali',
+                      textScaler: const TextScaler.linear(1.7),
                       style: GoogleFonts.roboto(
                         fontStyle: FontStyle.italic,
                         fontWeight: FontWeight.w300,
-                        textStyle: const TextStyle(
-                            fontSize: 25,
-                            color: Colors.black
-                        ),
                       ),
                     ),
                     onTap: () async {
@@ -115,15 +103,10 @@ class _HomePageTestState extends State<HomePageTest> {
                     imagePath: 'assets/images/OsmanHamdi/3.jpg',
                     title: Text(
                       'Osman Hamdi',
+                      textScaler: const TextScaler.linear(1.7),
                       style: GoogleFonts.roboto(
-
                         fontStyle: FontStyle.italic,
                         fontWeight: FontWeight.w300,
-                        textStyle: const TextStyle(
-
-                            fontSize: 25,
-                            color: Colors.black
-                        ),
                       ),
                     ),
                     onTap: () async {
@@ -138,13 +121,10 @@ class _HomePageTestState extends State<HomePageTest> {
                     imagePath: 'assets/images/VanGogh/2.jpg',
                     title: Text(
                         'Van Gogh',
+                        textScaler: const TextScaler.linear(1.7),
                         style: GoogleFonts.roboto(
                           fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.w300,
-                          textStyle: const TextStyle(
-                              fontSize: 25,
-                              color: Colors.black
-                        ),
                       ),
                     ),
                     onTap: () async {

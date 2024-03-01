@@ -55,10 +55,19 @@ class _SalvadorDaliState extends State<SalvadorDali> {
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      appBar:isLoading ? AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ) : AppBar(
+        backgroundColor: colorList.last,
+        elevation: 0,
+        shadowColor: Colors.black,
+        toolbarOpacity: 0.7,
+        bottomOpacity: 0.5,
+      ),
       backgroundColor: colorList.last,
       resizeToAvoidBottomInset: true,
       body: _body(deviceWidth, taskFuture, widget.randomImage, context),
-      floatingActionButton: _floatingActionButton(colorList.last, context),
     );
   }
 
@@ -95,13 +104,5 @@ class _SalvadorDaliState extends State<SalvadorDali> {
         ),
       ),
     ],
-  );
-
-  Widget _floatingActionButton(Color floatingActionButtonColor, BuildContext context) => FloatingActionButton(
-    backgroundColor: floatingActionButtonColor,
-    child: homeIconForFloatingActionButton,
-    onPressed: () {
-      Navigator.pop(context);
-    },
   );
 }
