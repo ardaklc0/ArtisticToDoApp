@@ -18,11 +18,10 @@ class Picasso extends StatefulWidget {
 class _PicassoState extends State<Picasso> {
   late Future<SingleChildScrollView> taskFuture;
   late List<Color> colorList;
+  bool isLoading = true; // Added loading indicator flag
   @override
   void initState() {
     super.initState();
-    Random random = Random();
-    int chosenBackground = random.nextInt(4) + 2;
     colorList = [Colors.transparent, Colors.transparent];
     taskFuture = createPlanner(
       widget.date!,
@@ -31,9 +30,16 @@ class _PicassoState extends State<Picasso> {
       Colors.transparent,
       Colors.black,
     );
+
+    // Show loading indicator initially
+    setState(() {
+      isLoading = true;
+    });
+
     sortedColors(widget.randomImage).then((List<Color> colors) {
       setState(() {
         colorList = colors;
+        int chosenBackground = Random().nextInt(4) + 2;
         taskFuture = createPlanner(
           widget.date!,
           widget.plannerId!,
@@ -41,54 +47,62 @@ class _PicassoState extends State<Picasso> {
           colorList.elementAt(chosenBackground),
           Colors.black,
         );
+        isLoading = false; // Set loading indicator to false when colors are determined
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-        backgroundColor: colorList.last,
-        resizeToAvoidBottomInset: true,
-        body: _body(deviceWidth, taskFuture, widget.randomImage, context),
-        floatingActionButton: _floatingActionButton(colorList.last, context)
+      backgroundColor: colorList.last,
+      resizeToAvoidBottomInset: true,
+      body: _body(deviceWidth, taskFuture, widget.randomImage, context),
+      floatingActionButton: _floatingActionButton(colorList.last, context),
     );
   }
-}
-Widget _body(double deviceWidth, Future<SingleChildScrollView> taskFuture, String randomImage, BuildContext context) =>Stack(
-  fit: StackFit.expand,
-    children: <Widget>[
+
+  Widget _body(double deviceWidth, Future<SingleChildScrollView> taskFuture, String randomImage, BuildContext context) => Stack(
+    fit: StackFit.expand,
+    children: [
+      // Background Image
       ImageContainer(
-        imageUrl: randomImage,
-        imageAlignment: const Alignment(0, -1),
+        imageUrl: randomImage, // Replace with your background image asset path or URL
+        imageAlignment: Alignment.center, // Adjust the fit as needed
       ),
+      // Content
       Center(
-        child: Column(
+        child: isLoading // Show CircularProgressIndicator if still loading
+            ? const CircularProgressIndicator()
+            : Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             Flexible(
-                child: FutureBuilder<SingleChildScrollView>(
-                  future: taskFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      return snapshot.data ?? Container();
-                    }
-                  },
-                )
+              child: FutureBuilder<SingleChildScrollView>(
+                future: taskFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return snapshot.data ?? Container();
+                  }
+                },
+              ),
             ),
           ],
         ),
-      )
+      ),
     ],
-);
-Widget _floatingActionButton(Color floatingActionButtonColor, BuildContext context) => FloatingActionButton(
-  backgroundColor: floatingActionButtonColor,
-  child: homeIconForFloatingActionButton,
-  onPressed: () {
-    Navigator.pop(context);
-  },
-);
+  );
+
+  Widget _floatingActionButton(Color floatingActionButtonColor, BuildContext context) => FloatingActionButton(
+    backgroundColor: floatingActionButtonColor,
+    child: homeIconForFloatingActionButton,
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+}
