@@ -14,8 +14,6 @@ class HomePageTest extends StatefulWidget {
 }
 
 class _HomePageTestState extends State<HomePageTest> {
-
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -39,7 +37,7 @@ class _HomePageTestState extends State<HomePageTest> {
                     ),
                     onTap: () async {
                       await createPlannerWrtArtist("GustavKlimt");
-                      goToCreatedPlanners();
+                      //goToCreatedPlanners();
                     },
                   ),
                 ),
@@ -57,7 +55,7 @@ class _HomePageTestState extends State<HomePageTest> {
                     ),
                     onTap: () async {
                       await createPlannerWrtArtist("Monet");
-                      goToCreatedPlanners();
+                      //goToCreatedPlanners();
                     },
                   ),
                 ),
@@ -75,7 +73,7 @@ class _HomePageTestState extends State<HomePageTest> {
                     ),
                     onTap: () async {
                       await createPlannerWrtArtist("Picasso");
-                      goToCreatedPlanners();
+                      //goToCreatedPlanners();
                     },
                   ),
                 ),
@@ -93,7 +91,7 @@ class _HomePageTestState extends State<HomePageTest> {
                     ),
                     onTap: () async {
                       await createPlannerWrtArtist("SalvadorDali");
-                      goToCreatedPlanners();
+                      //goToCreatedPlanners();
                     },
                   ),
                 ),
@@ -111,7 +109,7 @@ class _HomePageTestState extends State<HomePageTest> {
                     ),
                     onTap: () async {
                       await createPlannerWrtArtist("OsmanHamdi");
-                      goToCreatedPlanners();
+                      //goToCreatedPlanners();
                     },
                   ),
                 ),
@@ -129,7 +127,7 @@ class _HomePageTestState extends State<HomePageTest> {
                     ),
                     onTap: () async {
                       await createPlannerWrtArtist("VanGogh");
-                      goToCreatedPlanners();
+                      //goToCreatedPlanners();
                     },
                   ),
                 ),
@@ -139,11 +137,6 @@ class _HomePageTestState extends State<HomePageTest> {
         ),
       ),
     );
-  }
-  void goToCreatedPlanners() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return const CreatedPlanners();
-    }));
   }
 }
 

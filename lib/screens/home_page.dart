@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: homePageColor,
-      body: _body(deviceHeight, createArtistButton, goToCreatedPlanners, goToPomodoro, goToPomodoroMig, goToTestPage),
+      body: _body(deviceHeight, createArtistButton, goToPomodoro, goToPomodoroMig, goToTestPage),
     );
   }
   List<Padding> createArtistButton(double deviceHeight) {
@@ -44,7 +44,6 @@ class _HomePageState extends State<HomePage> {
                 setState(() {
                   addCreatedPlanners = fetchPlanners(context, deviceHeight);
                 });
-                goToCreatedPlanners();
               },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,14 +85,9 @@ class _HomePageState extends State<HomePage> {
       return const Pomodoro();
     }));
   }
-  void goToCreatedPlanners() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return const CreatedPlanners();
-    }));
-  }
 }
 
-Widget _body(double deviceHeight, Function createArtistButton, Function goToCreatedPlanners, Function goToPomodoro, Function goToPomodoroMig, Function goToTestPage) => Center(
+Widget _body(double deviceHeight, Function createArtistButton, Function goToPomodoro, Function goToPomodoroMig, Function goToTestPage) => Center(
   child: SingleChildScrollView(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -110,7 +104,6 @@ Widget _body(double deviceHeight, Function createArtistButton, Function goToCrea
             child: ElevatedButton(
               style: mainUiRaisedButtonStyle,
               onPressed: () async {
-                goToCreatedPlanners();
               },
               child: Text(
                 "Go To Created Planners",

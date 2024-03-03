@@ -2,7 +2,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pomodoro2/ui/helper/common_functions.dart';
 import 'package:pomodoro2/ui/widgets/common_widgets.dart';
+import 'package:provider/provider.dart';
 import '../main.dart';
+import '../provider/navbar_provider.dart';
 import '../ui/widgets/image_container.dart';
 class GustavKlimt extends StatefulWidget {
   const GustavKlimt({super.key, required this.title, this.plannerId, this.date, required this.randomImage});
@@ -53,20 +55,29 @@ class _GustavKlimtState extends State<GustavKlimt> {
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      appBar: isLoading ? AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ) :  AppBar(
+    final navbarProvider = Provider.of<NavbarProvider>(context);
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (bool didPop) async {
+        if (didPop) {
+          navbarProvider.showNavbar();
+        }
+      },
+      child: Scaffold(
+        appBar: isLoading ? AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ) :  AppBar(
+          backgroundColor: colorList.last,
+          elevation: 0,
+          shadowColor: Colors.black,
+          toolbarOpacity: 0.7,
+          bottomOpacity: 0.5,
+        ),
         backgroundColor: colorList.last,
-        elevation: 0,
-        shadowColor: Colors.black,
-        toolbarOpacity: 0.7,
-        bottomOpacity: 0.5,
+        resizeToAvoidBottomInset: true,
+        body: _body(deviceWidth, taskFuture, widget.randomImage, context),
       ),
-      backgroundColor: colorList.last,
-      resizeToAvoidBottomInset: true,
-      body: _body(deviceWidth, taskFuture, widget.randomImage, context),
     );
   }
 
