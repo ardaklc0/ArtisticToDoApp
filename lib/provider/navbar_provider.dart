@@ -1,18 +1,26 @@
 import 'package:flutter/cupertino.dart';
 
 class NavbarProvider extends ChangeNotifier {
-  bool navbarState = false;
+  bool _navbarState = false;
+  int _currentIndex = 0;
 
   void hideNavbar() {
-    navbarState = true;
+    _navbarState = true;
     notifyListeners();
   }
 
   void showNavbar() {
-    navbarState = false;
+    _navbarState = false;
     notifyListeners();
   }
 
-  bool get getNavbarVisibility => navbarState;
+  void setInitialIndex(int index) {
+    _currentIndex = index;
+    notifyListeners();
+  }
+
+
+  bool get getNavbarVisibility => _navbarState;
+  int get getInitialIndex => _currentIndex;
 
 }
