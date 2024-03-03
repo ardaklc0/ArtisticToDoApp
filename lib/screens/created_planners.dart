@@ -23,7 +23,6 @@ class _CreatedPlannersState extends State<CreatedPlanners> {
     return Scaffold(
       backgroundColor: homePageColor,
       body: _body(deviceWidth, deviceHeight, context),
-      floatingActionButton: _floatingActionButton(context)
     );
   }
 }
@@ -57,11 +56,4 @@ Widget _body(double deviceWidth, double deviceHeight,BuildContext context) => Ce
       ),
     ],
   ),
-);
-Widget _floatingActionButton(BuildContext context) => FloatingActionButton(
-  backgroundColor: floatingActionButtonBackgroundColor,
-  child: homeIconForFloatingActionButton,
-  onPressed: () {
-    Navigator.pop(context);
-  },
 );

@@ -4,7 +4,9 @@ import 'package:intl/intl.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:pomodoro2/ui/styles/common_styles.dart';
+import 'package:provider/provider.dart';
 import '../../models/planner_model.dart';
+import '../../provider/navbar_provider.dart';
 import '../../provider/slider_provider.dart';
 import '../../provider/task_provider.dart';
 import '../../screens/gustav_klimt.dart';
@@ -47,6 +49,7 @@ Future<int> createPlannerWrtArtist(String artistName) async {
   return await insertPlanner(planner);
 }
 Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight) async {
+  final navbarProvider = Provider.of<NavbarProvider>(context, listen: false);
   List<Container> plannerContainers = [];
   try {
     var planners = await getPlanners();
@@ -95,7 +98,9 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight)
                 child: ElevatedButton(
                   style: mainUiRaisedButtonStyle,
                   onPressed: () async {
+                    navbarProvider.hideNavbar();
                     goToArtist(context, element.plannerArtist, element.id!, element.creationDate);
+                    print(navbarProvider.navbarState);
                   },
                   child: Text(
                     '${element.id}.) at ${element.creationDate} with ${element.plannerArtist}',

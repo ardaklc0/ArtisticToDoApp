@@ -3,14 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:pomodoro2/provider/audio_provider.dart';
 import 'package:pomodoro2/provider/auto_start_provider.dart';
+import 'package:pomodoro2/provider/navbar_provider.dart';
 import 'package:pomodoro2/provider/notification_provider.dart';
 import 'package:pomodoro2/provider/planner_provider.dart';
 import 'package:pomodoro2/provider/slider_provider.dart';
 import 'package:pomodoro2/provider/task_provider.dart';
 import 'package:pomodoro2/provider/theme_provider.dart';
 import 'package:pomodoro2/provider/time_provider.dart';
+import 'package:pomodoro2/screens/bottom_navbar.dart';
 import 'package:pomodoro2/screens/gustav_klimt.dart';
-import 'package:pomodoro2/screens/home_page.dart';
 import 'package:pomodoro2/screens/home_page_test.dart';
 import 'package:pomodoro2/screens/monet.dart';
 import 'package:pomodoro2/screens/osman_hamdi.dart';
@@ -20,7 +21,6 @@ import 'package:pomodoro2/screens/pomodoro_migration.dart';
 import 'package:pomodoro2/screens/salvador_dali.dart';
 import 'package:pomodoro2/screens/van_gogh.dart';
 import 'package:pomodoro2/ui/helper/common_functions.dart';
-import 'package:pomodoro2/ui/widgets/task_container.dart';
 import 'package:pomodoro2/services/task_service.dart';
 import 'package:intl/intl.dart';
 import 'package:pomodoro2/ui/widgets/task_container_test.dart';
@@ -37,6 +37,7 @@ void main() async {
   final notificationProvider = NotificationProvider();
   final plannerProvider = PlannerProvider();
   final taskProvider = TaskProvider();
+  final navbarProvider = NavbarProvider();
   runApp(
     MultiProvider(
       providers: [
@@ -47,7 +48,8 @@ void main() async {
         ChangeNotifierProvider(create: (context) => SoundSelectionProvider()),
         ChangeNotifierProvider.value(value: autoStartProvider),
         ChangeNotifierProvider.value(value: plannerProvider),
-        ChangeNotifierProvider.value(value: taskProvider)
+        ChangeNotifierProvider.value(value: taskProvider),
+        ChangeNotifierProvider.value(value: navbarProvider),
       ],
       child: const MyApp(),
     ),
@@ -76,8 +78,7 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: '/',
         routes: {
-          '/': (context) => const HomePageTest(), //HomePage(),
-          '/created_planners': (context) => const CreatedPlanners(),
+          '/': (context) => const CustomNavbar(), //HomePageTest(),
           '/gustav_klimt': (context) => GustavKlimt(title: 'Gustav Klimt Home Page', randomImage: randomImageChooser("Gustav Klimt", 20)),
           '/osman_hamdi': (context) => OsmanHamdi(title: 'Osman Hamdi Page', randomImage: randomImageChooser("Osman Hamdi Bey", 11)),
           '/monet': (context) => Monet(title: 'Monet Page', randomImage: randomImageChooser("Monet", 22)),

@@ -45,8 +45,9 @@ dependencies:
   timer_count_down: ^2.2.2
   wakelock_plus: ^1.1.4
   shake: ^2.2.0
-  google_fonts: ^6.1.0
+  google_fonts: ^5.1.0
   floating_draggable_widget: ^2.1.5
+  persistent_bottom_nav_bar: ^5.0.2
 
 dev_dependencies:
   flutter_test:
