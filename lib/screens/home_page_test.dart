@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
+import '../provider/navbar_provider.dart';
 import '../ui/helper/common_functions.dart';
 import '../ui/helper/common_variables.dart';
 import 'created_planners.dart';
@@ -16,6 +18,7 @@ class HomePageTest extends StatefulWidget {
 class _HomePageTestState extends State<HomePageTest> {
   @override
   Widget build(BuildContext context) {
+    final navbarProvider = Provider.of<NavbarProvider>(context);
     return MaterialApp(
       home: Scaffold(
         backgroundColor: homePageColor,
@@ -36,8 +39,26 @@ class _HomePageTestState extends State<HomePageTest> {
                       ),
                     ),
                     onTap: () async {
+                      BuildContext currentContext = context;
                       await createPlannerWrtArtist("GustavKlimt");
-                      //goToCreatedPlanners();
+                      if (!context.mounted) return;
+                      showDialog(
+                        context: currentContext,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Success!'),
+                            content: const Text('The planner is successfully added.'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                   ),
                 ),
@@ -54,8 +75,26 @@ class _HomePageTestState extends State<HomePageTest> {
                       ),
                     ),
                     onTap: () async {
+                      BuildContext currentContext = context;
                       await createPlannerWrtArtist("Monet");
-                      //goToCreatedPlanners();
+                      if (!context.mounted) return;
+                      showDialog(
+                        context: currentContext,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Success!'),
+                            content: const Text('The planner is successfully added.'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                   ),
                 ),
@@ -72,8 +111,26 @@ class _HomePageTestState extends State<HomePageTest> {
                       ),
                     ),
                     onTap: () async {
+                      BuildContext currentContext = context;
                       await createPlannerWrtArtist("Picasso");
-                      //goToCreatedPlanners();
+                      if (!context.mounted) return;
+                      showDialog(
+                        context: currentContext,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Success!'),
+                            content: const Text('The planner is successfully added.'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                   ),
                 ),
@@ -90,8 +147,26 @@ class _HomePageTestState extends State<HomePageTest> {
                       ),
                     ),
                     onTap: () async {
+                      BuildContext currentContext = context;
                       await createPlannerWrtArtist("SalvadorDali");
-                      //goToCreatedPlanners();
+                      if (!context.mounted) return;
+                      showDialog(
+                        context: currentContext,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Success!'),
+                            content: const Text('The planner is successfully added.'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                   ),
                 ),
@@ -108,8 +183,26 @@ class _HomePageTestState extends State<HomePageTest> {
                       ),
                     ),
                     onTap: () async {
-                      await createPlannerWrtArtist("OsmanHamdi");
-                      //goToCreatedPlanners();
+                      BuildContext currentContext = context;
+                      await createPlannerWrtArtist("Osman Hamdi");
+                      if (!context.mounted) return;
+                      showDialog(
+                        context: currentContext,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Success!'),
+                            content: const Text('The planner is successfully added.'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                   ),
                 ),
@@ -118,16 +211,34 @@ class _HomePageTestState extends State<HomePageTest> {
                   child: ArtistButton(
                     imagePath: 'assets/images/VanGogh/2.jpg',
                     title: Text(
-                        'Van Gogh',
-                        textScaler: const TextScaler.linear(1.7),
-                        style: GoogleFonts.roboto(
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.w300,
+                      'Van Gogh',
+                      textScaler: const TextScaler.linear(1.7),
+                      style: GoogleFonts.roboto(
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w300,
                       ),
                     ),
                     onTap: () async {
+                      BuildContext currentContext = context;
                       await createPlannerWrtArtist("VanGogh");
-                      //goToCreatedPlanners();
+                      if (!context.mounted) return;
+                      showDialog(
+                        context: currentContext,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Success!'),
+                            content: const Text('The planner is successfully added.'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                   ),
                 ),

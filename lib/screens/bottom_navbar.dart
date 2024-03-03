@@ -21,10 +21,9 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
-    final double deviceHeight = MediaQuery.of(context).size.height;
     PersistentTabController controller;
-    controller = PersistentTabController(initialIndex: 0);
     final navbarProvider = Provider.of<NavbarProvider>(context);
+    controller = PersistentTabController(initialIndex: 0);
 
     List<Widget> _buildScreens() {
       return [
@@ -93,7 +92,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
       ),
       navBarStyle: NavBarStyle.style9,
       hideNavigationBar: navbarProvider.getNavbarVisibility,
-
     );
   }
 }

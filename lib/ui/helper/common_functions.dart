@@ -100,7 +100,6 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight)
                   onPressed: () async {
                     navbarProvider.hideNavbar();
                     goToArtist(context, element.plannerArtist, element.id!, element.creationDate);
-                    print(navbarProvider.navbarState);
                   },
                   child: Text(
                     '${element.id}.) at ${element.creationDate} with ${element.plannerArtist}',
