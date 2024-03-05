@@ -184,7 +184,7 @@ class _HomePageTestState extends State<HomePageTest> {
                     ),
                     onTap: () async {
                       BuildContext currentContext = context;
-                      await createPlannerWrtArtist("Osman Hamdi");
+                      await createPlannerWrtArtist("OsmanHamdi");
                       if (!context.mounted) return;
                       showDialog(
                         context: currentContext,

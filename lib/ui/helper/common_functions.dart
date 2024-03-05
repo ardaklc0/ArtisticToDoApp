@@ -33,7 +33,7 @@ void goToArtist(BuildContext context, String artist, int plannerId, String date)
       case "OsmanHamdi":
         return OsmanHamdi(title: "OsmanHamdi", plannerId: plannerId, date: date, randomImage: randomImageChooser("OsmanHamdi", 11));
       case "GustavKlimt":
-        return GustavKlimt(title: "GustavKlimt", plannerId: plannerId, date: date, randomImage: randomImageChooser("GustavKlimt", 20));
+        return GustavKlimt(title: "GustavKlimt", plannerId: plannerId, date: date);
       default:
         throw ArgumentError("Unsupported artist: $artist");
     }
@@ -118,8 +118,7 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight)
   return plannerContainers;
 }
 String randomImageChooser(String artistName, int count) {
-  Random random = Random();
-  int randomNumber = random.nextInt(count) + 1;
+  int randomNumber = Random().nextInt(count) + 1;
   return "assets/images/$artistName/$randomNumber.jpg";
 }
 
