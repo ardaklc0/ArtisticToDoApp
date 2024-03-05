@@ -57,6 +57,7 @@ class _GustavKlimtState extends State<GustavKlimt> {
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceHeight = MediaQuery.of(context).size.height;
     final navbarProvider = Provider.of<NavbarProvider>(context);
     return PopScope(
       canPop: true,
@@ -78,41 +79,40 @@ class _GustavKlimtState extends State<GustavKlimt> {
         ),
         backgroundColor: colorList.last,
         resizeToAvoidBottomInset: true,
-        body: _body(deviceWidth, taskFuture, context),
+        body: _body(deviceWidth, deviceHeight, taskFuture, context),
       ),
     );
   }
 
-  Widget _body(double deviceWidth, Future<SingleChildScrollView> taskFuture, BuildContext context) => Stack(
+  Widget _body(double deviceWidth, double deviceHeight, Future<SingleChildScrollView> taskFuture, BuildContext context) => Stack(
     fit: StackFit.expand,
     children: [
-      // Background Image
       ImageContainer(
-        imageUrl: randomImage, // Replace with your background image asset path or URL
-        imageAlignment: Alignment.center, // Adjust the fit as needed
+        imageUrl: randomImage,
+        imageAlignment: Alignment.center,
       ),
-      // Content
       Center(
-        child: isLoading // Show CircularProgressIndicator if still loading
-            ? const CircularProgressIndicator()
-            : Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Flexible(
-              child: FutureBuilder<SingleChildScrollView>(
-                future: taskFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    return snapshot.data ?? Container();
-                  }
-                },
+        child: isLoading ? const CircularProgressIndicator() : Padding(
+            padding: const EdgeInsets.only(top: 5),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+              Flexible(
+                child: FutureBuilder<SingleChildScrollView>(
+                  future: taskFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      return snapshot.data ?? Container();
+                    }
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     ],

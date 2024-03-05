@@ -6,10 +6,11 @@ import '../provider/navbar_provider.dart';
 import '../ui/helper/common_functions.dart';
 import '../ui/widgets/common_widgets.dart';
 import '../ui/widgets/image_container.dart';
+int chosenBackground = Random().nextInt(4) + 2;
+String randomImage =  randomImageChooser("Monet", 22);
 class Monet extends StatefulWidget {
-  const Monet({super.key, required this.title, this.plannerId, this.date, required this.randomImage});
+  const Monet({super.key, required this.title, this.plannerId, this.date});
   final String title;
-  final String randomImage;
   final int? plannerId;
   final String? date;
   @override
@@ -27,20 +28,19 @@ class _MonetState extends State<Monet> {
     taskFuture = createPlanner(
       widget.date!,
       widget.plannerId!,
-      Colors.transparent,
-      Colors.transparent,
+      colorList.last,
+      colorList.first,
       Colors.black,
     );
+    _loadColors();
+  }
 
-    // Show loading indicator initially
-    setState(() {
-      isLoading = true;
-    });
-
-    sortedColors(widget.randomImage).then((List<Color> colors) {
+  // New function to load colors
+  Future<void> _loadColors() async {
+    try {
+      List<Color> colors = await sortedColors(randomImage);
       setState(() {
         colorList = colors;
-        int chosenBackground = Random().nextInt(4) + 2;
         taskFuture = createPlanner(
           widget.date!,
           widget.plannerId!,
@@ -48,14 +48,17 @@ class _MonetState extends State<Monet> {
           colorList.elementAt(chosenBackground),
           Colors.black,
         );
-        isLoading = false; // Set loading indicator to false when colors are determined
+        isLoading = false;
       });
-    });
+    } catch (error) {
+      print('Error loading colors: $error');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceHeight = MediaQuery.of(context).size.height;
     final navbarProvider = Provider.of<NavbarProvider>(context);
     return PopScope(
       canPop: true,
@@ -65,10 +68,10 @@ class _MonetState extends State<Monet> {
         }
       },
       child: Scaffold(
-        appBar:isLoading ? AppBar(
+        appBar: isLoading ? AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-        ) : AppBar(
+        ) :  AppBar(
           backgroundColor: colorList.last,
           elevation: 0,
           shadowColor: Colors.black,
@@ -77,31 +80,30 @@ class _MonetState extends State<Monet> {
         ),
         backgroundColor: colorList.last,
         resizeToAvoidBottomInset: true,
-        body: _body(deviceWidth, taskFuture, widget.randomImage, context),
+        body: _body(deviceWidth, deviceHeight, taskFuture, context),
       ),
     );
   }
 
-  Widget _body(double deviceWidth, Future<SingleChildScrollView> taskFuture, String randomImage, BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: <Widget>[
-        ImageContainer(
-          imageUrl: randomImage,
-          imageAlignment: Alignment.center,
-        ),
-        Center(
-          child: isLoading // Show CircularProgressIndicator if still loading
-              ? const CircularProgressIndicator()
-              : Column(
+  Widget _body(double deviceWidth, double deviceHeight, Future<SingleChildScrollView> taskFuture, BuildContext context) => Stack(
+    fit: StackFit.expand,
+    children: [
+      ImageContainer(
+        imageUrl: randomImage,
+        imageAlignment: Alignment.center,
+      ),
+      Center(
+        child: isLoading ? const CircularProgressIndicator() : Padding(
+          padding: const EdgeInsets.only(top: 5),
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: <Widget>[
               Flexible(
                 child: FutureBuilder<SingleChildScrollView>(
                   future: taskFuture,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
+                      return CircularProgressIndicator();
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else {
@@ -113,7 +115,7 @@ class _MonetState extends State<Monet> {
             ],
           ),
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
 }

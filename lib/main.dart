@@ -25,7 +25,6 @@ import 'package:pomodoro2/services/task_service.dart';
 import 'package:intl/intl.dart';
 import 'package:pomodoro2/ui/widgets/task_container_test.dart';
 import 'package:provider/provider.dart';
-import 'screens/created_planners.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -80,11 +79,11 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => const CustomNavbar(), //HomePageTest(),
           '/gustav_klimt': (context) => GustavKlimt(title: 'Gustav Klimt Home Page'),
-          '/osman_hamdi': (context) => OsmanHamdi(title: 'Osman Hamdi Page', randomImage: randomImageChooser("Osman Hamdi Bey", 11)),
-          '/monet': (context) => Monet(title: 'Monet Page', randomImage: randomImageChooser("Monet", 22)),
-          '/picasso': (context) => Picasso(title: 'Picasso Home Page', randomImage: randomImageChooser("Picasso", 12)),
-          '/salvador_dali': (context) => SalvadorDali(title: 'Salvador Dali Page', randomImage: randomImageChooser("Dali", 9)),
-          '/van_gogh': (context) => VanGogh(title: 'Van Gogh Page', randomImage: randomImageChooser("Van Gogh", 17)),
+          '/osman_hamdi': (context) => OsmanHamdi(title: 'Osman Hamdi Page'),
+          '/monet': (context) => Monet(title: 'Monet Page'),
+          '/picasso': (context) => Picasso(title: 'Picasso Home Page'),
+          '/salvador_dali': (context) => SalvadorDali(title: 'Salvador Dali Page'),
+          '/van_gogh': (context) => VanGogh(title: 'Van Gogh Page'),
           '/pomodoro': (context) => const Pomodoro(),
           '/pomodoro_migration': (context) => const CountDownTimerPage(),
           '/home_page_test': (context) => const HomePageTest()

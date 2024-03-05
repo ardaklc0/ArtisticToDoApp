@@ -23,15 +23,15 @@ void goToArtist(BuildContext context, String artist, int plannerId, String date)
   Navigator.of(context).push(MaterialPageRoute(builder: (context) {
     switch (artist) {
       case "VanGogh":
-        return VanGogh(title: "Van Gogh", plannerId: plannerId, date: date, randomImage: randomImageChooser("VanGogh", 17));
+        return VanGogh(title: "Van Gogh", plannerId: plannerId, date: date);
       case "SalvadorDali":
-        return SalvadorDali(title: "Salvador Dali", plannerId: plannerId, date: date, randomImage: randomImageChooser("SalvadorDali", 9));
+        return SalvadorDali(title: "Salvador Dali", plannerId: plannerId, date: date);
       case "Picasso":
-        return Picasso(title: "Picasso", plannerId: plannerId, date: date, randomImage: randomImageChooser("Picasso", 12));
+        return Picasso(title: "Picasso", plannerId: plannerId, date: date);
       case "Monet":
-        return Monet(title: "Monet", plannerId: plannerId, date: date, randomImage: randomImageChooser("Monet", 22));
+        return Monet(title: "Monet", plannerId: plannerId, date: date);
       case "OsmanHamdi":
-        return OsmanHamdi(title: "OsmanHamdi", plannerId: plannerId, date: date, randomImage: randomImageChooser("OsmanHamdi", 11));
+        return OsmanHamdi(title: "OsmanHamdi", plannerId: plannerId, date: date);
       case "GustavKlimt":
         return GustavKlimt(title: "GustavKlimt", plannerId: plannerId, date: date);
       default:
