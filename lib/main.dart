@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => const CustomNavbar(), //HomePageTest(),
-          '/gustav_klimt': (context) => GustavKlimt(title: 'Gustav Klimt Home Page', randomImage: randomImageChooser("Gustav Klimt", 20)),
+          '/gustav_klimt': (context) => GustavKlimt(title: 'Gustav Klimt Home Page'),
           '/osman_hamdi': (context) => OsmanHamdi(title: 'Osman Hamdi Page', randomImage: randomImageChooser("Osman Hamdi Bey", 11)),
           '/monet': (context) => Monet(title: 'Monet Page', randomImage: randomImageChooser("Monet", 22)),
           '/picasso': (context) => Picasso(title: 'Picasso Home Page', randomImage: randomImageChooser("Picasso", 12)),

@@ -1,15 +1,15 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pomodoro2/ui/helper/common_functions.dart';
-import 'package:pomodoro2/ui/widgets/common_widgets.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
 import '../provider/navbar_provider.dart';
 import '../ui/widgets/image_container.dart';
+int chosenBackground = Random().nextInt(4) + 2;
+String randomImage =  randomImageChooser("GustavKlimt", 20);
 class GustavKlimt extends StatefulWidget {
-  const GustavKlimt({super.key, required this.title, this.plannerId, this.date, required this.randomImage});
+  const GustavKlimt({super.key, required this.title, this.plannerId, this.date});
   final String title;
-  final String randomImage;
   final int? plannerId;
   final String? date;
   @override
@@ -19,6 +19,7 @@ class _GustavKlimtState extends State<GustavKlimt> {
   late Future<SingleChildScrollView> taskFuture;
   late List<Color> colorList;
   bool isLoading = true; // Added loading indicator flag
+
   @override
   void initState() {
     super.initState();
@@ -26,20 +27,19 @@ class _GustavKlimtState extends State<GustavKlimt> {
     taskFuture = createPlanner(
       widget.date!,
       widget.plannerId!,
-      Colors.transparent,
-      Colors.transparent,
+      colorList.last,
+      colorList.first,
       Colors.black,
     );
+    _loadColors();
+  }
 
-    // Show loading indicator initially
-    setState(() {
-      isLoading = true;
-    });
-
-    sortedColors(widget.randomImage).then((List<Color> colors) {
+  // New function to load colors
+  Future<void> _loadColors() async {
+    try {
+      List<Color> colors = await sortedColors(randomImage);
       setState(() {
         colorList = colors;
-        int chosenBackground = Random().nextInt(4) + 2;
         taskFuture = createPlanner(
           widget.date!,
           widget.plannerId!,
@@ -47,9 +47,11 @@ class _GustavKlimtState extends State<GustavKlimt> {
           colorList.elementAt(chosenBackground),
           Colors.black,
         );
-        isLoading = false; // Set loading indicator to false when colors are determined
+        isLoading = false;
       });
-    });
+    } catch (error) {
+      print('Error loading colors: $error');
+    }
   }
 
   @override
@@ -76,12 +78,12 @@ class _GustavKlimtState extends State<GustavKlimt> {
         ),
         backgroundColor: colorList.last,
         resizeToAvoidBottomInset: true,
-        body: _body(deviceWidth, taskFuture, widget.randomImage, context),
+        body: _body(deviceWidth, taskFuture, context),
       ),
     );
   }
 
-  Widget _body(double deviceWidth, Future<SingleChildScrollView> taskFuture, String randomImage, BuildContext context) => Stack(
+  Widget _body(double deviceWidth, Future<SingleChildScrollView> taskFuture, BuildContext context) => Stack(
     fit: StackFit.expand,
     children: [
       // Background Image
