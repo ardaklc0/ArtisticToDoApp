@@ -12,7 +12,12 @@ class TaskRow extends StatefulWidget {
   final String? dateText;
   final Task? task;
   final int plannerId;
-  const TaskRow({super.key, required this.textColor, required this.checkboxColor, this.text, this.dateText, this.task, required this.plannerId});
+  const TaskRow({super.key,
+    required this.textColor,
+    required this.checkboxColor,
+    this.text, this.dateText,
+    this.task,
+    required this.plannerId});
   @override
   State<TaskRow> createState() => _TaskRowState();
 }

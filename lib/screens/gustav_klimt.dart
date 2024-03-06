@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../main.dart';
 import '../provider/navbar_provider.dart';
 import '../ui/widgets/image_container.dart';
-int chosenBackground = Random().nextInt(4) + 2;
+//int chosenBackground = Random().nextInt(4) + 2;
 String randomImage =  randomImageChooser("GustavKlimt", 20);
 class GustavKlimt extends StatefulWidget {
   const GustavKlimt({super.key, required this.title, this.plannerId, this.date});
