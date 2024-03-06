@@ -22,9 +22,11 @@ class TaskContainerTest extends StatefulWidget {
 }
 class _TaskContainerTestState extends State<TaskContainerTest> {
   List<Widget> textFields = [];
+  late FocusNode _newTaskFocusNode;
   @override
   void initState() {
     super.initState();
+    _newTaskFocusNode = FocusNode();
     initializeTasks(widget.tasks, textFields, widget.dateText, widget.textColor, widget.dateColor, widget.plannerId);
   }
   Future<void> addTask() async {
@@ -45,6 +47,7 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
         plannerId: widget.plannerId,
       ));
     });
+    _newTaskFocusNode.requestFocus();
   }
   @override
   Widget build(BuildContext context) {

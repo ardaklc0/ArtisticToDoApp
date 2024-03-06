@@ -5,7 +5,7 @@ import '../main.dart';
 import '../provider/navbar_provider.dart';
 import '../ui/helper/common_functions.dart';
 import '../ui/widgets/image_container.dart';
-int chosenBackground = Random().nextInt(4) + 2;
+//int chosenBackground = Random().nextInt(4) + 2;
 String randomImage =  randomImageChooser("VanGogh", 17);
 class VanGogh extends StatefulWidget{
   const VanGogh({super.key, required this.title, this.plannerId, this.date});

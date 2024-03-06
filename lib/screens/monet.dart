@@ -6,7 +6,7 @@ import '../provider/navbar_provider.dart';
 import '../ui/helper/common_functions.dart';
 import '../ui/widgets/common_widgets.dart';
 import '../ui/widgets/image_container.dart';
-int chosenBackground = Random().nextInt(4) + 2;
+//int chosenBackground = Random().nextInt(4) + 2;
 String randomImage =  randomImageChooser("Monet", 22);
 class Monet extends StatefulWidget {
   const Monet({super.key, required this.title, this.plannerId, this.date});

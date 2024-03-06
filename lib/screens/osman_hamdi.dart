@@ -6,7 +6,7 @@ import '../ui/helper/common_functions.dart';
 import '../ui/widgets/common_widgets.dart';
 import '../ui/widgets/image_container.dart';
 import '../main.dart';
-int chosenBackground = Random().nextInt(4) + 2;
+//int chosenBackground = Random().nextInt(4) + 2;
 String randomImage = randomImageChooser("OsmanHamdi", 11);
 class OsmanHamdi extends StatefulWidget {
   const OsmanHamdi({super.key, required this.title, this.plannerId, this.date});
