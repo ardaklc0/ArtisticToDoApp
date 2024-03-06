@@ -1,8 +1,10 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:pomodoro2/main.dart';
 import 'package:pomodoro2/ui/styles/common_styles.dart';
 import 'package:provider/provider.dart';
 import '../../models/planner_model.dart';
@@ -58,6 +60,8 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight)
       planners = await getPlanners();
     }
     for (var element in planners) {
+      DateTime creationDate = DateFormat('yMd').parse(element.creationDate);
+      DateTime newDate = creationDate.add(Duration(days: 7));
       plannerContainers.add(
         Container(
           child: Dismissible(
@@ -89,21 +93,57 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight)
                 color: Colors.white,
               ),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(3),
+            child: Container(
+              width: double.infinity,
+              height: deviceHeight,
+              padding: const EdgeInsets.all(5),
               child: Container(
-                width: double.infinity,
-                height: deviceHeight * 0.08,
-                padding: const EdgeInsets.all(2),
-                child: ElevatedButton(
-                  style: mainUiRaisedButtonStyle,
-                  onPressed: () async {
+
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: const Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: InkWell(
+                  onTap: () async {
                     navbarProvider.hideNavbar();
                     goToArtist(context, element.plannerArtist, element.id!, element.creationDate);
                   },
-                  child: Text(
-                    '${element.id}.) at ${element.creationDate} with ${element.plannerArtist}',
-                    textScaler: const TextScaler.linear(1.3),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8, bottom: 8),
+                        child: Text(
+                          '${element.creationDate} - ${DateFormat('M/d/y').format(newDate)}',
+                          textScaler: const TextScaler.linear(1.1),
+                          style: GoogleFonts.roboto(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        )
+                      ),
+                      Expanded(
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
+                          ),
+                          child: Image.asset(
+                            "assets/images/${element.plannerArtist}/$chosenStagger.jpg",
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
