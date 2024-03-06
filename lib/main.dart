@@ -21,6 +21,7 @@ import 'package:pomodoro2/screens/picasso.dart';
 import 'package:pomodoro2/screens/pomodoro.dart';
 import 'package:pomodoro2/screens/pomodoro_migration.dart';
 import 'package:pomodoro2/screens/salvador_dali.dart';
+import 'package:pomodoro2/screens/splash.dart';
 import 'package:pomodoro2/screens/van_gogh.dart';
 import 'package:pomodoro2/ui/helper/common_functions.dart';
 import 'package:pomodoro2/services/task_service.dart';
@@ -30,6 +31,7 @@ import 'package:provider/provider.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 int chosenBackground = Random().nextInt(4) + 2;
+int chosenStagger = Random().nextInt(5) + 1;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final sliderProvider = SliderProvider();
@@ -79,7 +81,7 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: '/',
         routes: {
-          '/': (context) => const CustomNavbar(), //HomePageTest(),
+          '/': (context) => const SplashScreen(), //HomePageTest(),
           '/gustav_klimt': (context) => GustavKlimt(title: 'Gustav Klimt Home Page'),
           '/osman_hamdi': (context) => OsmanHamdi(title: 'Osman Hamdi Page'),
           '/monet': (context) => Monet(title: 'Monet Page'),
@@ -104,7 +106,7 @@ Future<SingleChildScrollView> createPlanner(String dateTime, int plannerId, Colo
   String date = "";
   String day = "";
   var tasks = await getTasks(plannerId);
-  for (int i = 0; i < 7; i++) {
+  for (int i = 0; i <= 7; i++) {
     date = dateFormat.format(parsedDateTime);
     day = dayFormat.format(parsedDateTime);
     newContainer.add(

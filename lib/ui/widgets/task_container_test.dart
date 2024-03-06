@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pomodoro2/models/task_model.dart';
 import 'package:pomodoro2/ui/widgets/task_row.dart';
 import 'package:pomodoro2/services/task_service.dart';
@@ -53,7 +54,6 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
-
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Column(
@@ -111,13 +111,19 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                       ),
                     ),
                     Positioned(
-                      top: deviceHeight * 0.236,
+                      top: deviceHeight * 0.240,
+                      child: Container(
+                        color: widget.dateColor,
+                      ),
+                    ),
+                    Positioned(
+                      top: deviceHeight * 0.240,
                       left: deviceWidth * 0.825,
                       child: ElevatedButton(
                         onPressed: addTask,
                         style: ButtonStyle(
                           fixedSize: MaterialStateProperty.all<Size>(
-                              Size(deviceHeight * 0.05, deviceHeight * 0.05)
+                            Size(deviceHeight * 0.05, deviceHeight * 0.05),
                           ),
                           iconSize: MaterialStateProperty.all<double>(deviceHeight * 0.03),
                           padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.zero),
@@ -127,8 +133,8 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                           shape: MaterialStateProperty.all<CircleBorder>(
                             const CircleBorder(),
                           ),
-                          elevation: MaterialStateProperty.all<double>(10.0), // Set the elevation value for the shadow
-                          shadowColor: MaterialStateProperty.all<Color>(Colors.black), // Set the shadow color
+                          elevation: MaterialStateProperty.all<double>(10.0),
+                          shadowColor: MaterialStateProperty.all<Color>(Colors.black),
                         ),
                         child: const Icon(
                           Icons.add,

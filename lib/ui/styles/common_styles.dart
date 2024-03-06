@@ -23,7 +23,7 @@ ButtonStyle get mainUiRaisedButtonStyle => ElevatedButton.styleFrom(
   foregroundColor: const Color.fromRGBO(44, 54, 63, 1),
   backgroundColor: const Color.fromRGBO(242, 245, 234, 1),
   shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(30.0),
+    borderRadius: BorderRadius.circular(10),
   ),
   shadowColor: const Color.fromRGBO(44, 54, 63, 1),
   elevation: 2,

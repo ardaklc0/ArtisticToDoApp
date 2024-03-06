@@ -117,7 +117,7 @@ class _TaskRowState extends State<TaskRow> {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6.0),
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(
           children: [
             Expanded(
