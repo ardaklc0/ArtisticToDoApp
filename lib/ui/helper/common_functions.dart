@@ -50,7 +50,7 @@ Future<int> createPlannerWrtArtist(String artistName) async {
   );
   return await insertPlanner(planner);
 }
-Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight) async {
+Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight, Function setStateWhenDelete) async {
   final navbarProvider = Provider.of<NavbarProvider>(context, listen: false);
   List<Container> plannerContainers = [];
   try {
@@ -85,6 +85,7 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight)
             },
             onDismissed: (direction) async {
               await deletePlanner(element.id!);
+              setStateWhenDelete();
             },
             background: Container(
               color: Colors.red,
@@ -122,7 +123,7 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight)
                         padding: const EdgeInsets.only(top: 8, bottom: 8),
                         child: Text(
                           '${element.creationDate} - ${DateFormat('M/d/y').format(newDate)}',
-                          textScaler: const TextScaler.linear(1.1),
+                          textScaler: const TextScaler.linear(1.15),
                           style: GoogleFonts.roboto(
                             color: Colors.black,
                             fontWeight: FontWeight.w400,
