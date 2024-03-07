@@ -17,6 +17,10 @@ class _HomePageState extends State<HomePage> {
   void initState(){
     super.initState();
   }
+  void setStateWhenDelete(){
+    setState(() {
+    });
+  }
   late Future<List<Container>> addCreatedPlanners;
   @override
   Widget build(BuildContext context) {
@@ -42,7 +46,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () async {
                 await createPlannerWrtArtist(key);
                 setState(() {
-                  addCreatedPlanners = fetchPlanners(context, deviceHeight);
+                  addCreatedPlanners = fetchPlanners(context, deviceHeight, setStateWhenDelete);
                 });
               },
               child: Row(

@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -12,7 +11,6 @@ import 'package:pomodoro2/provider/slider_provider.dart';
 import 'package:pomodoro2/provider/task_provider.dart';
 import 'package:pomodoro2/provider/theme_provider.dart';
 import 'package:pomodoro2/provider/time_provider.dart';
-import 'package:pomodoro2/screens/bottom_navbar.dart';
 import 'package:pomodoro2/screens/gustav_klimt.dart';
 import 'package:pomodoro2/screens/home_page_test.dart';
 import 'package:pomodoro2/screens/monet.dart';
@@ -23,7 +21,6 @@ import 'package:pomodoro2/screens/pomodoro_migration.dart';
 import 'package:pomodoro2/screens/salvador_dali.dart';
 import 'package:pomodoro2/screens/splash.dart';
 import 'package:pomodoro2/screens/van_gogh.dart';
-import 'package:pomodoro2/ui/helper/common_functions.dart';
 import 'package:pomodoro2/services/task_service.dart';
 import 'package:intl/intl.dart';
 import 'package:pomodoro2/ui/widgets/task_container_test.dart';

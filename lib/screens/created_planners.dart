@@ -17,74 +17,50 @@ class _CreatedPlannersState extends State<CreatedPlanners> {
   void initState(){
     super.initState();
   }
-
+  void setStateWhenDelete(){
+    setState(() {
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: homePageColor,
-      body: Stack(
-        children: [
-          FutureBuilder<List<Container>>(
-            future: fetchPlanners(context, deviceHeight),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } else {
-                return GridView.custom(
-                  gridDelegate: SliverQuiltedGridDelegate(
-                    crossAxisCount: 4,
-                    repeatPattern: QuiltedGridRepeatPattern.inverted,
-                    pattern: [
-                      const QuiltedGridTile(3, 2),
-                      const QuiltedGridTile(2, 2),
-                    ],
-                  ),
-                  childrenDelegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-                    return snapshot.data![index];
-                    },
-                    childCount: snapshot.data?.length ?? 0,
-                  ),
-                );
-              }
-            },
-          ),
-        ],
-      ),
-    );//_body(deviceWidth, deviceHeight, context),
+      body: _body(deviceWidth, deviceHeight, context, setStateWhenDelete),
+    );
   }
+
+
 }
 
-Widget _body(double deviceWidth, double deviceHeight,BuildContext context) => Center(
-  child: Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      SingleChildScrollView(
-        child: SizedBox(
-          width: deviceWidth,
-          height: deviceHeight * 0.8,
-          child: FutureBuilder<List<Container>>(
-            future: fetchPlanners(context, deviceHeight),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } else {
-                return ListView.builder(
-                  itemCount: snapshot.data?.length ?? 0,
-                  itemBuilder: (context, index) {
-                    return snapshot.data![index];
-                  },
-                );
-              }
+Widget _body(double deviceWidth, double deviceHeight,BuildContext context, Function setStateWhenDelete) => Stack(
+  children: [
+    FutureBuilder<List<Container>>(
+      future: fetchPlanners(context, deviceHeight, setStateWhenDelete),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          return GridView.custom(
+            gridDelegate: SliverQuiltedGridDelegate(
+              crossAxisCount: 4,
+              repeatPattern: QuiltedGridRepeatPattern.inverted,
+              pattern: [
+                const QuiltedGridTile(3, 2),
+                const QuiltedGridTile(2, 2),
+              ],
+            ),
+            childrenDelegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+              return snapshot.data![index];
             },
-          ),
-        ),
-      ),
-    ],
-  ),
+              childCount: snapshot.data?.length ?? 0,
+            ),
+          );
+        }
+      },
+    ),
+  ],
 );
