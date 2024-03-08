@@ -128,4 +128,26 @@ Future<SingleChildScrollView> createPlanner(String dateTime, int plannerId, Colo
   );
 }
 
+/*
+Leonardo da Vinci (1452-1519)
+Michelangelo Buonarroti (1475-1564)
+Raphael (1483-1520)
+Sandro Botticelli (1445-1510)
+Jan van Eyck (c. 1390-1441)
+Caravaggio (1571-1610)
+Rembrandt van Rijn (1606-1669)
+Peter Paul Rubens (1577-1640)
+Johannes Vermeer (1632-1675)
+Diego Velázquez (1599-1660)
+Pieter Bruegel the Elder (c. 1525-1569)
+Titian (c. 1488-1576)
+Vincent van Gogh (1853-1890)
+Paul Cézanne (1839-1906)
+Edgar Degas (1834-1917)
+Édouard Manet (1832-1883)
+Claude Monet (1840-1926)
+Pierre-Auguste Renoir (1841-1919)
+Mary Cassatt (1844-1926)
+Gustav Klimt (1862-1918)
+* */
 

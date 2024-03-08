@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import '../main.dart';
 import '../provider/navbar_provider.dart';
 import '../ui/helper/common_functions.dart';
@@ -20,25 +21,16 @@ class Picasso extends StatefulWidget {
 class _PicassoState extends State<Picasso> {
   late Future<SingleChildScrollView> taskFuture;
   late List<Color> colorList;
-  bool isLoading = true; // Added loading indicator flag
-
+  bool isLoading = true;
   @override
   void initState() {
     super.initState();
     colorList = [Colors.transparent, Colors.transparent];
-    taskFuture = createPlanner(
-      widget.date!,
-      widget.plannerId!,
-      colorList.last,
-      colorList.first,
-      Colors.black,
-    );
     _loadColors();
   }
-
-  // New function to load colors
   Future<void> _loadColors() async {
     try {
+      await Future.delayed(const Duration(milliseconds: 1700));
       List<Color> colors = await sortedColors(randomImage);
       setState(() {
         colorList = colors;
@@ -69,32 +61,43 @@ class _PicassoState extends State<Picasso> {
         }
       },
       child: Scaffold(
-        appBar: isLoading ? AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-        ) :  AppBar(
-          backgroundColor: colorList.last,
-          elevation: 0,
-          shadowColor: Colors.black,
-          toolbarOpacity: 0.7,
-          bottomOpacity: 0.5,
+        appBar: AppBar(
+          flexibleSpace: isLoading
+              ? Shimmer.fromColors(
+            baseColor: Colors.grey.shade200.withOpacity(0.5),
+            highlightColor: Colors.grey.shade200.withOpacity(0.5),
+            child: Container(
+              width: double.infinity,
+              height: kToolbarHeight + MediaQuery.of(context).padding.top,
+              color: Colors.grey.shade200.withOpacity(0.5),
+            ),
+          )
+              : AppBar(
+            backgroundColor: colorList.last,
+            elevation: 2,
+            toolbarOpacity: 0.7,
+            bottomOpacity: 0.5,
+          ),
         ),
         backgroundColor: colorList.last,
         resizeToAvoidBottomInset: true,
-        body: _body(deviceWidth, deviceHeight, taskFuture, context),
+        body: _buildBody(deviceWidth, deviceHeight),
       ),
     );
   }
 
-  Widget _body(double deviceWidth, double deviceHeight, Future<SingleChildScrollView> taskFuture, BuildContext context) => Stack(
-    fit: StackFit.expand,
-    children: [
-      ImageContainer(
-        imageUrl: randomImage,
-        imageAlignment: Alignment.center,
-      ),
-      Center(
-        child: isLoading ? const CircularProgressIndicator() : Padding(
+  Widget _buildBody(double deviceWidth, double deviceHeight) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        ImageContainer(
+          imageUrl: randomImage,
+          imageAlignment: Alignment.center,
+        ),
+        if (isLoading) const ShimmerLoading(
+          isLoading: true,
+          child: PlaceholderForPage(),
+        ) else Padding(
           padding: const EdgeInsets.only(top: 5),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -104,7 +107,7 @@ class _PicassoState extends State<Picasso> {
                   future: taskFuture,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else {
@@ -116,7 +119,7 @@ class _PicassoState extends State<Picasso> {
             ],
           ),
         ),
-      ),
-    ],
-  );
+      ],
+    );
+  }
 }
