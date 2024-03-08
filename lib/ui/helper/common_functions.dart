@@ -7,6 +7,7 @@ import 'package:palette_generator/palette_generator.dart';
 import 'package:pomodoro2/main.dart';
 import 'package:pomodoro2/ui/styles/common_styles.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../models/planner_model.dart';
 import '../../provider/navbar_provider.dart';
 import '../../provider/slider_provider.dart';
@@ -221,4 +222,61 @@ Future<void> _showCompletionDialog() async {
       ),
       background: const Color.fromRGBO(242, 245, 234, 1),
   );
+}
+
+
+
+class ShimmerLoading extends StatelessWidget {
+  final bool isLoading;
+  final Widget child;
+  const ShimmerLoading({super.key, required this.isLoading, required this.child});
+  @override
+  Widget build(BuildContext context) {
+    return isLoading ?
+    Shimmer.fromColors(
+      baseColor: Colors.grey[400]!,
+      highlightColor: Colors.grey[100]!,
+      child: child,
+    ) : child;
+  }
+}
+
+class ShimmerContainer extends StatelessWidget {
+  const ShimmerContainer({super.key});
+  @override
+  Widget build(BuildContext context) {
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceHeight = MediaQuery.of(context).size.height;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Container(
+        width: deviceWidth * 0.95,
+        height: deviceHeight * 0.375,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade500.withOpacity(0.5),
+          borderRadius: BorderRadius.circular(15),
+        ),
+      ),
+    );
+  }
+}
+
+class PlaceholderForPage extends StatelessWidget {
+  const PlaceholderForPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.only(top: 5),
+        child: Column(
+          children: [
+            ShimmerContainer(),
+            ShimmerContainer(),
+            ShimmerContainer(),
+          ],
+        ),
+      ),
+    );
+  }
 }
