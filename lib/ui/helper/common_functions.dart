@@ -253,7 +253,7 @@ class ShimmerContainer extends StatelessWidget {
         width: deviceWidth * 0.95,
         height: deviceHeight * 0.375,
         decoration: BoxDecoration(
-          color: Colors.grey.shade500.withOpacity(0.5),
+          color: Colors.grey.shade400.withOpacity(0.7),
           borderRadius: BorderRadius.circular(15),
         ),
       ),
@@ -279,4 +279,36 @@ class PlaceholderForPage extends StatelessWidget {
       ),
     );
   }
+}
+
+
+
+class ShimmerAppBar extends StatelessWidget implements PreferredSizeWidget {
+  ShimmerAppBar ({super.key, required this.isLoading, required this.colorList});
+  bool isLoading;
+  final List<Color> colorList;
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      flexibleSpace: isLoading
+          ? Shimmer.fromColors(
+        baseColor: Colors.grey[350]!,
+        highlightColor: Colors.grey[100]!,
+        child: Container(
+            width: double.infinity,
+            height: kToolbarHeight + MediaQuery.of(context).padding.top,
+            color: Colors.grey.shade500
+        ),
+      )
+          : AppBar(
+        backgroundColor: colorList.last,
+        elevation: 2,
+        toolbarOpacity: 0.7,
+        bottomOpacity: 0.5,
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(AppBar().preferredSize.height);
 }
