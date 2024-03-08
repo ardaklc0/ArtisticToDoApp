@@ -60,24 +60,7 @@ class _MonetState extends State<Monet> {
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          flexibleSpace: isLoading
-              ? Shimmer.fromColors(
-            baseColor: Colors.grey.shade200.withOpacity(0.5),
-            highlightColor: Colors.grey.shade200.withOpacity(0.5),
-            child: Container(
-              width: double.infinity,
-              height: kToolbarHeight + MediaQuery.of(context).padding.top,
-              color: Colors.grey.shade200.withOpacity(0.5),
-            ),
-          )
-              : AppBar(
-            backgroundColor: colorList.last,
-            elevation: 2,
-            toolbarOpacity: 0.7,
-            bottomOpacity: 0.5,
-          ),
-        ),
+        appBar: ShimmerAppBar(isLoading: isLoading, colorList: colorList),
         backgroundColor: colorList.last,
         resizeToAvoidBottomInset: true,
         body: _buildBody(deviceWidth, deviceHeight),
