@@ -31,7 +31,7 @@ class _SalvadorDaliState extends State<SalvadorDali> {
   }
   Future<void> _loadColors() async {
     try {
-      await Future.delayed(const Duration(milliseconds: 500));
+      await Future.delayed(const Duration(milliseconds: 300));
       List<Color> colors = await sortedColors(randomImage);
       setState(() {
         colorList = colors;
