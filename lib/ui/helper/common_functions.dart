@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:pomodoro2/main.dart';
+import 'package:pomodoro2/screens/johannes_vermeer.dart';
 import 'package:pomodoro2/ui/styles/common_styles.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -12,6 +13,7 @@ import '../../models/planner_model.dart';
 import '../../provider/navbar_provider.dart';
 import '../../provider/slider_provider.dart';
 import '../../provider/task_provider.dart';
+import '../../screens/cezanne.dart';
 import '../../screens/gustav_klimt.dart';
 import '../../screens/monet.dart';
 import '../../screens/osman_hamdi.dart';
@@ -37,6 +39,10 @@ void goToArtist(BuildContext context, String artist, int plannerId, String date)
         return OsmanHamdi(title: "OsmanHamdi", plannerId: plannerId, date: date);
       case "GustavKlimt":
         return GustavKlimt(title: "GustavKlimt", plannerId: plannerId, date: date);
+      case "JohannesVermeer":
+        return JohannesVermeer(title: "JohannesVermeer", plannerId: plannerId, date: date);
+      case "Cezanne":
+        return Cezanne(title: "Cezanne", plannerId: plannerId, date: date);
       default:
         throw ArgumentError("Unsupported artist: $artist");
     }
