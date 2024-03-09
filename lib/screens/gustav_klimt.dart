@@ -7,7 +7,8 @@ import '../main.dart';
 import '../provider/navbar_provider.dart';
 import '../ui/widgets/image_container.dart';
 //int chosenBackground = Random().nextInt(4) + 2;
-String randomImage =  randomImageChooser("GustavKlimt", 20);
+//String randomImage =  randomImageChooser("GustavKlimt", 20);
+String randomImage =  randomImageChooser("GustavKlimt");
 class GustavKlimt extends StatefulWidget {
   const GustavKlimt({super.key, required this.title, this.plannerId, this.date});
   final String title;
@@ -28,7 +29,7 @@ class _GustavKlimtState extends State<GustavKlimt> {
   }
   Future<void> _loadColors() async {
     try {
-      await Future.delayed(const Duration(milliseconds: 1700));
+      await Future.delayed(const Duration(milliseconds: 500));
       List<Color> colors = await sortedColors(randomImage);
       setState(() {
         colorList = colors;

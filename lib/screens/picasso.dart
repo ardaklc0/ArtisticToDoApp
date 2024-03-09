@@ -9,7 +9,8 @@ import '../ui/helper/common_functions.dart';
 import '../ui/widgets/common_widgets.dart';
 import '../ui/widgets/image_container.dart';
 //int chosenBackground = Random().nextInt(4) + 2;
-String randomImage = randomImageChooser("Picasso", 12);
+//String randomImage = randomImageChooser("Picasso", 12);
+String randomImage = randomImageChooser("Picasso");
 class Picasso extends StatefulWidget {
   const Picasso({super.key, required this.title, this.plannerId, this.date});
   final String title;
@@ -30,7 +31,7 @@ class _PicassoState extends State<Picasso> {
   }
   Future<void> _loadColors() async {
     try {
-      await Future.delayed(const Duration(milliseconds: 1700));
+      await Future.delayed(const Duration(milliseconds: 500));
       List<Color> colors = await sortedColors(randomImage);
       setState(() {
         colorList = colors;

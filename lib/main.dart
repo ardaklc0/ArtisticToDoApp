@@ -27,8 +27,7 @@ import 'package:pomodoro2/ui/widgets/task_container_test.dart';
 import 'package:provider/provider.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-int chosenBackground = Random().nextInt(4) + 2;
-int chosenStagger = Random().nextInt(5) + 1;
+int chosenBackground = Random().nextInt(10) + 1;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final sliderProvider = SliderProvider();

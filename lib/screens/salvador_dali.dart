@@ -9,7 +9,8 @@ import '../ui/helper/common_functions.dart';
 import '../ui/widgets/common_widgets.dart';
 import '../ui/widgets/image_container.dart';
 //int chosenBackground = Random().nextInt(4) + 2;
-String randomImage = randomImageChooser("SalvadorDali", 9);
+//String randomImage = randomImageChooser("SalvadorDali", 9);
+String randomImage = randomImageChooser("SalvadorDali");
 class SalvadorDali extends StatefulWidget{
   const SalvadorDali({super.key, required this.title, this.plannerId, this.date});
   final String title;
@@ -30,7 +31,7 @@ class _SalvadorDaliState extends State<SalvadorDali> {
   }
   Future<void> _loadColors() async {
     try {
-      await Future.delayed(const Duration(milliseconds: 1700));
+      await Future.delayed(const Duration(milliseconds: 500));
       List<Color> colors = await sortedColors(randomImage);
       setState(() {
         colorList = colors;

@@ -6,8 +6,8 @@ import '../main.dart';
 import '../provider/navbar_provider.dart';
 import '../ui/helper/common_functions.dart';
 import '../ui/widgets/image_container.dart';
-//int chosenBackground = Random().nextInt(4) + 2;
-String randomImage =  randomImageChooser("VanGogh", 10);
+//String randomImage =  randomImageChooser("VanGogh", 10);
+String randomImage =  randomImageChooser("VanGogh");
 class VanGogh extends StatefulWidget {
   const VanGogh({Key? key, required this.title, this.plannerId, this.date}) : super(key: key);
   final String title;
@@ -28,7 +28,7 @@ class _VanGoghState extends State<VanGogh> {
   }
   Future<void> _loadColors() async {
     try {
-      await Future.delayed(const Duration(milliseconds: 1700));
+      await Future.delayed(const Duration(milliseconds: 500));
       List<Color> colors = await sortedColors(randomImage);
       setState(() {
         colorList = colors;
