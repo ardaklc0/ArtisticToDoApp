@@ -139,7 +139,7 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight,
                             bottomRight: Radius.circular(10),
                           ),
                           child: Image.asset(
-                            "assets/images/${element.plannerArtist}/$chosenStagger.jpg",
+                            "assets/images/${element.plannerArtist}/$chosenBackground.jpg",
                             width: double.infinity,
                             fit: BoxFit.cover,
                           ),
@@ -159,9 +159,9 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight,
   }
   return plannerContainers;
 }
-String randomImageChooser(String artistName, int count) {
-  int randomNumber = Random().nextInt(count) + 1;
-  return "assets/images/$artistName/$randomNumber.jpg";
+String randomImageChooser(String artistName) {
+  //int randomNumber = Random().nextInt(count) + 1;
+  return "assets/images/$artistName/$chosenBackground.jpg";
 }
 
 List<Container> colorContainers(List<Color> colorList){
@@ -253,7 +253,7 @@ class ShimmerContainer extends StatelessWidget {
         width: deviceWidth * 0.95,
         height: deviceHeight * 0.375,
         decoration: BoxDecoration(
-          color: Colors.grey.shade400.withOpacity(0.7),
+          color: Colors.grey.shade300.withOpacity(0.6),
           borderRadius: BorderRadius.circular(15),
         ),
       ),

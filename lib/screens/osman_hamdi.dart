@@ -8,7 +8,8 @@ import '../ui/widgets/common_widgets.dart';
 import '../ui/widgets/image_container.dart';
 import '../main.dart';
 //int chosenBackground = Random().nextInt(4) + 2;
-String randomImage = randomImageChooser("OsmanHamdi", 11);
+//String randomImage = randomImageChooser("OsmanHamdi", 11);
+String randomImage = randomImageChooser("OsmanHamdi");
 class OsmanHamdi extends StatefulWidget {
   const OsmanHamdi({super.key, required this.title, this.plannerId, this.date});
   final String title;
@@ -29,7 +30,7 @@ class _OsmanHamdiState extends State<OsmanHamdi> {
   }
   Future<void> _loadColors() async {
     try {
-      await Future.delayed(const Duration(milliseconds: 1700));
+      await Future.delayed(const Duration(milliseconds: 500));
       List<Color> colors = await sortedColors(randomImage);
       setState(() {
         colorList = colors;
