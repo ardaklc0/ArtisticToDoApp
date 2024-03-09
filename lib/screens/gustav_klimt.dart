@@ -29,7 +29,7 @@ class _GustavKlimtState extends State<GustavKlimt> {
   }
   Future<void> _loadColors() async {
     try {
-      await Future.delayed(const Duration(milliseconds: 500));
+      await Future.delayed(const Duration(milliseconds: 300));
       List<Color> colors = await sortedColors(randomImage);
       setState(() {
         colorList = colors;

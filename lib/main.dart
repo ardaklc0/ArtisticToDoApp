@@ -78,15 +78,15 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => const SplashScreen(), //HomePageTest(),
-          '/gustav_klimt': (context) => GustavKlimt(title: 'Gustav Klimt Home Page'),
-          '/osman_hamdi': (context) => OsmanHamdi(title: 'Osman Hamdi Page'),
-          '/monet': (context) => Monet(title: 'Monet Page'),
-          '/picasso': (context) => Picasso(title: 'Picasso Home Page'),
-          '/salvador_dali': (context) => SalvadorDali(title: 'Salvador Dali Page'),
-          '/van_gogh': (context) => VanGogh(title: 'Van Gogh Page'),
+          '/gustav_klimt': (context) => const GustavKlimt(title: 'Gustav Klimt Home Page'),
+          '/osman_hamdi': (context) => const OsmanHamdi(title: 'Osman Hamdi Page'),
+          '/monet': (context) => const Monet(title: 'Monet Page'),
+          '/picasso': (context) => const Picasso(title: 'Picasso Home Page'),
+          '/salvador_dali': (context) => const SalvadorDali(title: 'Salvador Dali Page'),
+          '/van_gogh': (context) => const VanGogh(title: 'Van Gogh Page'),
           '/pomodoro': (context) => const Pomodoro(),
           '/pomodoro_migration': (context) => const CountDownTimerPage(),
-          '/home_page_test': (context) => const HomePageTest()
+          '/home_page_test': (context) => HomePageTest()
         },
       ),
     );

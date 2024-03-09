@@ -27,8 +27,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
     List<Widget> _buildScreens() {
       return [
-        const HomePageTest(),
         const CreatedPlanners(),
+        HomePageTest(),
         const HomePage()
       ];
     }
@@ -36,8 +36,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
     List<PersistentBottomNavBarItem> _navBarsItems() {
       return [
         PersistentBottomNavBarItem(
-          icon: const Icon(Icons.add, color: Colors.black),
-          title: ("Create"),
+          icon: const Icon(Icons.book, color: Colors.black),
+          title: ("Planners"),
           activeColorPrimary: Colors.black,
           textStyle:GoogleFonts.roboto(
             fontStyle: FontStyle.normal,
@@ -45,8 +45,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
         ),
         PersistentBottomNavBarItem(
-          icon: const Icon(Icons.book, color: Colors.black),
-          title: ("Planners"),
+          icon: const Icon(Icons.add, color: Colors.black),
+          title: ("Create"),
           activeColorPrimary: Colors.black,
           textStyle:GoogleFonts.roboto(
             fontStyle: FontStyle.normal,
@@ -101,6 +101,7 @@ class CustomNavbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: BottomNavBar(),
     );
   }

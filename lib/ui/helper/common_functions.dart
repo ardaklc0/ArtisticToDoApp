@@ -100,7 +100,6 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight,
               height: deviceHeight,
               padding: const EdgeInsets.all(5),
               child: Container(
-
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
