@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:pomodoro2/screens/created_planners.dart';
+import 'package:pomodoro2/screens/gallery.dart';
 import 'package:pomodoro2/ui/helper/common_functions.dart';
 import 'package:provider/provider.dart';
 
@@ -28,8 +29,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
     List<Widget> _buildScreens() {
       return [
         const CreatedPlanners(),
-        HomePageTest(),
-        const HomePage()
+        const HomePageTest(),
+        const Gallery()
       ];
     }
 
@@ -54,8 +55,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
         ),
         PersistentBottomNavBarItem(
-          icon: const Icon(Icons.place_outlined, color: Colors.black),
-          title: ("Planners"),
+          icon: const Icon(Icons.photo, color: Colors.black),
+          title: ("Gallery"),
           activeColorPrimary: Colors.black,
           textStyle:GoogleFonts.roboto(
             fontStyle: FontStyle.normal,
