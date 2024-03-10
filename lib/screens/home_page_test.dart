@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
+import '../provider/navbar_provider.dart';
 import '../ui/helper/common_functions.dart';
 import '../ui/helper/common_variables.dart';
 
@@ -9,6 +12,7 @@ class HomePageTest extends StatelessWidget {
   const HomePageTest({super.key});
   @override
   Widget build(BuildContext context) {
+    final navbarProvider = Provider.of<NavbarProvider>(context, listen: false);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -37,9 +41,12 @@ class HomePageTest extends StatelessWidget {
                   ),
                 ),
                 onTap: () async {
-                  BuildContext currentContext = context;
-                  await createPlannerWrtArtist(artists[index].artistId);
+                  //BuildContext currentContext = context;
+                  DateTime dateTime = DateTime.now();
+                  String dayFormat = DateFormat('yMd').format(dateTime).toString();
+                  int id = await createPlannerWrtArtist(artists[index].artistId);
                   if (!context.mounted) return;
+                  /*if (!context.mounted) return;
                   showDialog(
                     context: currentContext,
                     builder: (BuildContext context) {
@@ -56,7 +63,9 @@ class HomePageTest extends StatelessWidget {
                         ],
                       );
                     },
-                  );
+                  );*/
+                  goToArtist(context, artists[index].artistId, id, dayFormat);
+                  navbarProvider.hideNavbar();
                 },
               ),
             );
@@ -103,7 +112,6 @@ class ArtistButton extends StatelessWidget {
     return Container(
       height: deviceWidth * 0.6,
       width: deviceWidth * 0.95,
-      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.rectangle,
@@ -124,15 +132,11 @@ class ArtistButton extends StatelessWidget {
           onTap: onTap,
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 8, bottom: 8),
-                child: title,
-              ),
               Expanded(
                 child: ClipRRect(
                   borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(15),
-                    bottomRight: Radius.circular(15),
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15),
                   ),
                   child: Image.asset(
                     imagePath,
@@ -140,6 +144,10 @@ class ArtistButton extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8, bottom: 8),
+                child: title,
               ),
             ],
           ),

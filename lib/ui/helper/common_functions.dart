@@ -107,7 +107,7 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight,
               padding: const EdgeInsets.all(5),
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(15),
                   color: Colors.white,
                   boxShadow: [
                     BoxShadow(
@@ -125,23 +125,12 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight,
                   },
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8, bottom: 8),
-                        child: Text(
-                          '${element.creationDate} - ${DateFormat('M/d/y').format(newDate)}',
-                          textScaler: const TextScaler.linear(1.15),
-                          style: GoogleFonts.roboto(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            fontStyle: FontStyle.italic,
-                          ),
-                        )
-                      ),
+
                       Expanded(
                         child: ClipRRect(
                           borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(10),
-                            bottomRight: Radius.circular(10),
+                            topLeft: Radius.circular(15),
+                            topRight: Radius.circular(15),
                           ),
                           child: Image.asset(
                             "assets/images/${element.plannerArtist}/$chosenBackground.jpg",
@@ -149,6 +138,18 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight,
                             fit: BoxFit.cover,
                           ),
                         ),
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.only(top: 8, bottom: 8),
+                          child: Text(
+                            '${element.creationDate} - ${DateFormat('M/d/y').format(newDate)}',
+                            textScaler: const TextScaler.linear(1.15),
+                            style: GoogleFonts.roboto(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          )
                       ),
                     ],
                   ),

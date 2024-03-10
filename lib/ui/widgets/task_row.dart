@@ -117,7 +117,7 @@ class _TaskRowState extends State<TaskRow> {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
         child: Row(
           children: [
             Expanded(
@@ -148,43 +148,48 @@ class _TaskRowState extends State<TaskRow> {
                     ),
                     child: Container(
                       decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30.0),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.5),
-                            spreadRadius: 1,
-                            blurRadius: 3,
-                            offset: const Offset(0, 2),
+                            color: Colors.black.withOpacity(0.3),
+                            spreadRadius: 2,
+                            blurRadius: 7,
+                            offset: const Offset(4, 2),
                           ),
                         ],
                       ),
-                      child: TextField(
-                        textCapitalization: TextCapitalization.sentences,
-                        keyboardType: TextInputType.multiline,
-                        controller: _controller,
-                        maxLines: null,
-                        autofocus: false,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: widget.checkboxColor,
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: widget.checkboxColor,
-                                width: 1.5
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(25.0),
+                        child: TextField(
+                          clipBehavior: Clip.antiAlias,
+                          textCapitalization: TextCapitalization.sentences,
+                          keyboardType: TextInputType.multiline,
+                          controller: _controller,
+                          maxLines: null,
+                          autofocus: false,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: widget.checkboxColor,
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: widget.checkboxColor,
+                                  width: 1.5
+                              ),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: widget.checkboxColor,
+                                  width: 1.5
+                              ),
                             ),
                           ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: widget.checkboxColor,
-                                width: 1.5
-                            ),
+                          style: GoogleFonts.abel(
+                            fontSize: deviceWidth * 0.042,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w500,
+                            textStyle: textStyle(widget.textColor, deviceWidth),
+                            decoration: widget.task!.isDone == 1 ? TextDecoration.lineThrough : TextDecoration.none,
                           ),
-                        ),
-                        style: GoogleFonts.abel(
-                          fontSize: deviceWidth * 0.042,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w500,
-                          textStyle: textStyle(widget.textColor, deviceWidth),
-                          decoration: widget.task!.isDone == 1 ? TextDecoration.lineThrough : TextDecoration.none,
                         ),
                       ),
                     ),
