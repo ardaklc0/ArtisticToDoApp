@@ -1,12 +1,15 @@
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../ui/helper/common_functions.dart';
 import '../ui/helper/common_variables.dart';
 
-class HomePageTest extends StatelessWidget {
-  const HomePageTest({super.key});
+class Gallery extends StatelessWidget {
+  const Gallery({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -36,28 +39,7 @@ class HomePageTest extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-                onTap: () async {
-                  BuildContext currentContext = context;
-                  await createPlannerWrtArtist(artists[index].artistId);
-                  if (!context.mounted) return;
-                  showDialog(
-                    context: currentContext,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Success!'),
-                        content: const Text('The planner is successfully added.'),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
+                onTap: () => _gotoDetailsPage(context, artists[index].imagePath),
               ),
             );
           },
@@ -66,6 +48,63 @@ class HomePageTest extends StatelessWidget {
     );
   }
 }
+
+void _gotoDetailsPage(BuildContext context, String imagePath) {
+  Navigator.of(context).push(MaterialPageRoute<void>(
+    builder: (BuildContext context) => Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        title: const Text('Gallery'),
+        backgroundColor: homePageColor,
+      ),
+      body: Stack(
+        children: [
+          // Blurred background
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            child: Image.asset(
+              imagePath,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: Colors.black.withOpacity(0.3),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
+              child: Container(
+                color: Colors.transparent,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Hero(
+                tag: 'gallery',
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(15)),
+                  clipBehavior: Clip.antiAlias,
+                  child: Image.asset(
+                    imagePath,
+                    width: double.infinity,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ]
+      ),
+    ),
+  ));
+}
+
+
+
 
 class Artist {
   final String name;
@@ -78,14 +117,14 @@ class Artist {
   });
 }
 List<Artist> artists = [
-  Artist(name: 'Gustav Klimt', imagePath: 'assets/images/GustavKlimt/1.jpg', artistId: 'GustavKlimt'),
-  Artist(name: 'Monet', imagePath: 'assets/images/Monet/1.jpg', artistId: 'Monet'),
-  Artist(name: 'Picasso', imagePath: 'assets/images/Picasso/1.jpg', artistId: 'Picasso'),
-  Artist(name: 'Dali', imagePath: 'assets/images/SalvadorDali/1.jpg', artistId: 'SalvadorDali'),
-  Artist(name: 'Osman Hamdi', imagePath: 'assets/images/OsmanHamdi/1.jpg', artistId: 'OsmanHamdi'),
-  Artist(name: 'Van Gogh', imagePath: 'assets/images/VanGogh/1.jpg', artistId: 'VanGogh'),
-  Artist(name: 'Jan Vermeer', imagePath: 'assets/images/JohannesVermeer/1.jpg', artistId: 'JohannesVermeer'),
-  Artist(name: 'Cezanne', imagePath: 'assets/images/Cezanne/1.jpg', artistId: 'Cezanne'),
+  Artist(name: 'Gustav Klimt', imagePath: 'assets/images/GustavKlimt/2.jpg', artistId: 'GustavKlimt'),
+  Artist(name: 'Monet', imagePath: 'assets/images/Monet/2.jpg', artistId: 'Monet'),
+  Artist(name: 'Picasso', imagePath: 'assets/images/Picasso/2.jpg', artistId: 'Picasso'),
+  Artist(name: 'Dali', imagePath: 'assets/images/SalvadorDali/2.jpg', artistId: 'SalvadorDali'),
+  Artist(name: 'Osman Hamdi', imagePath: 'assets/images/OsmanHamdi/2.jpg', artistId: 'OsmanHamdi'),
+  Artist(name: 'Van Gogh', imagePath: 'assets/images/VanGogh/2.jpg', artistId: 'VanGogh'),
+  Artist(name: 'Jan Vermeer', imagePath: 'assets/images/JohannesVermeer/2.jpg', artistId: 'JohannesVermeer'),
+  Artist(name: 'Cezanne', imagePath: 'assets/images/Cezanne/2.jpg', artistId: 'Cezanne'),
 ];
 class ArtistButton extends StatelessWidget {
   final VoidCallback? onTap;
