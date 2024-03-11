@@ -115,13 +115,13 @@ class ArtistButton extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.rectangle,
-        borderRadius: const BorderRadius.all(Radius.circular(15)),
+        borderRadius: BorderRadius.all(Radius.circular(15)),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: const Offset(0, 3), // changes position of shadow
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: const Offset(0, 0), // changes position of shadow
           ),
         ],
       ),
