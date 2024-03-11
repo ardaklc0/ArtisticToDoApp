@@ -111,10 +111,10 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight,
                   color: Colors.white,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: const Offset(0, 3), // changes position of shadow
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 1,
+                      blurRadius: 3,
+                      offset: const Offset(0, 0), // changes position of shadow
                     ),
                   ],
                 ),
@@ -216,17 +216,17 @@ Future<void> saveWorkedMinutes() async {
 }
 Future<void> _showCompletionDialog() async {
   showSimpleNotification(
-      duration: const Duration(seconds: 5),
-      slideDismissDirection: DismissDirection.vertical,
-      elevation: 4,
-      const Text(
-        "Working minutes saved successfully!",
-        style: TextStyle(
-          fontSize: 15,
-          color: Colors.black,
-        ),
+    duration: const Duration(seconds: 5),
+    slideDismissDirection: DismissDirection.vertical,
+    elevation: 4,
+    const Text(
+      "Working minutes saved successfully!",
+      style: TextStyle(
+        fontSize: 15,
+        color: Colors.black,
       ),
-      background: const Color.fromRGBO(242, 245, 234, 1),
+    ),
+    background: const Color.fromRGBO(242, 245, 234, 1),
   );
 }
 
@@ -298,14 +298,14 @@ class ShimmerAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       flexibleSpace: isLoading
           ? Shimmer.fromColors(
-        baseColor: Colors.grey[350]!,
-        highlightColor: Colors.grey[100]!,
-        child: Container(
-            width: double.infinity,
-            height: kToolbarHeight + MediaQuery.of(context).padding.top,
-            color: Colors.grey.shade500
-        ),
-      )
+            baseColor: Colors.grey[350]!,
+            highlightColor: Colors.grey[100]!,
+            child: Container(
+                width: double.infinity,
+                height: kToolbarHeight + MediaQuery.of(context).padding.top,
+                color: Colors.grey.shade500
+            ),
+          )
           : AppBar(
         backgroundColor: colorList.last,
         elevation: 2,
