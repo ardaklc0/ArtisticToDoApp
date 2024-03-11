@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -317,4 +318,52 @@ class ShimmerAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size.fromHeight(AppBar().preferredSize.height);
+}
+
+void gotoDetailsPage(BuildContext context, String imagePath) {
+  Navigator.of(context).push(MaterialPageRoute<void>(
+    builder: (BuildContext context) => Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        backgroundColor: homePageColor,
+      ),
+      body: Stack(
+          children: [
+            SizedBox(
+              width: double.infinity,
+              height: double.infinity,
+              child: Image.asset(
+                imagePath,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              height: double.infinity,
+              color: Colors.black.withOpacity(0.3),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
+                child: Container(
+                  color: Colors.transparent,
+                ),
+              ),
+            ),
+            Center(
+              child: Hero(
+                tag: 'gallery',
+                child: ClipRRect(
+                  clipBehavior: Clip.antiAlias,
+                  child: Image.asset(
+                    imagePath,
+                    width: double.infinity,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+            ),
+          ]
+      ),
+    ),
+  ));
 }
