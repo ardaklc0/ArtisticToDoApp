@@ -166,9 +166,9 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight,
   }
   return plannerContainers;
 }
-String randomImageChooser(String artistName) {
-  //int randomNumber = Random().nextInt(count) + 1;
-  return "assets/images/$artistName/$chosenBackground.jpg";
+String randomImageChooser(String artistName, [count = 10]) {
+  int randomNumber = Random().nextInt(count) + 1;
+  return "assets/images/$artistName/$randomNumber.jpg";
 }
 
 List<Container> colorContainers(List<Color> colorList){
@@ -341,9 +341,9 @@ void gotoDetailsPage(BuildContext context, String imagePath) {
             Container(
               width: double.infinity,
               height: double.infinity,
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withOpacity(0.7),
               child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
+                filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
                 child: Container(
                   color: Colors.transparent,
                 ),

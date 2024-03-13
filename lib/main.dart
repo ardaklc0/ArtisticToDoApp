@@ -29,6 +29,7 @@ import 'package:provider/provider.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 int chosenBackground = Random().nextInt(10) + 1;
 int chosenArtist = Random().nextInt(8);
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final sliderProvider = SliderProvider();
