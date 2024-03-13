@@ -69,7 +69,18 @@ class ArtistHeader extends StatelessWidget {
                 textScaler: const TextScaler.linear(1.15),
               ),
             ),
-            slideWidget(deviceHeight, artistId),
+            FutureBuilder(
+              future: slideWidget(deviceHeight, artistId),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  return snapshot.data ?? Container();
+                }
+              },
+            ),
           ],
         ),
       ),
