@@ -43,7 +43,7 @@ class ArtistHeader extends StatelessWidget {
                 artistName,
                 style: GoogleFonts.roboto(
                   fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                 ),
                 textScaler: const TextScaler.linear(1.5),
               ),
