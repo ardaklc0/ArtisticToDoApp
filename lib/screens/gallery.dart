@@ -63,7 +63,13 @@ List<ListTile> _listTiles(BuildContext context, Function(int) updateCallback) {
   for (int i = 0; i < artistEntities.length; i++) {
     listTiles.add(
       ListTile(
-        title: Text(artistEntities[i].name),
+        title: Text(
+          artistEntities[i].name,
+          style: GoogleFonts.roboto(
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.w300,
+          ),
+        ),
         onTap: () {
           updateCallback(i);
         },
@@ -74,6 +80,7 @@ List<ListTile> _listTiles(BuildContext context, Function(int) updateCallback) {
 }
 
 Drawer _drawer(BuildContext context, String artistId, Function(int) updateCallback) => Drawer(
+  backgroundColor: homePageColor,
   child: ListView(
     padding: EdgeInsets.zero,
     children: [
