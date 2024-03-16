@@ -69,7 +69,7 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight,
     }
     for (var element in planners) {
       DateTime creationDate = DateFormat('yMd').parse(element.creationDate);
-      DateTime newDate = creationDate.add(Duration(days: 7));
+      DateTime newDate = creationDate.add(const Duration(days: 6));
       plannerContainers.add(
         Container(
           child: Dismissible(

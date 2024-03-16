@@ -63,6 +63,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -72,7 +73,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Planart',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
@@ -88,7 +89,7 @@ class MyApp extends StatelessWidget {
           '/van_gogh': (context) => const VanGogh(title: 'Van Gogh Page'),
           '/pomodoro': (context) => const Pomodoro(),
           '/pomodoro_migration': (context) => const CountDownTimerPage(),
-          '/home_page_test': (context) => HomePageTest()
+          '/home_page_test': (context) => const HomePageTest()
         },
       ),
     );
@@ -104,7 +105,7 @@ Future<SingleChildScrollView> createPlanner(String dateTime, int plannerId, Colo
   String date = "";
   String day = "";
   var tasks = await getTasks(plannerId);
-  for (int i = 0; i <= 7; i++) {
+  for (int i = 0; i < 7; i++) {
     date = dateFormat.format(parsedDateTime);
     day = dayFormat.format(parsedDateTime);
     newContainer.add(
