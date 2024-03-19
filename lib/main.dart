@@ -78,8 +78,12 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Planart',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
+          textSelectionTheme: const TextSelectionThemeData(
+            cursorColor: Colors.black,
+            selectionHandleColor: Colors.black,
+            selectionColor: Colors.black38,
+          ),
         ),
         initialRoute: '/',
         routes: {

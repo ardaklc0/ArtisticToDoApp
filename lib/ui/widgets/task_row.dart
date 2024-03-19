@@ -165,35 +165,45 @@ class _TaskRowState extends State<TaskRow> {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(25.0),
-                        child: TextField(
-                          clipBehavior: Clip.antiAlias,
-                          textCapitalization: TextCapitalization.sentences,
-                          keyboardType: TextInputType.multiline,
-                          controller: _controller,
-                          maxLines: null,
-                          autofocus: false,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: widget.checkboxColor,
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: widget.checkboxColor,
-                                  width: 1.5
-                              ),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: widget.checkboxColor,
-                                  width: 1.5
-                              ),
+                        child: Theme(
+                          data: Theme.of(context).copyWith(
+                            textSelectionTheme: const TextSelectionThemeData(
+                              cursorColor: Colors.black,
+                              selectionHandleColor: Colors.black,
+                              selectionColor: Colors.black38,
                             ),
                           ),
-                          style: GoogleFonts.abel(
-                            fontSize: deviceWidth * 0.042,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w500,
-                            textStyle: textStyle(widget.textColor, deviceWidth),
-                            decoration: widget.task!.isDone == 1 ? TextDecoration.lineThrough : TextDecoration.none,
+                          child: TextField(
+                            clipBehavior: Clip.antiAlias,
+                            cursorColor: Colors.black,
+                            textCapitalization: TextCapitalization.sentences,
+                            keyboardType: TextInputType.multiline,
+                            controller: _controller,
+                            maxLines: null,
+                            autofocus: false,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: widget.checkboxColor,
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: widget.checkboxColor,
+                                    width: 1.5
+                                ),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: widget.checkboxColor,
+                                    width: 1.5
+                                ),
+                              ),
+                            ),
+                            style: GoogleFonts.abel(
+                              fontSize: deviceWidth * 0.042,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w500,
+                              textStyle: textStyle(widget.textColor, deviceWidth),
+                              decoration: widget.task!.isDone == 1 ? TextDecoration.lineThrough : TextDecoration.none,
+                            ),
                           ),
                         ),
                       ),
