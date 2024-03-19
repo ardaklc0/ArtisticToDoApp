@@ -56,12 +56,13 @@ Widget build(BuildContext context) {
   final double deviceHeight = MediaQuery.of(context).size.height;
   final navbarProvider = Provider.of<NavbarProvider>(context);
   final keyboardProvider = Provider.of<KeyboardProvider>(context, listen: false);
-
+  final viewInsets = EdgeInsets.fromViewPadding(WidgetsBinding.instance.window.viewInsets,WidgetsBinding.instance.window.devicePixelRatio);
   return PopScope(
     canPop: true,
     onPopInvoked: (bool didPop) async {
       if (didPop) {
         navbarProvider.showNavbar();
+        keyboardProvider.hideKeyboard();
       }
     },
     child: Scaffold(
@@ -71,7 +72,7 @@ Widget build(BuildContext context) {
       body:  AnimatedPadding(
         duration: const Duration(milliseconds: 150),
         padding: EdgeInsets.only(
-          bottom: keyboardProvider.isKeyboardVisible ? deviceHeight * 0.380 : 0,
+          bottom: keyboardProvider.isKeyboardVisible ? viewInsets.bottom : 0,
         ),
         child: _buildBody(deviceWidth, deviceHeight)
       ),

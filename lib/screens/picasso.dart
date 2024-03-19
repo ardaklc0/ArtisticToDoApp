@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import '../provider/keyboard_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -23,12 +23,14 @@ class _PicassoState extends State<Picasso> {
   late Future<SingleChildScrollView> taskFuture;
   late List<Color> colorList;
   bool isLoading = true;
+
   @override
   void initState() {
     super.initState();
     colorList = [Colors.transparent, Colors.transparent];
     _loadColors();
   }
+
   Future<void> _loadColors() async {
     try {
       await Future.delayed(const Duration(milliseconds: 300));
@@ -54,18 +56,27 @@ class _PicassoState extends State<Picasso> {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
     final navbarProvider = Provider.of<NavbarProvider>(context);
+    final keyboardProvider = Provider.of<KeyboardProvider>(context, listen: false);
+    final viewInsets = EdgeInsets.fromViewPadding(WidgetsBinding.instance.window.viewInsets,WidgetsBinding.instance.window.devicePixelRatio);
     return PopScope(
       canPop: true,
       onPopInvoked: (bool didPop) async {
         if (didPop) {
           navbarProvider.showNavbar();
+          keyboardProvider.hideKeyboard();
         }
       },
       child: Scaffold(
         appBar: ShimmerAppBar(isLoading: isLoading, colorList: colorList),
         backgroundColor: colorList.last,
         resizeToAvoidBottomInset: true,
-        body: _buildBody(deviceWidth, deviceHeight),
+        body:  AnimatedPadding(
+            duration: const Duration(milliseconds: 150),
+            padding: EdgeInsets.only(
+              bottom: keyboardProvider.isKeyboardVisible ? viewInsets.bottom : 0,
+            ),
+            child: _buildBody(deviceWidth, deviceHeight)
+        ),
       ),
     );
   }
@@ -81,28 +92,29 @@ class _PicassoState extends State<Picasso> {
         if (isLoading) const ShimmerLoading(
           isLoading: true,
           child: PlaceholderForPage(),
-        ) else Padding(
-          padding: const EdgeInsets.only(top: 5),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Flexible(
-                child: FutureBuilder<SingleChildScrollView>(
-                  future: taskFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      return snapshot.data ?? Container();
-                    }
-                  },
+        ) else
+          Padding(
+            padding: const EdgeInsets.only(top: 5),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Flexible(
+                  child: FutureBuilder<SingleChildScrollView>(
+                    future: taskFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        return snapshot.data ?? Container();
+                      }
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
       ],
     );
   }
