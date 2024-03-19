@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pomodoro2/models/task_model.dart';
 import 'package:pomodoro2/services/task_service.dart';
 import 'package:pomodoro2/ui/widgets/common_widgets.dart';
+import 'package:provider/provider.dart';
+import '../../provider/keyboard_provider.dart';
 import '../helper/common_variables.dart';
 import '../styles/common_styles.dart';
 class TaskRow extends StatefulWidget {
@@ -43,6 +45,7 @@ class _TaskRowState extends State<TaskRow> {
   Widget build(BuildContext context) {
     final double deviceHeight = MediaQuery.of(context).size.height;
     final double deviceWidth = MediaQuery.of(context).size.width;
+    final keyboardProvider = Provider.of<KeyboardProvider>(context, listen: false);
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
@@ -125,6 +128,8 @@ class _TaskRowState extends State<TaskRow> {
                 width: deviceWidth * 0.80,
                 child: Focus(
                   onFocusChange: (value) async {
+                    value ? keyboardProvider.showKeyboard() : keyboardProvider.hideKeyboard();
+                    print(keyboardProvider.isKeyboardVisible);
                     if (_controller.text.isNotEmpty) {
                       if (widget.task != null) {
                         var existingTask = Task(

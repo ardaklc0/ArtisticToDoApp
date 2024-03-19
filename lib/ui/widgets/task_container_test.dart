@@ -104,7 +104,6 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                     Padding(
                       padding: fixedEdgeInsets.copyWith(bottom: deviceHeight * 0.06),
                       child: SingleChildScrollView(
-                        reverse: true,
                         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                         child: Column(
                           children: textFields,

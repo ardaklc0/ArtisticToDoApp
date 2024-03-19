@@ -1,8 +1,10 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import '../main.dart';
+import '../provider/keyboard_provider.dart';
 import '../provider/navbar_provider.dart';
 import '../ui/helper/common_functions.dart';
 import '../ui/widgets/image_container.dart';
@@ -48,26 +50,34 @@ class _VanGoghState extends State<VanGogh> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final double deviceWidth = MediaQuery.of(context).size.width;
-    final double deviceHeight = MediaQuery.of(context).size.height;
-    final navbarProvider = Provider.of<NavbarProvider>(context);
-    return PopScope(
-      canPop: true,
-      onPopInvoked: (bool didPop) async {
-        if (didPop) {
-          navbarProvider.showNavbar();
-        }
-      },
-      child: Scaffold(
-        appBar: ShimmerAppBar(isLoading: isLoading, colorList: colorList),
-        backgroundColor: colorList.last,
-        resizeToAvoidBottomInset: true,
-        body: _buildBody(deviceWidth, deviceHeight),
+@override
+Widget build(BuildContext context) {
+  final double deviceWidth = MediaQuery.of(context).size.width;
+  final double deviceHeight = MediaQuery.of(context).size.height;
+  final navbarProvider = Provider.of<NavbarProvider>(context);
+  final keyboardProvider = Provider.of<KeyboardProvider>(context, listen: false);
+
+  return PopScope(
+    canPop: true,
+    onPopInvoked: (bool didPop) async {
+      if (didPop) {
+        navbarProvider.showNavbar();
+      }
+    },
+    child: Scaffold(
+      appBar: ShimmerAppBar(isLoading: isLoading, colorList: colorList),
+      backgroundColor: colorList.last,
+      resizeToAvoidBottomInset: true,
+      body:  AnimatedPadding(
+        duration: const Duration(milliseconds: 150),
+        padding: EdgeInsets.only(
+          bottom: keyboardProvider.isKeyboardVisible ? deviceHeight * 0.380 : 0,
+        ),
+        child: _buildBody(deviceWidth, deviceHeight)
       ),
-    );
-  }
+    ),
+  );
+}
 
 Widget _buildBody(double deviceWidth, double deviceHeight) {
   return Stack(
