@@ -20,12 +20,14 @@ class _VanGoghState extends State<VanGogh> {
   late Future<SingleChildScrollView> taskFuture;
   late List<Color> colorList;
   bool isLoading = true;
+
   @override
   void initState() {
     super.initState();
     colorList = [Colors.transparent, Colors.transparent];
     _loadColors();
   }
+
   Future<void> _loadColors() async {
     try {
       await Future.delayed(const Duration(milliseconds: 300));
@@ -48,39 +50,40 @@ class _VanGoghState extends State<VanGogh> {
 
   @override
   Widget build(BuildContext context) {
-  final double deviceWidth = MediaQuery.of(context).size.width;
-  final double deviceHeight = MediaQuery.of(context).size.height;
-  final navbarProvider = Provider.of<NavbarProvider>(context);
-  return PopScope(
-    canPop: true,
-    onPopInvoked: (bool didPop) async {
-      if (didPop) {
-        navbarProvider.showNavbar();
-      }
-    },
-    child: Scaffold(
-      appBar: ShimmerAppBar(isLoading: isLoading, colorList: colorList),
-      backgroundColor: colorList.last,
-      resizeToAvoidBottomInset: true,
-      body: _buildBody(deviceWidth, deviceHeight),
-    ),
-  );
-}
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceHeight = MediaQuery.of(context).size.height;
+    final navbarProvider = Provider.of<NavbarProvider>(context);
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (bool didPop) async {
+        if (didPop) {
+          navbarProvider.showNavbar();
+        }
+      },
+      child: Scaffold(
+        appBar: ShimmerAppBar(isLoading: isLoading, colorList: colorList),
+        backgroundColor: colorList.last,
+        resizeToAvoidBottomInset: true,
+        body: _buildBody(deviceWidth, deviceHeight),
+      ),
+    );
+  }
 
 Widget _buildBody(double deviceWidth, double deviceHeight) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        ImageContainer(
-          imageUrl: randomImage,
-          imageAlignment: Alignment.center,
-        ),
-        if (isLoading) const ShimmerLoading(
-          isLoading: true,
-          child: PlaceholderForPage(),
-        ) else Padding(
+  return Stack(
+    fit: StackFit.expand,
+    children: [
+      ImageContainer(
+        imageUrl: randomImage,
+        imageAlignment: Alignment.center,
+      ),
+      if (isLoading) const ShimmerLoading(
+        isLoading: true,
+        child: PlaceholderForPage(),
+      ) else
+        Padding(
           padding: const EdgeInsets.only(top: 5),
-            child: Column(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Flexible(
@@ -104,4 +107,3 @@ Widget _buildBody(double deviceWidth, double deviceHeight) {
     );
   }
 }
-

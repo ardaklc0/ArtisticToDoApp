@@ -122,6 +122,7 @@ Future<SingleChildScrollView> createPlanner(String dateTime, int plannerId, Colo
     parsedDateTime = parsedDateTime.add(const Duration(days: 1));
   }
   return SingleChildScrollView(
+      reverse: true,
       child: Column(
         children: [
           ...newContainer

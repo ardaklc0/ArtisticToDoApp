@@ -55,7 +55,7 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      padding: const EdgeInsets.symmetric(vertical: 5),
       child: Column(
         children: [
           SizedBox(
@@ -104,6 +104,7 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                     Padding(
                       padding: fixedEdgeInsets.copyWith(bottom: deviceHeight * 0.06),
                       child: SingleChildScrollView(
+                        reverse: true,
                         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                         child: Column(
                           children: textFields,
