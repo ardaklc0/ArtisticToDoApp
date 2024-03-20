@@ -36,7 +36,12 @@ List<Artist> artistEntities = [
     artistDescription: 'Oscar-Claude Monet was a French painter'
         ' and founder of impressionist painting who is'
         ' seen as a key precursor to modernism, especially'
-        ' in his attempts to paint nature as he perceived it.',
+        ' in his attempts to paint nature as he perceived it.'
+        ' Monet was born in Paris but grew up in Le Havre,'
+        ' where he first met Eugène Boudin, who encouraged'
+        ' him to paint out of doors. Monet was enrolled in'
+        ' the studio of Glenyre, where he met Pierre-Auguste'
+        ' Renoir and Frédéric Bazille.',
     artistBirthDate: 'November, 1840',
     artistDeathDate: 'December, 1926',
   ),
