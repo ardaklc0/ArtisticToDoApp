@@ -60,50 +60,24 @@ class _TaskRowState extends State<TaskRow> {
     return Dismissible(
       key: UniqueKey(),
       confirmDismiss: (direction) async {
-        bool confirm = false;
-        if (direction == DismissDirection.endToStart) {
-          // Show deletion confirmation dialog for right swipe
-          confirm = await showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                backgroundColor: widget.checkboxColor,
-                title: dismissibleText("Confirmation", deviceHeight, dismissibleColor),
-                content: dismissibleText("Are you sure you want to delete this item?", deviceHeight, dismissibleColor),
-                actions: <Widget>[
-                  dismissibleButton("Cancel", deviceHeight, dismissibleColor, false, context),
-                  dismissibleButton("Delete", deviceHeight, dismissibleColor, true, context)
-                ],
-              );
-            },
-          );
-        } else if (direction == DismissDirection.startToEnd) {
-          Task? task = await getTask(widget.task!.id!);
-          if (!context.mounted) return false;
-          int? workedMinutes = task?.totalWorkMinutes;
-          confirm = await showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                backgroundColor: widget.checkboxColor,
-                title: dismissibleText("Left Swipe Confirmation", deviceHeight, dismissibleColor),
-                content: dismissibleText("This task have $workedMinutes worked minutes.", deviceHeight, dismissibleColor),
-                actions: [
-                  dismissibleButton("Close", deviceHeight, dismissibleColor, false, context)
-                ],
-              );
-            },
-          );
-        }
-        return confirm;
+        return await showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: widget.checkboxColor,
+              title: dismissibleText("Confirmation", deviceHeight, dismissibleColor),
+              content: dismissibleText("Are you sure you want to delete this item?", deviceHeight, dismissibleColor),
+              actions: <Widget>[
+                dismissibleButton("Cancel", deviceHeight, dismissibleColor, false, context),
+                dismissibleButton("Delete", deviceHeight, dismissibleColor, true, context)
+              ],
+            );
+          },
+        );
       },
       onDismissed: (direction) async {
-        if (direction == DismissDirection.endToStart) {
-          await deleteTask(widget.task!.id!);
-        } else if (direction == DismissDirection.startToEnd) {
-          print("Left swipe action");
-        }
+        await deleteTask(widget.task!.id!);
       },
       secondaryBackground: Container(
         color: widget.checkboxColor,
@@ -115,7 +89,7 @@ class _TaskRowState extends State<TaskRow> {
       background: Container(
         color: widget.checkboxColor,
         child: const Icon(
-          Icons.info,
+          Icons.delete,
           color: Colors.black,
         ),
       ),
