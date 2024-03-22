@@ -30,6 +30,83 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
     _newTaskFocusNode = FocusNode();
     initializeTasks(widget.tasks, textFields, widget.dateText, widget.textColor, widget.dateColor, widget.plannerId);
   }
+
+  Future showSaveScreen(String taskDescription, int taskId) async {
+    TextEditingController controller = TextEditingController(text: taskDescription);
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.5),
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: widget.dateColor,
+          title: Text(
+            'Create a new task',
+            style: GoogleFonts.roboto(
+              fontStyle: FontStyle.normal,
+              fontWeight: FontWeight.w500,
+              color: widget.textColor,
+            ),
+          ),
+          content: TextField(
+            controller: controller,
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                'Close',
+                style: GoogleFonts.roboto(
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w400,
+                  color: widget.textColor,
+                ),
+              ),
+              onPressed: () async {
+                if (controller.text == "New Task") {
+                  await deleteTask(taskId);
+                }
+                if (!context.mounted) return;
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(
+                'Save',
+                style: GoogleFonts.roboto(
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w400,
+                  color: widget.textColor,
+                ),
+              ),
+              onPressed: () async {
+                Task? newTask = await getTask(taskId);
+                setState(() {
+                  textFields.add(TaskRow(
+                    textColor: widget.textColor,
+                    checkboxColor: widget.dateColor,
+                    text: controller.text,
+                    dateText: newTask?.creationDate,
+                    task: newTask,
+                    plannerId: widget.plannerId,
+                  ));
+                });
+                var existingTask = Task(
+                    id: newTask!.id,
+                    creationDate: newTask.creationDate,
+                    taskDescription: controller.text,
+                    plannerId: widget.plannerId
+                );
+                await updateTask(existingTask);
+                if (!context.mounted) return;
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> addTask() async {
     Task? newTask = Task(
       taskDescription: "New Task",
@@ -37,17 +114,7 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
       plannerId: widget.plannerId,
     );
     int taskId = await insertTask(newTask);
-    newTask = await getTask(taskId);
-    setState(() {
-      textFields.add(TaskRow(
-        textColor: widget.textColor,
-        checkboxColor: widget.dateColor,
-        text: newTask?.taskDescription,
-        dateText: newTask?.creationDate,
-        task: newTask,
-        plannerId: widget.plannerId,
-      ));
-    });
+    await showSaveScreen(newTask.taskDescription, taskId);
     _newTaskFocusNode.requestFocus();
   }
   @override
