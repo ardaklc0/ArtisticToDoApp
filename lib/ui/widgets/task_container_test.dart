@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pomodoro2/models/task_model.dart';
+import 'package:pomodoro2/provider/task_provider.dart';
 import 'package:pomodoro2/ui/widgets/task_row.dart';
 import 'package:pomodoro2/services/task_service.dart';
+import 'package:provider/provider.dart';
 import '../helper/common_variables.dart';
 import '../helper/task_function.dart';
 import '../styles/common_styles.dart';
@@ -33,6 +35,7 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
 
   Future showSaveScreen(String taskDescription, int taskId) async {
     TextEditingController controller = TextEditingController(text: taskDescription);
+    final taskProvider = Provider.of<TaskProvider>(context, listen: false);
     return showDialog(
       barrierDismissible: false,
       context: context,
@@ -48,8 +51,112 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
               color: widget.textColor,
             ),
           ),
-          content: TextField(
-            controller: controller,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Theme(
+                data: Theme.of(context).copyWith(
+                  textSelectionTheme: const TextSelectionThemeData(
+                    cursorColor: Colors.black,
+                    selectionColor: Colors.black38,
+                    selectionHandleColor: Colors.black,
+                  ),
+                ),
+                child: TextField(
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    hintText: 'Enter task description',
+                    hintStyle: GoogleFonts.roboto(
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w400,
+                      color: widget.textColor?.withOpacity(0.35),
+                    ),
+                    enabledBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                    focusedBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
+                  controller: controller,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  PopupMenuButton<int>(
+                    icon: Icon(
+                      Icons.flag,
+                      color: taskProvider.prioColor,
+                    ),
+                    itemBuilder: (context) => [
+                      const PopupMenuItem(
+                        value: 1,
+                        child: Row(
+                          children: [
+                            Icon(Icons.flag, color: Colors.redAccent),
+                            Text('Red'),
+                          ],
+                        ),
+                      ),
+                      const PopupMenuItem(
+                        value: 2,
+                        child: Row(
+                          children: [
+                            Icon(Icons.flag, color: Colors.orangeAccent),
+                            Text('Orange'),
+                          ],
+                        ),
+                      ),
+                      const PopupMenuItem(
+                        value: 3,
+                        child: Row(
+                          children: [
+                            Icon(Icons.flag, color: Colors.blueAccent),
+                            Text('Blue'),
+                          ],
+                        ),
+                      ),
+                    ],
+                    onSelected: (value) {
+                      switch (value) {
+                        case 1:
+                          taskProvider.setPrioColor(Colors.redAccent);
+                          break;
+                        case 2:
+                          taskProvider.setPrioColor(Colors.orangeAccent);
+                          break;
+                        case 3:
+                          taskProvider.setPrioColor(Colors.blueAccent);
+                          break;
+                      }
+                      print('Selected: ${taskProvider.prioColor}');
+                    },
+                  )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    "Choose a tag: ",
+                    style: GoogleFonts.roboto(
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w400,
+                      color: widget.textColor,
+                    )
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.tag,
+                      color: Colors.black,
+                    ),
+                  ),
+
+                ],
+              )
+            ],
           ),
           actions: <Widget>[
             TextButton(
@@ -62,16 +169,15 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                 ),
               ),
               onPressed: () async {
-                if (controller.text == "New Task") {
-                  await deleteTask(taskId);
-                }
+                await deleteTask(taskId);
+                taskProvider.setPrioColor(Colors.black);
                 if (!context.mounted) return;
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
               child: Text(
-                'Save',
+                'Create',
                 style: GoogleFonts.roboto(
                   fontStyle: FontStyle.normal,
                   fontWeight: FontWeight.w400,
