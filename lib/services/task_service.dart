@@ -29,6 +29,7 @@ Future<List<Task>> getTasks(int plannerId) async {
       taskDescription: maps[i]['task_description'] as String,
       creationDate: maps[i]['creation_date'] as String,
       plannerId: maps[i]['planner_id'] as int,
+      priority: maps[i]['priority'] as int,
       isDone: maps[i]['is_done'] as int,
       totalWorkMinutes: maps[i]['total_work_minutes'] as int
     );
@@ -49,6 +50,7 @@ Future<List<Task>> getUncheckedTasks(int plannerId) async {
         taskDescription: maps[i]['task_description'] as String,
         creationDate: maps[i]['creation_date'] as String,
         plannerId: maps[i]['planner_id'] as int,
+        priority: maps[i]['priority'] as int,
         isDone: maps[i]['is_done'] as int,
         totalWorkMinutes: maps[i]['total_work_minutes'] as int
     );
@@ -69,6 +71,7 @@ Future<Task?> getTask(int taskId) async {
       taskDescription: maps[0]['task_description'] as String,
       creationDate: maps[0]['creation_date'] as String,
       plannerId: maps[0]['planner_id'] as int,
+      priority: maps[0]['priority'] as int,
       isDone: maps[0]['is_done'] as int,
       totalWorkMinutes: maps[0]['total_work_minutes'] as int
     );

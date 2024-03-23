@@ -22,6 +22,7 @@ Future<Database> initializeDatabase() async {
               'creation_date TEXT,'
               'task_description TEXT,'
               'planner_id INTEGER,'
+              'priority INT,'
               'is_done INT,'
               'total_work_minutes INT)',
         );
