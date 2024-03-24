@@ -46,17 +46,18 @@ class _TaskRowState extends State<TaskRow> {
     final double deviceHeight = MediaQuery.of(context).size.height;
     final double deviceWidth = MediaQuery.of(context).size.width;
     final keyboardProvider = Provider.of<KeyboardProvider>(context, listen: false);
-    Color getColor(Set<MaterialState> states) {
-      const Set<MaterialState> interactiveStates = <MaterialState>{
-        MaterialState.pressed,
-        MaterialState.hovered,
-        MaterialState.focused,
-      };
-      if (states.any(interactiveStates.contains)) {
-        return Colors.blue;
-      }
-      return widget.checkboxColor;
-    }
+    //Color getColor(Set<MaterialState> states) {
+    //  const Set<MaterialState> interactiveStates = <MaterialState>{
+    //    MaterialState.pressed,
+    //    MaterialState.hovered,
+    //    MaterialState.focused,
+    //  };
+    //  if (states.any(interactiveStates.contains)) {
+    //    return Colors.blue;
+    //  }
+    //  return widget.checkboxColor;
+    //}
+
     return Dismissible(
       key: UniqueKey(),
       confirmDismiss: (direction) async {
@@ -188,7 +189,16 @@ class _TaskRowState extends State<TaskRow> {
             ),
             Checkbox(
               checkColor: Colors.black,
-              fillColor: MaterialStateProperty.resolveWith(getColor),
+              fillColor: MaterialStateProperty.resolveWith((states) {
+                if (widget.task?.priority == 1) {
+                  return Colors.redAccent;
+                } else if (widget.task?.priority == 2) {
+                  return Colors.orangeAccent;
+                } else if (widget.task?.priority == 3) {
+                  return Colors.blueAccent;
+                }
+                return widget.checkboxColor;
+              }),
               value: intConverter(widget.task!.isDone),
               onChanged: (bool? value) async {
                 setState(() {

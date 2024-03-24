@@ -36,178 +36,211 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
   Future showSaveScreen(String taskDescription, int taskId) async {
     TextEditingController controller = TextEditingController(text: taskDescription);
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
+    int selectedColor = 0;
     return showDialog(
       barrierDismissible: false,
       context: context,
       barrierColor: Colors.black.withOpacity(0.5),
       builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: widget.dateColor,
-          title: Text(
-            'Create a new task',
-            style: GoogleFonts.roboto(
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.w500,
-              color: widget.textColor,
-            ),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Theme(
-                data: Theme.of(context).copyWith(
-                  textSelectionTheme: const TextSelectionThemeData(
-                    cursorColor: Colors.black,
-                    selectionColor: Colors.black38,
-                    selectionHandleColor: Colors.black,
-                  ),
-                ),
-                child: TextField(
-                  autofocus: true,
-                  decoration: InputDecoration(
-                    hintText: 'Enter task description',
-                    hintStyle: GoogleFonts.roboto(
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.w400,
-                      color: widget.textColor?.withOpacity(0.35),
-                    ),
-                    enabledBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                    focusedBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black),
-                    ),
-                  ),
-                  controller: controller,
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              backgroundColor: widget.dateColor,
+              title: Text(
+                'Create a new task',
+                style: GoogleFonts.roboto(
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w500,
+                  color: widget.textColor,
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  PopupMenuButton<int>(
-                    icon: Icon(
-                      Icons.flag,
-                      color: taskProvider.prioColor,
+                  Theme(
+                    data: Theme.of(context).copyWith(
+                      textSelectionTheme: const TextSelectionThemeData(
+                        cursorColor: Colors.black,
+                        selectionColor: Colors.black38,
+                        selectionHandleColor: Colors.black,
+                      ),
                     ),
-                    itemBuilder: (context) => [
-                      const PopupMenuItem(
-                        value: 1,
-                        child: Row(
-                          children: [
-                            Icon(Icons.flag, color: Colors.redAccent),
-                            Text('Red'),
-                          ],
+                    child: TextField(
+                      autofocus: true,
+                      decoration: InputDecoration(
+                        hintText: 'Enter task description',
+                        hintStyle: GoogleFonts.roboto(
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w400,
+                          color: widget.textColor?.withOpacity(0.35),
+                        ),
+                        enabledBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
+                        focusedBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
                         ),
                       ),
-                      const PopupMenuItem(
-                        value: 2,
-                        child: Row(
-                          children: [
-                            Icon(Icons.flag, color: Colors.orangeAccent),
-                            Text('Orange'),
-                          ],
+                      controller: controller,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      PopupMenuButton<int>(
+                        color: widget.dateColor,
+                        icon: Icon(
+                          Icons.flag,
+                          color: taskProvider.prioColor,
                         ),
-                      ),
-                      const PopupMenuItem(
-                        value: 3,
-                        child: Row(
-                          children: [
-                            Icon(Icons.flag, color: Colors.blueAccent),
-                            Text('Blue'),
-                          ],
-                        ),
-                      ),
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                            value: 1,
+                            child: Row(
+                              children: [
+                                const Icon(Icons.flag, color: Colors.redAccent),
+                                Text(
+                                  'Red',
+                                  style: GoogleFonts.roboto(
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w300,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            value: 2,
+                            child: Row(
+                              children: [
+                                const Icon(Icons.flag, color: Colors.orangeAccent),
+                                Text(
+                                  'Orange',
+                                  style: GoogleFonts.roboto(
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w300,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            value: 3,
+                            child: Row(
+                              children: [
+                                const Icon(Icons.flag, color: Colors.blueAccent),
+                                Text(
+                                  'Blue',
+                                  style: GoogleFonts.roboto(
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w300,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                        onSelected: (value) {
+                          switch (value) {
+                            case 1:
+                              taskProvider.setPrioColor(Colors.redAccent);
+                              selectedColor = 1;
+                              break;
+                            case 2:
+                              taskProvider.setPrioColor(Colors.orangeAccent);
+                              selectedColor = 2;
+                              break;
+                            case 3:
+                              taskProvider.setPrioColor(Colors.blueAccent);
+                              selectedColor = 3;
+                              break;
+                          }
+                          setState(() {
+                          });
+                          print('Selected: ${taskProvider.prioColor}');
+                        },
+                      )
                     ],
-                    onSelected: (value) {
-                      switch (value) {
-                        case 1:
-                          taskProvider.setPrioColor(Colors.redAccent);
-                          break;
-                        case 2:
-                          taskProvider.setPrioColor(Colors.orangeAccent);
-                          break;
-                        case 3:
-                          taskProvider.setPrioColor(Colors.blueAccent);
-                          break;
-                      }
-                      print('Selected: ${taskProvider.prioColor}');
-                    },
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                          "Choose a tag: ",
+                          style: GoogleFonts.roboto(
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w400,
+                            color: widget.textColor,
+                          )
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.tag,
+                          color: Colors.black,
+                        ),
+                      ),
+
+                    ],
                   )
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    "Choose a tag: ",
+              actions: <Widget>[
+                TextButton(
+                  child: Text(
+                    'Close',
                     style: GoogleFonts.roboto(
                       fontStyle: FontStyle.normal,
                       fontWeight: FontWeight.w400,
                       color: widget.textColor,
-                    )
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.tag,
-                      color: Colors.black,
                     ),
                   ),
-
-                ],
-              )
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text(
-                'Close',
-                style: GoogleFonts.roboto(
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w400,
-                  color: widget.textColor,
+                  onPressed: () async {
+                    await deleteTask(taskId);
+                    taskProvider.setPrioColor(Colors.black);
+                    if (!context.mounted) return;
+                    Navigator.of(context).pop();
+                  },
                 ),
-              ),
-              onPressed: () async {
-                await deleteTask(taskId);
-                taskProvider.setPrioColor(Colors.black);
-                if (!context.mounted) return;
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text(
-                'Create',
-                style: GoogleFonts.roboto(
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w400,
-                  color: widget.textColor,
+                TextButton(
+                  child: Text(
+                    'Create',
+                    style: GoogleFonts.roboto(
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w400,
+                      color: widget.textColor,
+                    ),
+                  ),
+                  onPressed: () async {
+                    Task? newTask = await getTask(taskId);
+                    print('Selected color: $selectedColor');
+                    textFields.add(TaskRow(
+                      textColor: widget.textColor,
+                      checkboxColor: widget.dateColor,
+                      text: controller.text,
+                      dateText: newTask?.creationDate,
+                      task: newTask,
+                      plannerId: widget.plannerId,
+                    ));
+                    var existingTask = Task(
+                      id: newTask!.id,
+                      creationDate: newTask.creationDate,
+                      taskDescription: controller.text,
+                      plannerId: widget.plannerId,
+                      priority: selectedColor
+                    );
+                    await updateTask(existingTask);
+                    taskProvider.setPrioColor(Colors.black);
+                    if (!context.mounted) return;
+                    Navigator.of(context).pop();
+                  },
                 ),
-              ),
-              onPressed: () async {
-                Task? newTask = await getTask(taskId);
-                setState(() {
-                  textFields.add(TaskRow(
-                    textColor: widget.textColor,
-                    checkboxColor: widget.dateColor,
-                    text: controller.text,
-                    dateText: newTask?.creationDate,
-                    task: newTask,
-                    plannerId: widget.plannerId,
-                  ));
-                });
-                var existingTask = Task(
-                    id: newTask!.id,
-                    creationDate: newTask.creationDate,
-                    taskDescription: controller.text,
-                    plannerId: widget.plannerId
-                );
-                await updateTask(existingTask);
-                if (!context.mounted) return;
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+              ],
+            );
+          }
         );
       },
     );
@@ -221,8 +254,10 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
     );
     int taskId = await insertTask(newTask);
     await showSaveScreen(newTask.taskDescription, taskId);
+    setState(() {});
     _newTaskFocusNode.requestFocus();
   }
+
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
