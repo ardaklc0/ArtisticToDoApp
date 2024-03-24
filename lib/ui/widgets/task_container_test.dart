@@ -165,27 +165,6 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                       )
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                          "Choose a tag: ",
-                          style: GoogleFonts.roboto(
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w400,
-                            color: widget.textColor,
-                          )
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.tag,
-                          color: Colors.black,
-                        ),
-                      ),
-
-                    ],
-                  )
                 ],
               ),
               actions: <Widget>[
@@ -224,13 +203,14 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                       dateText: newTask?.creationDate,
                       task: newTask,
                       plannerId: widget.plannerId,
+                      priority: selectedColor,
                     ));
                     var existingTask = Task(
                       id: newTask!.id,
                       creationDate: newTask.creationDate,
                       taskDescription: controller.text,
                       plannerId: widget.plannerId,
-                      priority: selectedColor
+                      priority: selectedColor,
                     );
                     await updateTask(existingTask);
                     taskProvider.setPrioColor(Colors.black);
