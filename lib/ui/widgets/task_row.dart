@@ -14,12 +14,14 @@ class TaskRow extends StatefulWidget {
   final String? dateText;
   final Task? task;
   final int plannerId;
+  final int priority;
   const TaskRow({super.key,
     required this.textColor,
     required this.checkboxColor,
     this.text, this.dateText,
     this.task,
-    required this.plannerId});
+    required this.plannerId,
+    required this.priority});
   @override
   State<TaskRow> createState() => _TaskRowState();
 }
@@ -190,17 +192,19 @@ class _TaskRowState extends State<TaskRow> {
             Checkbox(
               checkColor: Colors.black,
               fillColor: MaterialStateProperty.resolveWith((states) {
-                if (widget.task?.priority == 1) {
+                if (widget.priority == 0) {
+                  return widget.checkboxColor;
+                } else if (widget.priority == 1) {
                   return Colors.redAccent;
-                } else if (widget.task?.priority == 2) {
+                } else if (widget.priority == 2) {
                   return Colors.orangeAccent;
-                } else if (widget.task?.priority == 3) {
+                } else if (widget.priority == 3) {
                   return Colors.blueAccent;
                 }
-                return widget.checkboxColor;
               }),
               value: intConverter(widget.task!.isDone),
               onChanged: (bool? value) async {
+                print("Priority: ${widget.task!.priority}");
                 setState(() {
                   widget.task!.isDone = boolConverter(value!);
                 });
@@ -212,6 +216,7 @@ class _TaskRowState extends State<TaskRow> {
                     taskDescription: _controller.text,
                     plannerId: widget.plannerId,
                     isDone: intValue,
+                    priority: widget.priority,
                   );
                   await updateTask(existingTask);
                   print("Updated existing task: $existingTask");

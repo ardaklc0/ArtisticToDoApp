@@ -13,6 +13,7 @@ List<Widget> initializeTasks(List<Task>? taskList, List<Widget> taskRowList, Str
         dateText: element.creationDate,
         task: element,
         plannerId: plannerId,
+        priority: element.priority,
       );
     }));
   }
