@@ -175,6 +175,7 @@ class _TaskRowState extends State<TaskRow> {
                               ),
                             ),
                             style: GoogleFonts.abel(
+                              color: widget.task!.isDone == 1 ? Colors.black.withOpacity(0.5) : Colors.black,
                               fontSize: deviceWidth * 0.042,
                               fontStyle: FontStyle.normal,
                               fontWeight: FontWeight.w500,

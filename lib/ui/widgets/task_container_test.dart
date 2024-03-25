@@ -84,86 +84,114 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                       controller: controller,
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      PopupMenuButton<int>(
-                        color: widget.dateColor,
-                        icon: Icon(
-                          Icons.flag,
-                          color: taskProvider.prioColor,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15),
+                    child: Row(
+                      children: [
+                        PopupMenuButton<int>(
+                          tooltip: 'Select priority',
+                          color: widget.dateColor,
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                              value: 1,
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.flag, color: Colors.redAccent),
+                                  Text(
+                                    'High Priority',
+                                    style: GoogleFonts.roboto(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w300,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            PopupMenuItem(
+                              value: 2,
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.flag, color: Colors.orangeAccent),
+                                  Text(
+                                    'Mid Priority',
+                                    style: GoogleFonts.roboto(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w300,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            PopupMenuItem(
+                              value: 3,
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.flag, color: Colors.blueAccent),
+                                  Text(
+                                    'Low Priority',
+                                    style: GoogleFonts.roboto(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w300,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                          onSelected: (value) {
+                            switch (value) {
+                              case 1:
+                                taskProvider.setPrioColor(Colors.redAccent);
+                                selectedColor = 1;
+                                break;
+                              case 2:
+                                taskProvider.setPrioColor(Colors.orangeAccent);
+                                selectedColor = 2;
+                                break;
+                              case 3:
+                                taskProvider.setPrioColor(Colors.blueAccent);
+                                selectedColor = 3;
+                                break;
+                            }
+                            setState(() {
+                            });
+                            print('Selected: ${taskProvider.prioColor}');
+                          },
+                          child: Container(
+                            height: 40,
+                            width: 150,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black.withOpacity(0.5)),
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 5),
+                                  child: Text(
+                                      "Select Priority: ",
+                                      style: GoogleFonts.roboto(
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w400,
+                                        color: widget.textColor,
+                                      )),
+                                ),
+                                Icon(
+                                  Icons.flag,
+                                  color: taskProvider.prioColor,
+                                ),
+
+                              ],
+                            ),
+                          ),
                         ),
-                        itemBuilder: (context) => [
-                          PopupMenuItem(
-                            value: 1,
-                            child: Row(
-                              children: [
-                                const Icon(Icons.flag, color: Colors.redAccent),
-                                Text(
-                                  'Red',
-                                  style: GoogleFonts.roboto(
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w300,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          PopupMenuItem(
-                            value: 2,
-                            child: Row(
-                              children: [
-                                const Icon(Icons.flag, color: Colors.orangeAccent),
-                                Text(
-                                  'Orange',
-                                  style: GoogleFonts.roboto(
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w300,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          PopupMenuItem(
-                            value: 3,
-                            child: Row(
-                              children: [
-                                const Icon(Icons.flag, color: Colors.blueAccent),
-                                Text(
-                                  'Blue',
-                                  style: GoogleFonts.roboto(
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w300,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                        onSelected: (value) {
-                          switch (value) {
-                            case 1:
-                              taskProvider.setPrioColor(Colors.redAccent);
-                              selectedColor = 1;
-                              break;
-                            case 2:
-                              taskProvider.setPrioColor(Colors.orangeAccent);
-                              selectedColor = 2;
-                              break;
-                            case 3:
-                              taskProvider.setPrioColor(Colors.blueAccent);
-                              selectedColor = 3;
-                              break;
-                          }
-                          setState(() {
-                          });
-                          print('Selected: ${taskProvider.prioColor}');
-                        },
-                      )
-                    ],
+
+                      ],
+                    ),
                   ),
                 ],
               ),
