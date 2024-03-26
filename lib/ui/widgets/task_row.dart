@@ -106,14 +106,14 @@ class _TaskRowState extends State<TaskRow> {
                 child: Focus(
                   onFocusChange: (value) async {
                     value ? keyboardProvider.showKeyboard() : keyboardProvider.hideKeyboard();
-                    print(keyboardProvider.isKeyboardVisible);
                     if (_controller.text.isNotEmpty) {
                       if (widget.task != null) {
                         var existingTask = Task(
-                            id: widget.task!.id,
-                            creationDate: widget.task!.creationDate,
-                            taskDescription: _controller.text,
-                            plannerId: widget.plannerId
+                          id: widget.task!.id,
+                          creationDate: widget.task!.creationDate,
+                          taskDescription: _controller.text,
+                          plannerId: widget.plannerId,
+                          priority: widget.priority,
                         );
                         await updateTask(existingTask);
                       }

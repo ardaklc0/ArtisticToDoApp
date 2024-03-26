@@ -24,7 +24,7 @@ import 'package:pomodoro2/screens/splash.dart';
 import 'package:pomodoro2/screens/van_gogh.dart';
 import 'package:pomodoro2/services/task_service.dart';
 import 'package:intl/intl.dart';
-import 'package:pomodoro2/ui/widgets/task_container_test.dart';
+import 'package:pomodoro2/ui/widgets/task_container.dart';
 import 'package:provider/provider.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
