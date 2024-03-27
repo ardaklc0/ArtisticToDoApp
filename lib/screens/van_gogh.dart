@@ -1,8 +1,5 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:provider/provider.dart';
-import 'package:shimmer/shimmer.dart';
 import '../main.dart';
 import '../provider/keyboard_provider.dart';
 import '../provider/navbar_provider.dart';

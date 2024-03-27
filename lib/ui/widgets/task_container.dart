@@ -33,6 +33,51 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
     initializeTasks(widget.tasks, textFields, widget.dateText, widget.textColor, widget.dateColor, widget.plannerId);
   }
 
+  Future showDaysToChoose() async {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.5),
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+             return AlertDialog(
+               backgroundColor: widget.dateColor,
+               actions: <Widget>[
+                 TextButton(
+                   child: Text(
+                     'Cancel',
+                     style: GoogleFonts.roboto(
+                       fontStyle: FontStyle.normal,
+                       fontWeight: FontWeight.w400,
+                       color: widget.textColor,
+                     ),
+                   ),
+                   onPressed: () async {
+                      Navigator.of(context).pop();
+                   },
+                 ),
+                 TextButton(
+                   child: Text(
+                     'Submit',
+                     style: GoogleFonts.roboto(
+                       fontStyle: FontStyle.normal,
+                       fontWeight: FontWeight.w400,
+                       color: widget.textColor,
+                     ),
+                   ),
+                   onPressed: () async {
+                      Navigator.of(context).pop();
+                   },
+                 ),
+               ],
+            );
+          }
+        );
+      },
+    );
+  }
+
   Future showSaveScreen(String taskDescription, int taskId) async {
     TextEditingController controller = TextEditingController(text: taskDescription);
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
@@ -89,7 +134,7 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                   Padding(
                     padding: const EdgeInsets.only(top: 15),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         PopupMenuButton<int>(
                           tooltip: 'Select priority',
@@ -193,7 +238,24 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                             ),
                           ),
                         ),
-
+                        Container(
+                          height: 40,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black.withOpacity(0.3)),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: IconButton(
+                            onPressed: () {
+                              showDaysToChoose();
+                            },
+                            icon: const Icon(
+                              Icons.access_time,
+                              color: Colors.black,
+                            ),
+                            color: Colors.black,
+                          ),
+                        ),
                       ],
                     ),
                   ),
