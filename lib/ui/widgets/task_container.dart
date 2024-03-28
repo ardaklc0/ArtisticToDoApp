@@ -33,6 +33,54 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
     initializeTasks(widget.tasks, textFields, widget.dateText, widget.textColor, widget.dateColor, widget.plannerId);
   }
 
+  Column dayButtons() {
+    List<ElevatedButton> buttons = [];
+    List<String> days = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+    for (int i = 0; i < 7; i++) {
+      buttons.add(ElevatedButton(
+        onPressed: () {
+          print('Day ${days.elementAt(i)}');
+        },
+        style: ButtonStyle(
+          fixedSize: MaterialStateProperty.all<Size>(
+            const Size(40, 40),
+          ),
+          backgroundColor: MaterialStateProperty.all<Color>(widget.dateColor),
+          shape: MaterialStateProperty.all<CircleBorder>(
+            const CircleBorder(),
+          ),
+        ),
+        child: Text(
+          days.elementAt(i),
+          style: GoogleFonts.roboto(
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.w300,
+            color: widget.textColor,
+          ),
+          textScaler: const TextScaler.linear(1
+          ),
+        ),
+      ));
+    }
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ...buttons.sublist(0, 4),
+          ]
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ...buttons.sublist(4, 7),
+          ],
+        )
+      ],
+    );
+  }
+
   Future showDaysToChoose() async {
     return showDialog(
       barrierDismissible: false,
@@ -43,6 +91,7 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
             builder: (context, setState) {
              return AlertDialog(
                backgroundColor: widget.dateColor,
+               content: dayButtons(),
                actions: <Widget>[
                  TextButton(
                    child: Text(
@@ -113,7 +162,6 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                     ),
                     child: TextField(
                       autofocus: true,
-
                       decoration: InputDecoration(
                         hintText: 'Enter task description',
                         hintStyle: GoogleFonts.roboto(
