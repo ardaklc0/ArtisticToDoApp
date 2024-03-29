@@ -34,32 +34,35 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
   }
 
   Column dayButtons() {
-    List<ElevatedButton> buttons = [];
+    List<Stack> buttons = [];
     List<String> days = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
     for (int i = 0; i < 7; i++) {
-      buttons.add(ElevatedButton(
-        onPressed: () {
-          print('Day ${days.elementAt(i)}');
-        },
-        style: ButtonStyle(
-          fixedSize: MaterialStateProperty.all<Size>(
-            const Size(40, 40),
+      buttons.add(Stack(
+        alignment: Alignment.center,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              print('Day ${days.elementAt(i)}');
+            },
+            style: ButtonStyle(
+              fixedSize: MaterialStateProperty.all<Size>(
+                const Size(45, 45),
+              ),
+              backgroundColor: MaterialStateProperty.all<Color>(widget.dateColor),
+              shape: MaterialStateProperty.all<CircleBorder>(
+                const CircleBorder(),
+              ),
+            ), child: null,
           ),
-          backgroundColor: MaterialStateProperty.all<Color>(widget.dateColor),
-          shape: MaterialStateProperty.all<CircleBorder>(
-            const CircleBorder(),
+          Text(
+            days.elementAt(i),
+            style: GoogleFonts.roboto(
+              fontStyle: FontStyle.normal,
+              fontWeight: FontWeight.w300,
+              color: widget.textColor,
+            ),
           ),
-        ),
-        child: Text(
-          days.elementAt(i),
-          style: GoogleFonts.roboto(
-            fontStyle: FontStyle.normal,
-            fontWeight: FontWeight.w300,
-            color: widget.textColor,
-          ),
-          textScaler: const TextScaler.linear(1
-          ),
-        ),
+        ],
       ));
     }
     return Column(
@@ -71,6 +74,7 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
             ...buttons.sublist(0, 4),
           ]
         ),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.01),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
