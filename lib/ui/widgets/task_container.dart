@@ -2,11 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:pomodoro2/models/task_model.dart';
 import 'package:pomodoro2/provider/task_provider.dart';
+import 'package:pomodoro2/services/planner_service.dart';
 import 'package:pomodoro2/ui/widgets/task_row.dart';
 import 'package:pomodoro2/services/task_service.dart';
 import 'package:provider/provider.dart';
+import '../../models/planner_model.dart';
 import '../helper/common_variables.dart';
 import '../helper/task_function.dart';
 import '../styles/common_styles.dart';
@@ -26,44 +29,54 @@ class TaskContainerTest extends StatefulWidget {
 class _TaskContainerTestState extends State<TaskContainerTest> {
   List<Widget> textFields = [];
   late FocusNode _newTaskFocusNode;
+
   @override
   void initState() {
     super.initState();
     _newTaskFocusNode = FocusNode();
     initializeTasks(widget.tasks, textFields, widget.dateText, widget.textColor, widget.dateColor, widget.plannerId);
   }
-
-  Column dayButtons() {
-    List<Stack> buttons = [];
-    List<String> days = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+  Future<Column> dayButtons() async {
+    Planner? currentPlanner = await getPlanner(widget.plannerId);
+    List<ElevatedButton> buttons = [];
+    Color color = widget.dateColor;
+    List<String> chosenDays = [];
+    DateFormat inputFormat = DateFormat("M/d/yyyy");
+    DateTime parsedDateTime = inputFormat.parse(currentPlanner!.creationDate.toString());
+    DateFormat dateFormat = DateFormat('yMd');
+    DateFormat dayFormat = DateFormat('EE');
+    String date = "";
+    String day = "";
     for (int i = 0; i < 7; i++) {
-      buttons.add(Stack(
-        alignment: Alignment.center,
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              print('Day ${days.elementAt(i)}');
-            },
-            style: ButtonStyle(
-              fixedSize: MaterialStateProperty.all<Size>(
-                const Size(45, 45),
-              ),
-              backgroundColor: MaterialStateProperty.all<Color>(widget.dateColor),
-              shape: MaterialStateProperty.all<CircleBorder>(
-                const CircleBorder(),
-              ),
-            ), child: null,
+      date = dateFormat.format(parsedDateTime);
+      day = dayFormat.format(parsedDateTime);
+      print(date);
+      buttons.add(
+        ElevatedButton(
+          key: ValueKey(date),
+          onPressed: () {
+            setState(() {
+              chosenDays.add(day);
+              print(chosenDays);
+            });
+          },
+          style: ElevatedButton.styleFrom(
+            elevation: 5,
+            backgroundColor: color,
+            shape: const CircleBorder(),
+            padding: const EdgeInsets.all(15),
           ),
-          Text(
-            days.elementAt(i),
+          child: Text(
+            day.toUpperCase(),
             style: GoogleFonts.roboto(
               fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.w300,
+              fontWeight: FontWeight.w400,
               color: widget.textColor,
             ),
           ),
-        ],
-      ));
+        )
+      );
+      parsedDateTime = parsedDateTime.add(const Duration(days: 1));
     }
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -80,7 +93,7 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
           children: [
             ...buttons.sublist(4, 7),
           ],
-        )
+        ),
       ],
     );
   }
@@ -95,7 +108,16 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
             builder: (context, setState) {
              return AlertDialog(
                backgroundColor: widget.dateColor,
-               content: dayButtons(),
+               content: FutureBuilder(
+                 future: dayButtons(),
+                 builder: (context, AsyncSnapshot<Column> snapshot) {
+                   if (snapshot.connectionState == ConnectionState.waiting) {
+                     return const CircularProgressIndicator();
+                   } else {
+                     return snapshot.data!;
+                   }
+                 },
+               ),
                actions: <Widget>[
                  TextButton(
                    child: Text(
