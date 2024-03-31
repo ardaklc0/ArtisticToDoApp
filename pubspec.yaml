@@ -54,6 +54,7 @@ dependencies:
   carousel_slider: ^4.2.1
   day_picker: ^2.2.0
   flutter_launcher_icons: ^0.13.1
+  syncfusion_flutter_datepicker: ^25.1.37
 
 dev_dependencies:
   flutter_test:

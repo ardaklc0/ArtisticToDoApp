@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:pomodoro2/models/task_model.dart';
@@ -9,10 +7,10 @@ import 'package:pomodoro2/services/planner_service.dart';
 import 'package:pomodoro2/ui/widgets/task_row.dart';
 import 'package:pomodoro2/services/task_service.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../models/planner_model.dart';
 import '../helper/common_variables.dart';
 import '../helper/task_function.dart';
-import '../styles/common_styles.dart';
 import 'common_widgets.dart';
 class TaskContainerTest extends StatefulWidget {
   final Color dateColor;
@@ -29,6 +27,7 @@ class TaskContainerTest extends StatefulWidget {
 class _TaskContainerTestState extends State<TaskContainerTest> {
   List<Widget> textFields = [];
   late FocusNode _newTaskFocusNode;
+  Set<String> selectedDays = {};
 
   @override
   void initState() {
@@ -36,116 +35,86 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
     _newTaskFocusNode = FocusNode();
     initializeTasks(widget.tasks, textFields, widget.dateText, widget.textColor, widget.dateColor, widget.plannerId);
   }
-  Future<Column> dayButtons() async {
+
+  Future showDaysToChoose() async {
     Planner? currentPlanner = await getPlanner(widget.plannerId);
-    List<ElevatedButton> buttons = [];
-    Color color = widget.dateColor;
-    List<String> chosenDays = [];
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     DateFormat inputFormat = DateFormat("M/d/yyyy");
     DateTime parsedDateTime = inputFormat.parse(currentPlanner!.creationDate.toString());
     DateFormat dateFormat = DateFormat('yMd');
     DateFormat dayFormat = DateFormat('EE');
-    String date = "";
-    String day = "";
-    for (int i = 0; i < 7; i++) {
-      date = dateFormat.format(parsedDateTime);
-      day = dayFormat.format(parsedDateTime);
-      print(date);
-      buttons.add(
-        ElevatedButton(
-          key: ValueKey(date),
-          onPressed: () {
-            setState(() {
-              chosenDays.add(day);
-              print(chosenDays);
-            });
-          },
-          style: ElevatedButton.styleFrom(
-            elevation: 5,
-            backgroundColor: color,
-            shape: const CircleBorder(),
-            padding: const EdgeInsets.all(15),
-          ),
-          child: Text(
-            day.toUpperCase(),
-            style: GoogleFonts.roboto(
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.w400,
-              color: widget.textColor,
-            ),
-          ),
-        )
-      );
-      parsedDateTime = parsedDateTime.add(const Duration(days: 1));
-    }
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ...buttons.sublist(0, 4),
-          ]
-        ),
-        SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ...buttons.sublist(4, 7),
-          ],
-        ),
-      ],
-    );
-  }
+    DateRangePickerController controller = DateRangePickerController();
 
-  Future showDaysToChoose() async {
     return showDialog(
       barrierDismissible: false,
       context: context,
-      barrierColor: Colors.black.withOpacity(0.5),
         builder: (BuildContext context) {
           return StatefulBuilder(
             builder: (context, setState) {
              return AlertDialog(
                backgroundColor: widget.dateColor,
-               content: FutureBuilder(
-                 future: dayButtons(),
-                 builder: (context, AsyncSnapshot<Column> snapshot) {
-                   if (snapshot.connectionState == ConnectionState.waiting) {
-                     return const CircularProgressIndicator();
-                   } else {
-                     return snapshot.data!;
-                   }
-                 },
+               content: Container(
+                 width: width * 0.8 , // Set your desired width
+                 height: height * 0.5,
+                 child: MaterialApp(
+                   theme: ThemeData(
+                     colorScheme: ColorScheme.fromSeed(
+                       seedColor: Colors.white,
+                       primary: Colors.black, // Explicitly set text color to white
+                     ),
+                     useMaterial3: true,
+                   ),
+                   debugShowCheckedModeBanner: false,
+                   home: SfDateRangePicker(
+                     controller: controller,
+                     selectionColor: widget.taskColor,
+                     selectionTextStyle: GoogleFonts.roboto(
+                       fontStyle: FontStyle.normal,
+                       fontWeight: FontWeight.w400,
+                       color: Colors.black,
+                     ),
+                     monthCellStyle: DateRangePickerMonthCellStyle(
+                       textStyle: GoogleFonts.roboto(
+                         fontStyle: FontStyle.normal,
+                         fontWeight: FontWeight.w400,
+                         color: widget.textColor,
+                       ),
+                     ),
+                     backgroundColor: Colors.transparent,
+                     minDate: parsedDateTime,
+                     maxDate: parsedDateTime.add(const Duration(days: 6)),
+                     showActionButtons: true,
+                     headerStyle: DateRangePickerHeaderStyle(
+                       backgroundColor: Colors.transparent,
+                       textAlign: TextAlign.center,
+                       textStyle: GoogleFonts.roboto(
+                         fontStyle: FontStyle.normal,
+                         fontWeight: FontWeight.w400,
+                         color: widget.textColor,
+                       ),
+                     ),
+                     cancelText: 'Cancel',
+                     todayHighlightColor: Colors.black,
+                     rangeSelectionColor: Colors.black,
+                     endRangeSelectionColor: Colors.black,
+                     startRangeSelectionColor: Colors.black,
+                     confirmText: 'Confirm',
+                     selectionMode: DateRangePickerSelectionMode.multiple,
+                     onCancel: () {
+                       selectedDays.clear();
+                       Navigator.of(context).pop();
+                     },
+                     onSelectionChanged: (dateRangePickerSelectionChangedArgs) {
+                        selectedDays.clear();
+                        for (int i = 0; i < dateRangePickerSelectionChangedArgs.value.length; i++) {
+                          selectedDays.add(dateFormat.format(dateRangePickerSelectionChangedArgs.value[i]));
+                        }
+                        print(selectedDays);
+                      },
+                   ),
+                 ),
                ),
-               actions: <Widget>[
-                 TextButton(
-                   child: Text(
-                     'Cancel',
-                     style: GoogleFonts.roboto(
-                       fontStyle: FontStyle.normal,
-                       fontWeight: FontWeight.w400,
-                       color: widget.textColor,
-                     ),
-                   ),
-                   onPressed: () async {
-                      Navigator.of(context).pop();
-                   },
-                 ),
-                 TextButton(
-                   child: Text(
-                     'Submit',
-                     style: GoogleFonts.roboto(
-                       fontStyle: FontStyle.normal,
-                       fontWeight: FontWeight.w400,
-                       color: widget.textColor,
-                     ),
-                   ),
-                   onPressed: () async {
-                      Navigator.of(context).pop();
-                   },
-                 ),
-               ],
             );
           }
         );
@@ -283,7 +252,6 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                             }
                             setState(() {
                             });
-                            print('Selected: ${taskProvider.prioColor}');
                           },
                           child: Container(
                             height: 40,
@@ -324,7 +292,7 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                               showDaysToChoose();
                             },
                             icon: const Icon(
-                              Icons.access_time,
+                              Icons.date_range,
                               color: Colors.black,
                             ),
                             color: Colors.black,
@@ -363,7 +331,6 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                   ),
                   onPressed: () async {
                     Task? newTask = await getTask(taskId);
-                    print('Selected color: $selectedColor');
                     textFields.add(TaskRow(
                       textColor: widget.textColor,
                       checkboxColor: widget.dateColor,
@@ -509,3 +476,31 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
   }
 }
 
+//class DayButton extends StatelessWidget{
+//  String day;
+//  String date;
+//  Color color;
+//  void Function()? onPressed;
+//  DayButton({super.key, required this.day, required this.date, required this.color, this.onPressed});
+//  @override
+//  Widget build(BuildContext context) {
+//    return ElevatedButton(
+//      key: ValueKey(date),
+//      onPressed: onPressed,
+//      style: ElevatedButton.styleFrom(
+//        elevation: 5,
+//        backgroundColor: color,
+//        shape: const CircleBorder(),
+//        padding: const EdgeInsets.all(15),
+//      ),
+//      child: Text(
+//        day.toUpperCase(),
+//        style: GoogleFonts.roboto(
+//          fontStyle: FontStyle.normal,
+//          fontWeight: FontWeight.w400,
+//          color: Colors.black,
+//        ),
+//      ),
+//    );
+//  }
+//}
