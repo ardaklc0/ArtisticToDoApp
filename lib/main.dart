@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:pomodoro2/provider/audio_provider.dart';
 import 'package:pomodoro2/provider/auto_start_provider.dart';
+import 'package:pomodoro2/provider/chosen_day_provider.dart';
 import 'package:pomodoro2/provider/keyboard_provider.dart';
 import 'package:pomodoro2/provider/navbar_provider.dart';
 import 'package:pomodoro2/provider/notification_provider.dart';
@@ -41,6 +42,7 @@ void main() async {
   final taskProvider = TaskProvider();
   final navbarProvider = NavbarProvider();
   final keyboardProvider = KeyboardProvider();
+  final chosenDayProvider = ChosenDayProvider();
   runApp(
     MultiProvider(
       providers: [
@@ -54,6 +56,7 @@ void main() async {
         ChangeNotifierProvider.value(value: taskProvider),
         ChangeNotifierProvider.value(value: navbarProvider),
         ChangeNotifierProvider.value(value: keyboardProvider),
+        ChangeNotifierProvider.value(value: chosenDayProvider),
       ],
       child: const MyApp(),
     ),
