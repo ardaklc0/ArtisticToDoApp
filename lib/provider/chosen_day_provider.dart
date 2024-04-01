@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 
 class ChosenDayProvider extends ChangeNotifier {
-  List<String> _chosenDay = [];
+  Set<String> _chosenDay = {};
 
-  List<String> get chosenDay => _chosenDay;
+  Set<String> get chosenDay => _chosenDay;
 
-  void setChosenDay(List<String> days) {
+  void setChosenDay(Set<String> days) {
     _chosenDay = days;
+    notifyListeners();
+  }
+  void clearChosenDay() {
+    _chosenDay = {};
     notifyListeners();
   }
 }
