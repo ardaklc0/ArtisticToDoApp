@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:pomodoro2/models/task_model.dart';
+import 'package:pomodoro2/provider/chosen_day_provider.dart';
 import 'package:pomodoro2/provider/task_provider.dart';
 import 'package:pomodoro2/services/planner_service.dart';
 import 'package:pomodoro2/ui/widgets/task_row.dart';
@@ -28,14 +29,12 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
   List<Widget> textFields = [];
   late FocusNode _newTaskFocusNode;
   Set<String> selectedDays = {};
-
   @override
   void initState() {
     super.initState();
     _newTaskFocusNode = FocusNode();
     initializeTasks(widget.tasks, textFields, widget.dateText, widget.textColor, widget.dateColor, widget.plannerId);
   }
-
   Future showDaysToChoose() async {
     Planner? currentPlanner = await getPlanner(widget.plannerId);
     double height = MediaQuery.of(context).size.height;
@@ -45,11 +44,11 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
     DateFormat dateFormat = DateFormat('yMd');
     DateFormat dayFormat = DateFormat('EE');
     DateRangePickerController controller = DateRangePickerController();
-
     return showDialog(
       barrierDismissible: false,
       context: context,
         builder: (BuildContext context) {
+          final chosenDayProvider = Provider.of<ChosenDayProvider>(context);
           return StatefulBuilder(
             builder: (context, setState) {
              return AlertDialog(
@@ -100,6 +99,11 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                      endRangeSelectionColor: Colors.black,
                      startRangeSelectionColor: Colors.black,
                      confirmText: 'Confirm',
+                     initialSelectedDates: chosenDayProvider.chosenDay.isEmpty ?
+                     [] :
+                     [for (int i = 0; i < chosenDayProvider.chosenDay.length; i++)
+                       dateFormat.parse(chosenDayProvider.chosenDay.elementAt(i))
+                     ],
                      selectionMode: DateRangePickerSelectionMode.multiple,
                      onCancel: () {
                        selectedDays.clear();
@@ -112,6 +116,10 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                         }
                         print(selectedDays);
                       },
+                     onSubmit: (dateRangePickerSubmitArgs) {
+                       chosenDayProvider.setChosenDay(selectedDays);
+                       Navigator.of(context).pop();
+                     },
                    ),
                  ),
                ),
@@ -132,6 +140,7 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
       context: context,
       barrierColor: Colors.black.withOpacity(0.5),
       builder: (BuildContext context) {
+        final chosenDayProvider = Provider.of<ChosenDayProvider>(context);
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
@@ -291,9 +300,9 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                             onPressed: () {
                               showDaysToChoose();
                             },
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.date_range,
-                              color: Colors.black,
+                              color: chosenDayProvider.chosenDay.isEmpty ? Colors.black : Colors.green,
                             ),
                             color: Colors.black,
                           ),
@@ -317,6 +326,7 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                     await deleteTask(taskId);
                     taskProvider.setPrioColor(Colors.black);
                     if (!context.mounted) return;
+                    chosenDayProvider.clearChosenDay();
                     Navigator.of(context).pop();
                   },
                 ),
@@ -349,6 +359,7 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                     );
                     await updateTask(existingTask);
                     taskProvider.setPrioColor(Colors.black);
+                    chosenDayProvider.clearChosenDay();
                     if (!context.mounted) return;
                     Navigator.of(context).pop();
                   },
@@ -475,32 +486,3 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
     );
   }
 }
-
-//class DayButton extends StatelessWidget{
-//  String day;
-//  String date;
-//  Color color;
-//  void Function()? onPressed;
-//  DayButton({super.key, required this.day, required this.date, required this.color, this.onPressed});
-//  @override
-//  Widget build(BuildContext context) {
-//    return ElevatedButton(
-//      key: ValueKey(date),
-//      onPressed: onPressed,
-//      style: ElevatedButton.styleFrom(
-//        elevation: 5,
-//        backgroundColor: color,
-//        shape: const CircleBorder(),
-//        padding: const EdgeInsets.all(15),
-//      ),
-//      child: Text(
-//        day.toUpperCase(),
-//        style: GoogleFonts.roboto(
-//          fontStyle: FontStyle.normal,
-//          fontWeight: FontWeight.w400,
-//          color: Colors.black,
-//        ),
-//      ),
-//    );
-//  }
-//}
