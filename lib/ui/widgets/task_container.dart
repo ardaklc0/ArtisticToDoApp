@@ -100,10 +100,8 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                      startRangeSelectionColor: Colors.black,
                      confirmText: 'Confirm',
                      initialSelectedDates: chosenDayProvider.chosenDay.isEmpty ?
-                     [] :
-                     [for (int i = 0; i < chosenDayProvider.chosenDay.length; i++)
-                       dateFormat.parse(chosenDayProvider.chosenDay.elementAt(i))
-                     ],
+                     [] : [for (int i = 0; i < chosenDayProvider.chosenDay.length; i++)
+                       dateFormat.parse(chosenDayProvider.chosenDay.elementAt(i))],
                      selectionMode: DateRangePickerSelectionMode.multiple,
                      onCancel: () {
                        selectedDays.clear();
@@ -130,8 +128,8 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
     );
   }
 
-  Future showSaveScreen(String taskDescription, int taskId) async {
-    TextEditingController controller = TextEditingController(text: taskDescription);
+  Future showSaveScreen() async {
+    TextEditingController controller = TextEditingController(text: "New Task");
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
     int selectedColor = 0;
     String prioName = '';
@@ -323,10 +321,9 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                     ),
                   ),
                   onPressed: () async {
-                    await deleteTask(taskId);
                     taskProvider.setPrioColor(Colors.black);
-                    if (!context.mounted) return;
                     chosenDayProvider.clearChosenDay();
+                    if (!context.mounted) return;
                     Navigator.of(context).pop();
                   },
                 ),
@@ -340,24 +337,14 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                     ),
                   ),
                   onPressed: () async {
-                    Task? newTask = await getTask(taskId);
-                    textFields.add(TaskRow(
-                      textColor: widget.textColor,
-                      checkboxColor: widget.dateColor,
-                      text: controller.text,
-                      dateText: newTask?.creationDate,
-                      task: newTask,
-                      plannerId: widget.plannerId,
-                      priority: selectedColor,
-                    ));
-                    var existingTask = Task(
-                      id: newTask!.id,
-                      creationDate: newTask.creationDate,
-                      taskDescription: controller.text,
-                      plannerId: widget.plannerId,
-                      priority: selectedColor,
-                    );
-                    await updateTask(existingTask);
+                    for (int i = 0; i < chosenDayProvider.chosenDay.length; i++) {
+                      await insertTask(Task(
+                        taskDescription: controller.text,
+                        priority: selectedColor,
+                        creationDate: chosenDayProvider.chosenDay.elementAt(i),
+                        plannerId: widget.plannerId,
+                      ));
+                    }
                     taskProvider.setPrioColor(Colors.black);
                     chosenDayProvider.clearChosenDay();
                     if (!context.mounted) return;
@@ -373,13 +360,7 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
   }
 
   Future<void> addTask() async {
-    Task? newTask = Task(
-      taskDescription: "New Task",
-      creationDate: widget.dateText,
-      plannerId: widget.plannerId,
-    );
-    int taskId = await insertTask(newTask);
-    await showSaveScreen(newTask.taskDescription, taskId);
+    await showSaveScreen();
     setState(() {});
     _newTaskFocusNode.requestFocus();
   }
@@ -454,7 +435,11 @@ class _TaskContainerTestState extends State<TaskContainerTest> {
                       top: deviceHeight * 0.240,
                       left: deviceWidth * 0.825,
                       child: ElevatedButton(
-                        onPressed: addTask,
+                        onPressed: () async {
+                          await addTask();
+                          setState(() {
+                          });
+                        },
                         style: ButtonStyle(
                           fixedSize: MaterialStateProperty.all<Size>(
                             Size(deviceHeight * 0.05, deviceHeight * 0.05),
