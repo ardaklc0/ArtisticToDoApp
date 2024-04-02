@@ -291,8 +291,9 @@ class PlaceholderForPage extends StatelessWidget {
 
 
 class ShimmerAppBar extends StatelessWidget implements PreferredSizeWidget {
-  ShimmerAppBar ({super.key, required this.isLoading, required this.colorList});
+  ShimmerAppBar ({super.key, required this.isLoading, required this.colorList, this.actions});
   bool isLoading;
+  List<Widget>? actions;
   final List<Color> colorList;
   @override
   Widget build(BuildContext context) {
@@ -313,6 +314,7 @@ class ShimmerAppBar extends StatelessWidget implements PreferredSizeWidget {
         toolbarOpacity: 0.7,
         bottomOpacity: 0.5,
       ),
+      actions: actions,
     );
   }
 
