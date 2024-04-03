@@ -68,7 +68,20 @@ class _SalvadorDaliState extends State<SalvadorDali> {
         }
       },
       child: Scaffold(
-        appBar: ShimmerAppBar(isLoading: isLoading, colorList: colorList),
+        appBar: ShimmerAppBar(
+          isLoading: isLoading,
+          colorList: colorList,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                navbarProvider.showNavbar();
+                keyboardProvider.hideKeyboard();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
         backgroundColor: colorList.last,
         resizeToAvoidBottomInset: true,
         body:  AnimatedPadding(
