@@ -71,7 +71,7 @@ class _VanGoghState extends State<VanGogh> {
                     debugShowCheckedModeBanner: false,
                     home: SfDateRangePicker(
                       controller: controller,
-                      selectionColor: colorList.last,
+                      selectionColor: colorList.first.withOpacity(0.5),
                       selectionTextStyle: GoogleFonts.roboto(
                         fontStyle: FontStyle.normal,
                         fontWeight: FontWeight.w400,
@@ -135,7 +135,6 @@ class _VanGoghState extends State<VanGogh> {
       },
     );
   }
-
   Future showSaveScreen() async {
     TextEditingController controller = TextEditingController(text: "");
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
@@ -397,12 +396,10 @@ class _VanGoghState extends State<VanGogh> {
       },
     );
   }
-
   Future<void> addTask() async {
     await showSaveScreen();
     setState(() {});
   }
-
   Future<void> _loadColors() async {
     try {
       List<Color> colors = await sortedColors(randomImage);

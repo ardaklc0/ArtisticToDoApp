@@ -27,7 +27,7 @@ Future<Database> initializeDatabase() async {
               'total_work_minutes INT)',
         );
       },
-      version: 3,
+      version: 4,
     );
     return database;
   } catch (e) {

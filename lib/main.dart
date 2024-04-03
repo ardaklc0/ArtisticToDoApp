@@ -114,6 +114,7 @@ Future<SingleChildScrollView> createPlanner(String dateTime, int plannerId, Colo
   DateFormat dayFormat = DateFormat('EEEE');
   String date = "";
   String day = "";
+  ScrollController _controller = ScrollController(initialScrollOffset: 0.0);
   var tasks = await getTasks(plannerId);
   for (int i = 0; i < 7; i++) {
     date = dateFormat.format(parsedDateTime);
@@ -132,7 +133,7 @@ Future<SingleChildScrollView> createPlanner(String dateTime, int plannerId, Colo
     parsedDateTime = parsedDateTime.add(const Duration(days: 1));
   }
   return SingleChildScrollView(
-      reverse: true,
+      controller: _controller,
       child: Column(
         children: [
           ...newContainer
