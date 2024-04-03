@@ -498,7 +498,7 @@ class _JohannesVermeerState extends State<JohannesVermeer> {
           child: PlaceholderForPage(),
         ) else
           Padding(
-            padding: const EdgeInsets.only(top: 5),
+            padding: const EdgeInsets.only(top: 3),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
