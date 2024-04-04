@@ -347,6 +347,7 @@ class _JohannesVermeerState extends State<JohannesVermeer> {
                     onPressed: () async {
                       taskProvider.setPrioColor(Colors.black);
                       chosenDayProvider.clearChosenDay();
+                      error = '';
                       if (!context.mounted) return;
                       Navigator.of(context).pop();
                     },
