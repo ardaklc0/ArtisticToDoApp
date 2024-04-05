@@ -313,7 +313,7 @@ class _MonetState extends State<Monet> {
                           ),
                           Container(
                             height: 40,
-                            width: 100,
+                            width: 50,
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.black.withOpacity(0.3)),
                               borderRadius: BorderRadius.circular(10),
@@ -323,8 +323,36 @@ class _MonetState extends State<Monet> {
                                 showDaysToChoose();
                               },
                               icon: Icon(
-                                Icons.date_range,
-                                color: chosenDayProvider.chosenDay.isEmpty ? Colors.black : Colors.green,
+                                Icons.calendar_month,
+                                color: chosenDayProvider.chosenDay.isEmpty ? Colors.black : Colors.redAccent,
+                              ),
+                              color: Colors.black,
+                            ),
+                          ),
+                          Container(
+                            height: 40,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black.withOpacity(0.3)),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: IconButton(
+                              onPressed: () {
+                                if (chosenDayProvider.chosenDay.isNotEmpty) {
+                                  chosenDayProvider.clearChosenDay();
+                                } else {
+                                  DateFormat inputFormat = DateFormat("M/d/yyyy");
+                                  String currentDateString = DateFormat("M/d/yyyy").format(DateTime.now());
+                                  DateTime parsedDateTime = inputFormat.parse(currentDateString);
+                                  DateFormat dateFormat = DateFormat('yMd');
+                                  String formattedDate = dateFormat.format(parsedDateTime);
+                                  chosenDayProvider.setChosenDay({formattedDate});
+                                }
+                                setState(() {});
+                              },
+                              icon: Icon(
+                                Icons.today,
+                                color: chosenDayProvider.chosenDay.isEmpty ? Colors.black : Colors.redAccent,
                               ),
                               color: Colors.black,
                             ),
