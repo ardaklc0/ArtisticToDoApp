@@ -479,9 +479,11 @@ class _PicassoState extends State<Picasso> {
               ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(colorList.last),
-                  elevation: MaterialStateProperty.all(5),
+                  elevation: MaterialStateProperty.all(0),
                   shape: MaterialStateProperty.all(
-                      const CircleBorder()
+                    const CircleBorder(
+                        side: BorderSide(color: Colors.black, width: 1.0)
+                    ),
                   ),
                 ),
                 onPressed: () async {
