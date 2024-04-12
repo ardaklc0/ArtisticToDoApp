@@ -40,7 +40,6 @@ class _VanGoghState extends State<VanGogh> {
     colorList = [Colors.transparent, Colors.transparent];
     _loadColors();
   }
-
   Future showDaysToChoose() async {
     Planner? currentPlanner = await getPlanner(widget.plannerId!);
     double height = MediaQuery.of(context).size.height;
@@ -448,7 +447,6 @@ class _VanGoghState extends State<VanGogh> {
       print('Error loading colors: $error');
     }
   }
-
 @override
 Widget build(BuildContext context) {
   final double deviceWidth = MediaQuery.of(context).size.width;
@@ -471,7 +469,7 @@ Widget build(BuildContext context) {
       ),
       backgroundColor: isLoading ? Colors.transparent : colorList.last,
       resizeToAvoidBottomInset: true,
-      persistentFooterButtons: [
+      persistentFooterButtons: !keyboardProvider.isKeyboardVisible ? [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -503,7 +501,7 @@ Widget build(BuildContext context) {
             ),
           ],
         ),
-      ],
+      ] : [],
       body: AnimatedPadding(
         duration: const Duration(milliseconds: 150),
         padding: EdgeInsets.only(
