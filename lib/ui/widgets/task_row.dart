@@ -27,6 +27,7 @@ class TaskRow extends StatefulWidget {
 }
 class _TaskRowState extends State<TaskRow> {
   final FocusNode _focus = FocusNode();
+  final FocusNode _focus2 = FocusNode();
   final TextEditingController _controller = TextEditingController();
   @override
   void initState() {
@@ -48,18 +49,6 @@ class _TaskRowState extends State<TaskRow> {
     final double deviceHeight = MediaQuery.of(context).size.height;
     final double deviceWidth = MediaQuery.of(context).size.width;
     final keyboardProvider = Provider.of<KeyboardProvider>(context, listen: false);
-    //Color getColor(Set<MaterialState> states) {
-    //  const Set<MaterialState> interactiveStates = <MaterialState>{
-    //    MaterialState.pressed,
-    //    MaterialState.hovered,
-    //    MaterialState.focused,
-    //  };
-    //  if (states.any(interactiveStates.contains)) {
-    //    return Colors.blue;
-    //  }
-    //  return widget.checkboxColor;
-    //}
-
     return Dismissible(
       key: UniqueKey(),
       confirmDismiss: (direction) async {
@@ -150,37 +139,47 @@ class _TaskRowState extends State<TaskRow> {
                               selectionColor: Colors.black38,
                             ),
                           ),
-                          child: TextField(
-                            clipBehavior: Clip.antiAlias,
-                            cursorColor: Colors.black,
-                            textCapitalization: TextCapitalization.sentences,
-                            keyboardType: TextInputType.multiline,
-                            controller: _controller,
-                            maxLines: null,
-                            autofocus: false,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: widget.checkboxColor,
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: widget.checkboxColor,
-                                    width: 1.5
+                          child: MaterialButton(
+                            onLongPress: () {
+                              print("dgsasga");
+                            },
+                            color: widget.checkboxColor,
+                            onPressed: () => _focus2.requestFocus(),
+                            child: AbsorbPointer(
+                              child: TextField(
+                                focusNode: _focus2,
+                                clipBehavior: Clip.antiAlias,
+                                cursorColor: Colors.black,
+                                textCapitalization: TextCapitalization.sentences,
+                                keyboardType: TextInputType.multiline,
+                                controller: _controller,
+                                maxLines: null,
+                                autofocus: false,
+                                decoration: InputDecoration(
+                                  filled: false,
+                                  fillColor: widget.checkboxColor,
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: widget.checkboxColor,
+                                        width: 1.5
+                                    ),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: widget.checkboxColor,
+                                        width: 1.5
+                                    ),
+                                  ),
+                                ),
+                                style: GoogleFonts.abel(
+                                  color: widget.task!.isDone == 1 ? Colors.black.withOpacity(0.5) : Colors.black,
+                                  fontSize: deviceWidth * 0.042,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.w500,
+                                  textStyle: textStyle(widget.textColor, deviceWidth),
+                                  decoration: widget.task!.isDone == 1 ? TextDecoration.lineThrough : TextDecoration.none,
                                 ),
                               ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: widget.checkboxColor,
-                                    width: 1.5
-                                ),
-                              ),
-                            ),
-                            style: GoogleFonts.abel(
-                              color: widget.task!.isDone == 1 ? Colors.black.withOpacity(0.5) : Colors.black,
-                              fontSize: deviceWidth * 0.042,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w500,
-                              textStyle: textStyle(widget.textColor, deviceWidth),
-                              decoration: widget.task!.isDone == 1 ? TextDecoration.lineThrough : TextDecoration.none,
                             ),
                           ),
                         ),
