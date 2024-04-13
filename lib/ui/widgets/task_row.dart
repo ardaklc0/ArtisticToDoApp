@@ -5,6 +5,8 @@ import 'package:pomodoro2/services/task_service.dart';
 import 'package:pomodoro2/ui/widgets/common_widgets.dart';
 import 'package:provider/provider.dart';
 import '../../provider/keyboard_provider.dart';
+import '../../provider/task_provider.dart';
+import '../../provider/task_update_provider.dart';
 import '../helper/common_variables.dart';
 import '../styles/common_styles.dart';
 class TaskRow extends StatefulWidget {
@@ -28,6 +30,7 @@ class TaskRow extends StatefulWidget {
 class _TaskRowState extends State<TaskRow> {
   final FocusNode _focus = FocusNode();
   final FocusNode _focus2 = FocusNode();
+  String error = '';
   final TextEditingController _controller = TextEditingController();
   @override
   void initState() {
@@ -44,11 +47,264 @@ class _TaskRowState extends State<TaskRow> {
     _focus.dispose();
     _controller.dispose();
   }
+  Future showSaveScreen(TaskUpdateProvider taskUpdateProvider) async {
+    TextEditingController controller = TextEditingController(text: widget.text);
+    final taskProvider = Provider.of<TaskProvider>(context, listen: false);
+    int selectedColor = 0;
+    String prioName = '';
+    if (widget.priority == 0) {
+      taskProvider.setPrioColor(Colors.black);
+      selectedColor = 0;
+    } else if (widget.priority == 1) {
+      taskProvider.setPrioColor(Colors.redAccent);
+      prioName = 'H';
+      selectedColor = 1;
+    } else if (widget.priority == 2) {
+      taskProvider.setPrioColor(Colors.orangeAccent);
+      prioName = 'M';
+      selectedColor = 2;
+    } else if (widget.priority == 3) {
+      taskProvider.setPrioColor(Colors.blueAccent);
+      prioName = 'L';
+      selectedColor = 3;
+    }
+
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.5),
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+            builder: (context, setState) {
+              return AlertDialog(
+                backgroundColor: widget.checkboxColor,
+                title: Text(
+                  'Create a new task',
+                  style: GoogleFonts.roboto(
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                  ),
+                ),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Visibility(
+                      visible: error.isNotEmpty,
+                      child: Text(
+                        error,
+                        style: GoogleFonts.roboto(
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ),
+                    Theme(
+                      data: Theme.of(context).copyWith(
+                        textSelectionTheme: const TextSelectionThemeData(
+                          cursorColor: Colors.black,
+                          selectionColor: Colors.black38,
+                          selectionHandleColor: Colors.black,
+                        ),
+                      ),
+                      child: TextField(
+                        autofocus: true,
+                        onChanged: (value) {
+                          error = '';
+                          setState(() {});
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Enter task description',
+                          hintStyle: GoogleFonts.roboto(
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black.withOpacity(0.35),
+                          ),
+                          enabledBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                          focusedBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                        ),
+                        controller: controller,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          PopupMenuButton<int>(
+                            tooltip: 'Select priority',
+                            color: widget.checkboxColor,
+                            itemBuilder: (context) => [
+                              PopupMenuItem(
+                                value: 1,
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.flag, color: Colors.redAccent),
+                                    Text(
+                                      'High Priority',
+                                      style: GoogleFonts.roboto(
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w300,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              PopupMenuItem(
+                                value: 2,
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.flag, color: Colors.orangeAccent),
+                                    Text(
+                                      'Mid Priority',
+                                      style: GoogleFonts.roboto(
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w300,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              PopupMenuItem(
+                                value: 3,
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.flag, color: Colors.blueAccent),
+                                    Text(
+                                      'Low Priority',
+                                      style: GoogleFonts.roboto(
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w300,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                            onSelected: (value) {
+                              switch (value) {
+                                case 1:
+                                  taskProvider.setPrioColor(Colors.redAccent);
+                                  selectedColor = 1;
+                                  prioName = 'H';
+                                  break;
+                                case 2:
+                                  taskProvider.setPrioColor(Colors.orangeAccent);
+                                  selectedColor = 2;
+                                  prioName = 'M';
+                                  break;
+                                case 3:
+                                  taskProvider.setPrioColor(Colors.blueAccent);
+                                  selectedColor = 3;
+                                  prioName = 'L';
+                                  break;
+                              }
+                              setState(() {
+                              });
+                            },
+                            child: Container(
+                              height: 40,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black.withOpacity(0.3)),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.flag,
+                                    color: taskProvider.prioColor,
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Text(
+                                    prioName,
+                                    style: GoogleFonts.roboto(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w600,
+                                      color: taskProvider.prioColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text(
+                      'Cancel',
+                      style: GoogleFonts.roboto(
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
+                    ),
+                    onPressed: () async {
+                      taskProvider.setPrioColor(Colors.black);
+                      error = '';
+                      if (!context.mounted) return;
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  TextButton(
+                    child: Text(
+                      'Submit',
+                      style: GoogleFonts.roboto(
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
+                    ),
+                    onPressed: () async {
+                      if (controller.text == "") {
+                        error = 'Please enter a task description and select a day!';
+                        setState(() {});
+                        return;
+                      } else {
+                        var existingTask = Task(
+                          id: widget.task!.id,
+                          creationDate: widget.task!.creationDate,
+                          taskDescription: controller.text,
+                          plannerId: widget.plannerId,
+                          isDone: widget.task!.isDone,
+                          priority: selectedColor,
+                        );
+                        await updateTask(existingTask);
+                        taskProvider.setPrioColor(Colors.black);
+                        error = '';
+                        taskUpdateProvider.taskUpdated();
+                        if (!context.mounted) return;
+                        Navigator.of(context).pop();
+                        print("Updated existing task: $existingTask");
+                      }
+                    },
+                  ),
+                ],
+              );
+            }
+        );
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     final double deviceHeight = MediaQuery.of(context).size.height;
     final double deviceWidth = MediaQuery.of(context).size.width;
     final keyboardProvider = Provider.of<KeyboardProvider>(context, listen: false);
+    TaskUpdateProvider taskUpdateProvider = Provider.of<TaskUpdateProvider>(context);
     return Dismissible(
       key: UniqueKey(),
       confirmDismiss: (direction) async {
@@ -140,8 +396,11 @@ class _TaskRowState extends State<TaskRow> {
                             ),
                           ),
                           child: MaterialButton(
-                            onLongPress: () {
-                              print("dgsasga");
+                            onLongPress: () async {
+                              await showSaveScreen(taskUpdateProvider);
+                              setState(() {
+
+                              });
                             },
                             color: widget.checkboxColor,
                             onPressed: () => _focus2.requestFocus(),
