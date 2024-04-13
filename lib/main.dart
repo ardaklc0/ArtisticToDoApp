@@ -11,6 +11,7 @@ import 'package:pomodoro2/provider/notification_provider.dart';
 import 'package:pomodoro2/provider/planner_provider.dart';
 import 'package:pomodoro2/provider/slider_provider.dart';
 import 'package:pomodoro2/provider/task_provider.dart';
+import 'package:pomodoro2/provider/task_update_provider.dart';
 import 'package:pomodoro2/provider/theme_provider.dart';
 import 'package:pomodoro2/provider/time_provider.dart';
 import 'package:pomodoro2/screens/gustav_klimt.dart';
@@ -43,6 +44,7 @@ void main() async {
   final navbarProvider = NavbarProvider();
   final keyboardProvider = KeyboardProvider();
   final chosenDayProvider = ChosenDayProvider();
+  final taskUpdateProvider = TaskUpdateProvider();
   runApp(
     MultiProvider(
       providers: [
@@ -57,6 +59,7 @@ void main() async {
         ChangeNotifierProvider.value(value: navbarProvider),
         ChangeNotifierProvider.value(value: keyboardProvider),
         ChangeNotifierProvider.value(value: chosenDayProvider),
+        ChangeNotifierProvider.value(value: taskUpdateProvider),
       ],
       child: const MyApp(),
     ),

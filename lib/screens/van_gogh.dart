@@ -13,6 +13,7 @@ import '../provider/chosen_day_provider.dart';
 import '../provider/keyboard_provider.dart';
 import '../provider/navbar_provider.dart';
 import '../provider/task_provider.dart';
+import '../provider/task_update_provider.dart';
 import '../services/planner_service.dart';
 import '../services/task_service.dart';
 import '../ui/helper/common_functions.dart';
@@ -42,10 +43,17 @@ class _VanGoghState extends State<VanGogh> {
   }
   Future showDaysToChoose() async {
     Planner? currentPlanner = await getPlanner(widget.plannerId!);
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    double width = MediaQuery
+        .of(context)
+        .size
+        .width;
     DateFormat inputFormat = DateFormat("M/d/yyyy");
-    DateTime parsedDateTime = inputFormat.parse(currentPlanner!.creationDate.toString());
+    DateTime parsedDateTime = inputFormat.parse(
+        currentPlanner!.creationDate.toString());
     DateFormat dateFormat = DateFormat('yMd');
     DateRangePickerController controller = DateRangePickerController();
     return showDialog(
@@ -58,13 +66,14 @@ class _VanGoghState extends State<VanGogh> {
               return AlertDialog(
                 backgroundColor: colorList.last,
                 content: Container(
-                  width: width * 0.8 , // Set your desired width
+                  width: width * 0.8, // Set your desired width
                   height: height * 0.5,
                   child: MaterialApp(
                     theme: ThemeData(
                       colorScheme: ColorScheme.fromSeed(
                         seedColor: Colors.white,
-                        primary: Colors.black, // Explicitly set text color to white
+                        primary: Colors
+                            .black, // Explicitly set text color to white
                       ),
                       useMaterial3: true,
                     ),
@@ -103,18 +112,27 @@ class _VanGoghState extends State<VanGogh> {
                       endRangeSelectionColor: Colors.black,
                       startRangeSelectionColor: Colors.black,
                       confirmText: 'Confirm',
-                      initialSelectedDates: chosenDayProvider.chosenDay.isEmpty ?
-                      [] : [for (int i = 0; i < chosenDayProvider.chosenDay.length; i++)
-                        dateFormat.parse(chosenDayProvider.chosenDay.elementAt(i))],
+                      initialSelectedDates: chosenDayProvider.chosenDay.isEmpty
+                          ?
+                      []
+                          : [
+                        for (int i = 0; i <
+                            chosenDayProvider.chosenDay.length; i++)
+                          dateFormat.parse(chosenDayProvider.chosenDay
+                              .elementAt(i))
+                      ],
                       selectionMode: DateRangePickerSelectionMode.multiple,
                       onCancel: () {
                         selectedDays.clear();
                         Navigator.of(context).pop();
                       },
-                      onSelectionChanged: (dateRangePickerSelectionChangedArgs) {
+                      onSelectionChanged: (
+                          dateRangePickerSelectionChangedArgs) {
                         selectedDays.clear();
-                        for (int i = 0; i < dateRangePickerSelectionChangedArgs.value.length; i++) {
-                          selectedDays.add(dateFormat.format(dateRangePickerSelectionChangedArgs.value[i]));
+                        for (int i = 0; i < dateRangePickerSelectionChangedArgs
+                            .value.length; i++) {
+                          selectedDays.add(dateFormat.format(
+                              dateRangePickerSelectionChangedArgs.value[i]));
                         }
                         print(selectedDays);
                       },
@@ -211,12 +229,14 @@ class _VanGoghState extends State<VanGogh> {
                           PopupMenuButton<int>(
                             tooltip: 'Select priority',
                             color: colorList.last,
-                            itemBuilder: (context) => [
+                            itemBuilder: (context) =>
+                            [
                               PopupMenuItem(
                                 value: 1,
                                 child: Row(
                                   children: [
-                                    const Icon(Icons.flag, color: Colors.redAccent),
+                                    const Icon(
+                                        Icons.flag, color: Colors.redAccent),
                                     Text(
                                       'High Priority',
                                       style: GoogleFonts.roboto(
@@ -232,7 +252,8 @@ class _VanGoghState extends State<VanGogh> {
                                 value: 2,
                                 child: Row(
                                   children: [
-                                    const Icon(Icons.flag, color: Colors.orangeAccent),
+                                    const Icon(
+                                        Icons.flag, color: Colors.orangeAccent),
                                     Text(
                                       'Mid Priority',
                                       style: GoogleFonts.roboto(
@@ -248,7 +269,8 @@ class _VanGoghState extends State<VanGogh> {
                                 value: 3,
                                 child: Row(
                                   children: [
-                                    const Icon(Icons.flag, color: Colors.blueAccent),
+                                    const Icon(
+                                        Icons.flag, color: Colors.blueAccent),
                                     Text(
                                       'Low Priority',
                                       style: GoogleFonts.roboto(
@@ -269,7 +291,8 @@ class _VanGoghState extends State<VanGogh> {
                                   prioName = 'H';
                                   break;
                                 case 2:
-                                  taskProvider.setPrioColor(Colors.orangeAccent);
+                                  taskProvider.setPrioColor(
+                                      Colors.orangeAccent);
                                   selectedColor = 2;
                                   prioName = 'M';
                                   break;
@@ -279,14 +302,14 @@ class _VanGoghState extends State<VanGogh> {
                                   prioName = 'L';
                                   break;
                               }
-                              setState(() {
-                              });
+                              setState(() {});
                             },
                             child: Container(
                               height: 40,
                               width: 100,
                               decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black.withOpacity(0.3)),
+                                border: Border.all(
+                                    color: Colors.black.withOpacity(0.3)),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
@@ -313,7 +336,8 @@ class _VanGoghState extends State<VanGogh> {
                             height: 40,
                             width: 50,
                             decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black.withOpacity(0.3)),
+                              border: Border.all(
+                                  color: Colors.black.withOpacity(0.3)),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: IconButton(
@@ -322,7 +346,9 @@ class _VanGoghState extends State<VanGogh> {
                               },
                               icon: Icon(
                                 Icons.calendar_month,
-                                color: chosenDayProvider.chosenDay.isEmpty ? Colors.black : Colors.redAccent,
+                                color: chosenDayProvider.chosenDay.isEmpty
+                                    ? Colors.black
+                                    : Colors.redAccent,
                               ),
                               color: Colors.black,
                             ),
@@ -331,7 +357,8 @@ class _VanGoghState extends State<VanGogh> {
                             height: 40,
                             width: 50,
                             decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black.withOpacity(0.3)),
+                              border: Border.all(
+                                  color: Colors.black.withOpacity(0.3)),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: IconButton(
@@ -339,18 +366,25 @@ class _VanGoghState extends State<VanGogh> {
                                 if (chosenDayProvider.chosenDay.isNotEmpty) {
                                   chosenDayProvider.clearChosenDay();
                                 } else {
-                                  DateFormat inputFormat = DateFormat("M/d/yyyy");
-                                  String currentDateString = DateFormat("M/d/yyyy").format(DateTime.now());
-                                  DateTime parsedDateTime = inputFormat.parse(currentDateString);
+                                  DateFormat inputFormat = DateFormat(
+                                      "M/d/yyyy");
+                                  String currentDateString = DateFormat(
+                                      "M/d/yyyy").format(DateTime.now());
+                                  DateTime parsedDateTime = inputFormat.parse(
+                                      currentDateString);
                                   DateFormat dateFormat = DateFormat('yMd');
-                                  String formattedDate = dateFormat.format(parsedDateTime);
-                                  chosenDayProvider.setChosenDay({formattedDate});
+                                  String formattedDate = dateFormat.format(
+                                      parsedDateTime);
+                                  chosenDayProvider.setChosenDay(
+                                      {formattedDate});
                                 }
                                 setState(() {});
                               },
                               icon: Icon(
                                 Icons.today,
-                                color: chosenDayProvider.chosenDay.isEmpty ? Colors.black : Colors.redAccent,
+                                color: chosenDayProvider.chosenDay.isEmpty
+                                    ? Colors.black
+                                    : Colors.redAccent,
                               ),
                               color: Colors.black,
                             ),
@@ -388,8 +422,10 @@ class _VanGoghState extends State<VanGogh> {
                       ),
                     ),
                     onPressed: () async {
-                      if (controller.text == "" && chosenDayProvider.chosenDay.isEmpty) {
-                        error = 'Please enter a task description and select a day!';
+                      if (controller.text == "" &&
+                          chosenDayProvider.chosenDay.isEmpty) {
+                        error =
+                        'Please enter a task description and select a day!';
                         setState(() {});
                         return;
                       } else if (controller.text == "") {
@@ -401,11 +437,13 @@ class _VanGoghState extends State<VanGogh> {
                         setState(() {});
                         return;
                       } else {
-                        for (int i = 0; i < chosenDayProvider.chosenDay.length; i++) {
+                        for (int i = 0; i < chosenDayProvider.chosenDay
+                            .length; i++) {
                           Task newTask = Task(
                             taskDescription: controller.text,
                             priority: selectedColor,
-                            creationDate: chosenDayProvider.chosenDay.elementAt(i),
+                            creationDate: chosenDayProvider.chosenDay.elementAt(
+                                i),
                             plannerId: widget.plannerId!,
                           );
                           await insertTask(newTask);
@@ -429,6 +467,7 @@ class _VanGoghState extends State<VanGogh> {
     await showSaveScreen();
     setState(() {});
   }
+
   Future<void> _loadColors() async {
     try {
       List<Color> colors = await sortedColors(randomImage);
@@ -447,106 +486,114 @@ class _VanGoghState extends State<VanGogh> {
       print('Error loading colors: $error');
     }
   }
-@override
-Widget build(BuildContext context) {
-  final double deviceWidth = MediaQuery.of(context).size.width;
-  final double deviceHeight = MediaQuery.of(context).size.height;
-  final navbarProvider = Provider.of<NavbarProvider>(context);
-  final keyboardProvider = Provider.of<KeyboardProvider>(context, listen: false);
-  final viewInsets = EdgeInsets.fromViewPadding(WidgetsBinding.instance.window.viewInsets,WidgetsBinding.instance.window.devicePixelRatio);
-  return PopScope(
-    canPop: true,
-    onPopInvoked: (bool didPop) async {
-      if (didPop) {
-        navbarProvider.showNavbar();
-        keyboardProvider.hideKeyboard();
-      }
-    },
-    child: Scaffold(
-      appBar: ShimmerAppBar(
-        isLoading: isLoading,
-        colorList: colorList,
-      ),
-      backgroundColor: isLoading ? Colors.transparent : colorList.last,
-      resizeToAvoidBottomInset: true,
-      persistentFooterButtons: !keyboardProvider.isKeyboardVisible ? [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(colorList.last),
-                elevation: MaterialStateProperty.all(0),
-                shape: MaterialStateProperty.all(
-                  const CircleBorder(
-                    side: BorderSide(color: Colors.black, width: 1.0)
+
+  @override
+  Widget build(BuildContext context) {
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceHeight = MediaQuery.of(context).size.height;
+    final navbarProvider = Provider.of<NavbarProvider>(context);
+    final keyboardProvider = Provider.of<KeyboardProvider>(context, listen: false);
+    final viewInsets = EdgeInsets.fromViewPadding(WidgetsBinding.instance.window.viewInsets, WidgetsBinding.instance.window.devicePixelRatio);
+    return Consumer<TaskUpdateProvider>(
+      builder: (_, taskUpdateProvider, __) {
+        return PopScope(
+          canPop: true,
+          onPopInvoked: (bool didPop) async {
+            if (didPop) {
+              navbarProvider.showNavbar();
+              keyboardProvider.hideKeyboard();
+            }
+          },
+          child: Scaffold(
+            appBar: ShimmerAppBar(
+              isLoading: isLoading,
+              colorList: colorList,
+            ),
+            backgroundColor: isLoading ? Colors.transparent : colorList.last,
+            resizeToAvoidBottomInset: true,
+            persistentFooterButtons: !keyboardProvider.isKeyboardVisible ? [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(colorList.last),
+                      elevation: MaterialStateProperty.all(0),
+                      shape: MaterialStateProperty.all(
+                        const CircleBorder(
+                            side: BorderSide(color: Colors.black, width: 1.0)
+                        ),
+                      ),
+                    ),
+                    onPressed: () async {
+                      await addTask();
+                      taskFuture = createPlanner(
+                        widget.date!,
+                        widget.plannerId!,
+                        colorList.last,
+                        colorList.elementAt(chosenBackground),
+                        Colors.black,
+                      );
+                      setState(() {});
+                    },
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+            ] : [],
+            body: AnimatedPadding(
+                duration: const Duration(milliseconds: 150),
+                padding: EdgeInsets.only(
+                  bottom: keyboardProvider.isKeyboardVisible
+                      ? viewInsets.bottom
+                      : 0,
+                ),
+                child: _buildBody(deviceWidth, deviceHeight)
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildBody(double deviceWidth, double deviceHeight) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        ImageContainer(
+          imageUrl: randomImage,
+          imageAlignment: Alignment.center,
+        ),
+        if (isLoading) const ShimmerLoading(
+          isLoading: true,
+          child: PlaceholderForPage(),
+        ) else
+          Padding(
+            padding: const EdgeInsets.only(top: 3),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Flexible(
+                  child: FutureBuilder<SingleChildScrollView>(
+                    future: taskFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        return snapshot.data ?? Container();
+                      }
+                    },
                   ),
                 ),
-              ),
-              onPressed: () async {
-                await addTask();
-                taskFuture = createPlanner(
-                  widget.date!,
-                  widget.plannerId!,
-                  colorList.last,
-                  colorList.elementAt(chosenBackground),
-                  Colors.black,
-                );
-                setState(() {});
-              },
-              child: const Icon(
-                Icons.add,
-                color: Colors.black,
-              ),
+              ],
             ),
-          ],
-        ),
-      ] : [],
-      body: AnimatedPadding(
-        duration: const Duration(milliseconds: 150),
-        padding: EdgeInsets.only(
-          bottom: keyboardProvider.isKeyboardVisible ? viewInsets.bottom : 0,
-        ),
-        child: _buildBody(deviceWidth, deviceHeight)
-      ),
-    ),
-  );
-}
-
-Widget _buildBody(double deviceWidth, double deviceHeight) {
-  return Stack(
-    fit: StackFit.expand,
-    children: [
-      ImageContainer(
-        imageUrl: randomImage,
-        imageAlignment: Alignment.center,
-      ),
-      if (isLoading) const ShimmerLoading(
-        isLoading: true,
-        child: PlaceholderForPage(),
-      ) else
-        Padding(
-          padding: const EdgeInsets.only(top: 3),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Flexible(
-                child: FutureBuilder<SingleChildScrollView>(
-                  future: taskFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      return snapshot.data ?? Container();
-                    }
-                  },
-                ),
-              ),
-            ],
           ),
-        ),
       ],
     );
   }
