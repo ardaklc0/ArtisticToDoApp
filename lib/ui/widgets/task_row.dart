@@ -16,14 +16,14 @@ class TaskRow extends StatefulWidget {
   final String? dateText;
   final Task? task;
   final int plannerId;
-  final int priority;
-  const TaskRow({super.key,
+  int? priority;
+  TaskRow({super.key,
     required this.textColor,
     required this.checkboxColor,
     this.text, this.dateText,
     this.task,
     required this.plannerId,
-    required this.priority});
+    this.priority});
   @override
   State<TaskRow> createState() => _TaskRowState();
 }
@@ -270,7 +270,7 @@ class _TaskRowState extends State<TaskRow> {
                     ),
                     onPressed: () async {
                       if (controller.text == "") {
-                        error = 'Please enter a task description and select a day!';
+                        error = 'Please enter a task description!';
                         setState(() {});
                         return;
                       } else {
@@ -283,7 +283,9 @@ class _TaskRowState extends State<TaskRow> {
                           priority: selectedColor,
                         );
                         await updateTask(existingTask);
+                        _controller.text = controller.text;
                         taskProvider.setPrioColor(Colors.black);
+                        widget.priority = selectedColor;
                         error = '';
                         taskUpdateProvider.taskUpdated();
                         if (!context.mounted) return;
@@ -358,7 +360,7 @@ class _TaskRowState extends State<TaskRow> {
                           creationDate: widget.task!.creationDate,
                           taskDescription: _controller.text,
                           plannerId: widget.plannerId,
-                          priority: widget.priority,
+                          priority: widget.priority!,
                         );
                         await updateTask(existingTask);
                       }
@@ -475,7 +477,7 @@ class _TaskRowState extends State<TaskRow> {
                     taskDescription: _controller.text,
                     plannerId: widget.plannerId,
                     isDone: intValue,
-                    priority: widget.priority,
+                    priority: widget.priority!,
                   );
                   await updateTask(existingTask);
                   print("Updated existing task: $existingTask");
