@@ -1,4 +1,4 @@
-# Plantist - Your Personal Planner with an Artistic Twist
+# Planart - Your Personal Planner with an Artistic Twist
 
 Welcome to Plantist, the ultimate mobile app that combines the essence of planning with the creativity of art! Plan your days with a unique touch by choosing an artist to inspire your daily schedule.
 
