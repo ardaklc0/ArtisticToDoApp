@@ -204,17 +204,17 @@ class _VanGoghState extends State<VanGogh> {
                           error = '';
                           setState(() {});
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Enter task description',
-                          hintStyle: GoogleFonts.roboto(
+                          hintStyle: TextStyle(
                             fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black.withOpacity(0.35),
+                            fontWeight: FontWeight.w300,
+                            color: Colors.black,
                           ),
-                          enabledBorder: const UnderlineInputBorder(
+                          enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.black),
                           ),
-                          focusedBorder: const UnderlineInputBorder(
+                          focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.black),
                           ),
                         ),
@@ -517,9 +517,9 @@ class _VanGoghState extends State<VanGogh> {
                 children: [
                   ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(colorList.last),
-                      elevation: MaterialStateProperty.all(0),
-                      shape: MaterialStateProperty.all(
+                      backgroundColor: WidgetStateProperty.all(colorList.last),
+                      elevation: WidgetStateProperty.all(0),
+                      shape: WidgetStateProperty.all(
                         const CircleBorder(
                             side: BorderSide(color: Colors.black, width: 1.0)
                         ),

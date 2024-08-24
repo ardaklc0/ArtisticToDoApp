@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 
 class NavbarProvider extends ChangeNotifier {
-  bool _navbarState = false;
+  bool _navbarState = true;
   int _currentIndex = 0;
 
   void hideNavbar() {
-    _navbarState = true;
+    _navbarState = false;
     notifyListeners();
   }
 
   void showNavbar() {
-    _navbarState = false;
+    _navbarState = true;
     notifyListeners();
   }
 

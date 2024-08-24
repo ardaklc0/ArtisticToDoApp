@@ -188,17 +188,17 @@ class _GustavKlimtState extends State<GustavKlimt> {
                           error = '';
                           setState(() {});
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Enter task description',
-                          hintStyle: GoogleFonts.roboto(
+                          hintStyle: TextStyle(
                             fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black.withOpacity(0.35),
+                            fontWeight: FontWeight.w300,
+                            color: Colors.black,
                           ),
-                          enabledBorder: const UnderlineInputBorder(
+                          enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.black),
                           ),
-                          focusedBorder: const UnderlineInputBorder(
+                          focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.black),
                           ),
                         ),

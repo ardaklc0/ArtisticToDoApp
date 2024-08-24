@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
@@ -33,28 +33,29 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   intl: ^0.19.0
-  flutter_keyboard_visibility: ^5.0.0
+  flutter_keyboard_visibility: ^6.0.0
   sqflite: ^2.3.0
   path_provider: ^2.1.2
   palette_generator: ^0.3.3+3
   provider: ^6.0.5
-  audioplayers: ^5.1.0
+  audioplayers: ^6.0.0
   shared_preferences: ^2.2.0
   overlay_support: ^2.1.0
   flutter_isolate: ^2.0.4
   timer_count_down: ^2.2.2
   wakelock_plus: ^1.1.4
   shake: ^2.2.0
-  google_fonts: ^5.1.0
+  google_fonts: ^6.2.1
   floating_draggable_widget: ^2.1.5
-  persistent_bottom_nav_bar: ^5.0.2
+  persistent_bottom_nav_bar: ^6.2.1
   flutter_native_splash: ^2.3.0
   flutter_staggered_grid_view: ^0.7.0
   shimmer: ^3.0.0
-  carousel_slider: ^4.2.1
+  carousel_slider: ^5.0.0
   day_picker: ^2.2.0
   flutter_launcher_icons: ^0.13.1
-  syncfusion_flutter_datepicker: ^25.1.37
+  syncfusion_flutter_datepicker: ^26.2.10
+  app_tutorial: ^1.0.6
 
 dev_dependencies:
   flutter_test:
@@ -66,7 +67,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
