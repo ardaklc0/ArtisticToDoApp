@@ -286,6 +286,22 @@ class _CezanneState extends State<Cezanne> {
                                   ],
                                 ),
                               ),
+                              PopupMenuItem(
+                                value: 4,
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.flag, color: Colors.black),
+                                    Text(
+                                      'No Priority',
+                                      style: GoogleFonts.roboto(
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w300,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                             onSelected: (value) {
                               switch (value) {
@@ -304,6 +320,11 @@ class _CezanneState extends State<Cezanne> {
                                   taskProvider.setPrioColor(Colors.blueAccent);
                                   selectedColor = 3;
                                   prioName = 'L';
+                                  break;
+                                case 4:
+                                  taskProvider.setPrioColor(Colors.black);
+                                  selectedColor = 0;
+                                  prioName = '';
                                   break;
                               }
                               setState(() {});

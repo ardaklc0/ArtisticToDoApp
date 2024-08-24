@@ -29,6 +29,13 @@ class _GalleryState extends State<Gallery> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         key: _scaffoldKey,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+          ),
+          backgroundColor: homePageColor,
+        ),
         drawer: _drawer(context, artistId, _updateChosenArtist),
         backgroundColor: homePageColor,
         body: ArtistHeader(

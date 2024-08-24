@@ -79,7 +79,7 @@ class _TaskRowState extends State<TaskRow> {
               return AlertDialog(
                 backgroundColor: widget.checkboxColor,
                 title: Text(
-                  'Create a new task',
+                  'Edit the task',
                   style: GoogleFonts.roboto(
                     fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.w500,
@@ -188,6 +188,22 @@ class _TaskRowState extends State<TaskRow> {
                                   ],
                                 ),
                               ),
+                              PopupMenuItem(
+                                value: 4,
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.flag, color: Colors.black),
+                                    Text(
+                                      'No Priority',
+                                      style: GoogleFonts.roboto(
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.w300,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                             onSelected: (value) {
                               switch (value) {
@@ -205,6 +221,11 @@ class _TaskRowState extends State<TaskRow> {
                                   taskProvider.setPrioColor(Colors.blueAccent);
                                   selectedColor = 3;
                                   prioName = 'L';
+                                  break;
+                                case 4:
+                                  taskProvider.setPrioColor(Colors.black);
+                                  selectedColor = 0;
+                                  prioName = '';
                                   break;
                               }
                               setState(() {
@@ -287,12 +308,8 @@ class _TaskRowState extends State<TaskRow> {
                         taskProvider.setPrioColor(Colors.black);
                         widget.priority = selectedColor;
                         error = '';
-                        taskUpdateProvider.taskUpdated();
-                        print(_controller.text);
-                        print(controller.text);
                         if (!context.mounted) return;
                         Navigator.of(context).pop();
-                        print("Updated existing task: $existingTask");
                       }
                     },
                   ),
@@ -435,6 +452,7 @@ class _TaskRowState extends State<TaskRow> {
                                   ),
                                 ),
                                 style: TextStyle(
+                                  fontSize: deviceHeight * 0.020,
                                   color: widget.task!.isDone == 1 ? Colors.black.withOpacity(0.5) : Colors.black,
                                   fontWeight: FontWeight.w300,
                                   decoration: widget.task!.isDone == 1 ? TextDecoration.lineThrough : TextDecoration.none,
