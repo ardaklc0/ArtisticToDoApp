@@ -209,15 +209,38 @@ class _CezanneState extends State<Cezanne> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
+                          Container(
+                            height: 40,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.black.withOpacity(0.3)),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: IconButton(
+                              onPressed: () {
+                                showDaysToChoose();
+                              },
+                              icon: Icon(
+                                Icons.calendar_month,
+                                color: chosenDayProvider.chosenDay.isEmpty
+                                    ? Colors.black
+                                    : Colors.redAccent,
+                              ),
+                              color: Colors.black,
+                            ),
+                          ),
                           PopupMenuButton<int>(
                             tooltip: 'Select priority',
                             color: colorList.last,
-                            itemBuilder: (context) => [
+                            itemBuilder: (context) =>
+                            [
                               PopupMenuItem(
                                 value: 1,
                                 child: Row(
                                   children: [
-                                    const Icon(Icons.flag, color: Colors.redAccent),
+                                    const Icon(
+                                        Icons.flag, color: Colors.redAccent),
                                     Text(
                                       'High Priority',
                                       style: GoogleFonts.roboto(
@@ -233,7 +256,8 @@ class _CezanneState extends State<Cezanne> {
                                 value: 2,
                                 child: Row(
                                   children: [
-                                    const Icon(Icons.flag, color: Colors.orangeAccent),
+                                    const Icon(
+                                        Icons.flag, color: Colors.orangeAccent),
                                     Text(
                                       'Mid Priority',
                                       style: GoogleFonts.roboto(
@@ -249,7 +273,8 @@ class _CezanneState extends State<Cezanne> {
                                 value: 3,
                                 child: Row(
                                   children: [
-                                    const Icon(Icons.flag, color: Colors.blueAccent),
+                                    const Icon(
+                                        Icons.flag, color: Colors.blueAccent),
                                     Text(
                                       'Low Priority',
                                       style: GoogleFonts.roboto(
@@ -270,7 +295,8 @@ class _CezanneState extends State<Cezanne> {
                                   prioName = 'H';
                                   break;
                                 case 2:
-                                  taskProvider.setPrioColor(Colors.orangeAccent);
+                                  taskProvider.setPrioColor(
+                                      Colors.orangeAccent);
                                   selectedColor = 2;
                                   prioName = 'M';
                                   break;
@@ -280,14 +306,14 @@ class _CezanneState extends State<Cezanne> {
                                   prioName = 'L';
                                   break;
                               }
-                              setState(() {
-                              });
+                              setState(() {});
                             },
                             child: Container(
                               height: 40,
                               width: 100,
                               decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black.withOpacity(0.3)),
+                                border: Border.all(
+                                    color: Colors.black.withOpacity(0.3)),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
@@ -308,52 +334,6 @@ class _CezanneState extends State<Cezanne> {
                                   ),
                                 ],
                               ),
-                            ),
-                          ),
-                          Container(
-                            height: 40,
-                            width: 50,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black.withOpacity(0.3)),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: IconButton(
-                              onPressed: () {
-                                showDaysToChoose();
-                              },
-                              icon: Icon(
-                                Icons.calendar_month,
-                                color: chosenDayProvider.chosenDay.isEmpty ? Colors.black : Colors.redAccent,
-                              ),
-                              color: Colors.black,
-                            ),
-                          ),
-                          Container(
-                            height: 40,
-                            width: 50,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black.withOpacity(0.3)),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: IconButton(
-                              onPressed: () {
-                                if (chosenDayProvider.chosenDay.isNotEmpty) {
-                                  chosenDayProvider.clearChosenDay();
-                                } else {
-                                  DateFormat inputFormat = DateFormat("M/d/yyyy");
-                                  String currentDateString = DateFormat("M/d/yyyy").format(DateTime.now());
-                                  DateTime parsedDateTime = inputFormat.parse(currentDateString);
-                                  DateFormat dateFormat = DateFormat('yMd');
-                                  String formattedDate = dateFormat.format(parsedDateTime);
-                                  chosenDayProvider.setChosenDay({formattedDate});
-                                }
-                                setState(() {});
-                              },
-                              icon: Icon(
-                                Icons.today,
-                                color: chosenDayProvider.chosenDay.isEmpty ? Colors.black : Colors.redAccent,
-                              ),
-                              color: Colors.black,
                             ),
                           ),
                         ],
@@ -398,11 +378,22 @@ class _CezanneState extends State<Cezanne> {
                         setState(() {});
                         return;
                       } else if (chosenDayProvider.chosenDay.isEmpty) {
-                        error = 'Please select a day!';
+                        String formatDate = DateFormat('yMd').format(DateTime.now());
+                        Task newTask = Task(
+                          taskDescription: controller.text,
+                          priority: selectedColor,
+                          creationDate: formatDate,
+                          plannerId: widget.plannerId!,
+                        );
+                        await insertTask(newTask);
                         setState(() {});
-                        return;
+                        taskProvider.setPrioColor(Colors.black);
+                        chosenDayProvider.clearChosenDay();
+                        if (!context.mounted) return;
+                        Navigator.of(context).pop();
                       } else {
                         for (int i = 0; i < chosenDayProvider.chosenDay.length; i++) {
+                          print("date: : ${chosenDayProvider.chosenDay.elementAt(i)}");
                           Task newTask = Task(
                             taskDescription: controller.text,
                             priority: selectedColor,
