@@ -48,7 +48,7 @@ class _TaskRowState extends State<TaskRow> {
     _controller.dispose();
   }
   Future showSaveScreen(TaskUpdateProvider taskUpdateProvider) async {
-    TextEditingController controller = TextEditingController(text: widget.text);
+    TextEditingController controller = TextEditingController(text: _controller.text);
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
     int selectedColor = 0;
     String prioName = '';
@@ -288,6 +288,8 @@ class _TaskRowState extends State<TaskRow> {
                         widget.priority = selectedColor;
                         error = '';
                         taskUpdateProvider.taskUpdated();
+                        print(_controller.text);
+                        print(controller.text);
                         if (!context.mounted) return;
                         Navigator.of(context).pop();
                         print("Updated existing task: $existingTask");
@@ -432,12 +434,9 @@ class _TaskRowState extends State<TaskRow> {
                                     ),
                                   ),
                                 ),
-                                style: GoogleFonts.abel(
+                                style: TextStyle(
                                   color: widget.task!.isDone == 1 ? Colors.black.withOpacity(0.5) : Colors.black,
-                                  fontSize: deviceWidth * 0.042,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w500,
-                                  textStyle: textStyle(widget.textColor, deviceWidth),
+                                  fontWeight: FontWeight.w300,
                                   decoration: widget.task!.isDone == 1 ? TextDecoration.lineThrough : TextDecoration.none,
                                 ),
                               ),

@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
+import 'package:app_tutorial/app_tutorial.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -59,15 +60,33 @@ Future<int> createPlannerWrtArtist(String artistName) async {
   return await insertPlanner(planner);
 }
 Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight, Function setStateWhenDelete) async {
+  List<TutorialItem> tutorialItems = [];
+  tutorialItems.add(TutorialItem(
+    globalKey: GlobalKey(),
+    color: Colors.black.withOpacity(0.6),
+    borderRadius: const Radius.circular(15.0),
+    shapeFocus: ShapeFocus.roundedSquare,
+    child: const Text(
+      "Welcome to the Planners page! Here you can see your created planners. You can tap on a planner to start planning your day.",
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 15,
+      ),
+    ),
+  ));
+
   final navbarProvider = Provider.of<NavbarProvider>(context, listen: false);
   List<Container> plannerContainers = [];
   try {
     var planners = await getPlanners();
-    if (planners.isEmpty) {
+    if (planners.isEmpty) { // If there are no planners, create a planner for VanGogh
       await createPlannerWrtArtist("VanGogh");
+      Tutorial.showTutorial(context, tutorialItems, onTutorialComplete: () async {
+        navbarProvider.hideNavbar();
+      });
       planners = await getPlanners();
     }
-    for (var element in planners) {
+    for (var element in planners) { // For each planner, create a container
       DateTime creationDate = DateFormat('yMd').parse(element.creationDate);
       DateTime newDate = creationDate.add(const Duration(days: 6));
       plannerContainers.add(

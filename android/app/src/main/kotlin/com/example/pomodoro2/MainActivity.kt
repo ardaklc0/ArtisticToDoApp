@@ -1,4 +1,4 @@
-package com.example.pomodoro2
+package com.Planart
 
 import io.flutter.embedding.android.FlutterActivity
 
