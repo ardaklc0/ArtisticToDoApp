@@ -226,6 +226,27 @@ class _VanGoghState extends State<VanGogh> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
+                          Container(
+                            height: 40,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.black.withOpacity(0.3)),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: IconButton(
+                              onPressed: () {
+                                showDaysToChoose();
+                              },
+                              icon: Icon(
+                                Icons.calendar_month,
+                                color: chosenDayProvider.chosenDay.isEmpty
+                                    ? Colors.black
+                                    : Colors.redAccent,
+                              ),
+                              color: Colors.black,
+                            ),
+                          ),
                           PopupMenuButton<int>(
                             tooltip: 'Select priority',
                             color: colorList.last,
@@ -332,63 +353,6 @@ class _VanGoghState extends State<VanGogh> {
                               ),
                             ),
                           ),
-                          Container(
-                            height: 40,
-                            width: 50,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.black.withOpacity(0.3)),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: IconButton(
-                              onPressed: () {
-                                showDaysToChoose();
-                              },
-                              icon: Icon(
-                                Icons.calendar_month,
-                                color: chosenDayProvider.chosenDay.isEmpty
-                                    ? Colors.black
-                                    : Colors.redAccent,
-                              ),
-                              color: Colors.black,
-                            ),
-                          ),
-                          Container(
-                            height: 40,
-                            width: 50,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.black.withOpacity(0.3)),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: IconButton(
-                              onPressed: () {
-                                if (chosenDayProvider.chosenDay.isNotEmpty) {
-                                  chosenDayProvider.clearChosenDay();
-                                } else {
-                                  DateFormat inputFormat = DateFormat(
-                                      "M/d/yyyy");
-                                  String currentDateString = DateFormat(
-                                      "M/d/yyyy").format(DateTime.now());
-                                  DateTime parsedDateTime = inputFormat.parse(
-                                      currentDateString);
-                                  DateFormat dateFormat = DateFormat('yMd');
-                                  String formattedDate = dateFormat.format(
-                                      parsedDateTime);
-                                  chosenDayProvider.setChosenDay(
-                                      {formattedDate});
-                                }
-                                setState(() {});
-                              },
-                              icon: Icon(
-                                Icons.today,
-                                color: chosenDayProvider.chosenDay.isEmpty
-                                    ? Colors.black
-                                    : Colors.redAccent,
-                              ),
-                              color: Colors.black,
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -422,10 +386,8 @@ class _VanGoghState extends State<VanGogh> {
                       ),
                     ),
                     onPressed: () async {
-                      if (controller.text == "" &&
-                          chosenDayProvider.chosenDay.isEmpty) {
-                        error =
-                        'Please enter a task description and select a day!';
+                      if (controller.text == "" && chosenDayProvider.chosenDay.isEmpty) {
+                        error = 'Please enter a task description and select a day!';
                         setState(() {});
                         return;
                       } else if (controller.text == "") {
@@ -433,17 +395,26 @@ class _VanGoghState extends State<VanGogh> {
                         setState(() {});
                         return;
                       } else if (chosenDayProvider.chosenDay.isEmpty) {
-                        error = 'Please select a day!';
+                        String formatDate = DateFormat('yMd').format(DateTime.now());
+                        Task newTask = Task(
+                          taskDescription: controller.text,
+                          priority: selectedColor,
+                          creationDate: formatDate,
+                          plannerId: widget.plannerId!,
+                        );
+                        await insertTask(newTask);
                         setState(() {});
-                        return;
+                        taskProvider.setPrioColor(Colors.black);
+                        chosenDayProvider.clearChosenDay();
+                        if (!context.mounted) return;
+                        Navigator.of(context).pop();
                       } else {
-                        for (int i = 0; i < chosenDayProvider.chosenDay
-                            .length; i++) {
+                        for (int i = 0; i < chosenDayProvider.chosenDay.length; i++) {
+                          print("date: : ${chosenDayProvider.chosenDay.elementAt(i)}");
                           Task newTask = Task(
                             taskDescription: controller.text,
                             priority: selectedColor,
-                            creationDate: chosenDayProvider.chosenDay.elementAt(
-                                i),
+                            creationDate: chosenDayProvider.chosenDay.elementAt(i),
                             plannerId: widget.plannerId!,
                           );
                           await insertTask(newTask);
