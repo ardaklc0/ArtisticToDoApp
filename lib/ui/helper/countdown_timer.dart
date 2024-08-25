@@ -23,13 +23,13 @@ class CountdownTimer {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _countdownSeconds--;
       if (_onTick != null) {
-        _onTick!(_countdownSeconds);
+        _onTick(_countdownSeconds);
       }
 
       if (_countdownSeconds <= 0) {
         stop();
         if (_onFinished != null) {
-          _onFinished!();
+          _onFinished();
         }
       }
     });

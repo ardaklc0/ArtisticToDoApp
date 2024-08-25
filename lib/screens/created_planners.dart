@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:pomodoro2/screens/home_page_test.dart';
 import 'package:pomodoro2/ui/helper/common_functions.dart';
 import '../ui/helper/common_variables.dart';
-import 'package:pomodoro2/ui/widgets/common_widgets.dart';
-import '../ui/helper/created_planner_variables.dart';
 class CreatedPlanners extends StatefulWidget {
   const CreatedPlanners({super.key});
   @override
@@ -36,7 +33,7 @@ class _CreatedPlannersState extends State<CreatedPlanners> {
 
 Widget _body(double deviceWidth, double deviceHeight,BuildContext context, Function setStateWhenDelete) => Stack(
   children: [
-    FutureBuilder<List<Container>>(
+    FutureBuilder<List<Dismissible>>(
       future: fetchPlanners(context, deviceHeight, setStateWhenDelete),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {

@@ -1,15 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pomodoro2/models/planner_model.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
-
 import 'initialize_database.dart';
 
 
 Future<int> insertPlanner(Planner planner) async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = await initializeDatabase();
-  final db = await database;
+  final db = database;
   return await db.insert(
     'planners',
     planner.toMap(),
@@ -18,7 +16,7 @@ Future<int> insertPlanner(Planner planner) async {
 Future<List<Planner>> getPlanners() async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = await initializeDatabase();
-  final db = await database;
+  final db = database;
   final List<Map<String, dynamic>> maps = await db.query('planners');
   return List.generate(maps.length, (i) {
     return Planner(
@@ -31,7 +29,7 @@ Future<List<Planner>> getPlanners() async {
 Future<Planner?> getPlanner(int plannerId) async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = await initializeDatabase();
-  final db = await database;
+  final db = database;
   final List<Map<String, dynamic>> maps = await db.query(
     'planners',
     where: 'id = ?',
@@ -50,7 +48,7 @@ Future<Planner?> getPlanner(int plannerId) async {
 Future<void> updatePlanner(Planner planner) async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = await initializeDatabase();
-  final db = await database;
+  final db = database;
   await db.update(
     'planners',
     planner.toMap(),
@@ -61,7 +59,7 @@ Future<void> updatePlanner(Planner planner) async {
 Future<void> deletePlanner(int id) async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = await initializeDatabase();
-  final db = await database;
+  final db = database;
   await db.delete(
     'planners',
     where: 'id = ?',

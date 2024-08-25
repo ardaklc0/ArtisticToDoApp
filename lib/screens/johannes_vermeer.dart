@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -8,14 +7,12 @@ import '../provider/chosen_day_provider.dart';
 import '../provider/keyboard_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shimmer/shimmer.dart';
 import '../main.dart';
 import '../provider/navbar_provider.dart';
 import '../provider/task_provider.dart';
 import '../services/planner_service.dart';
 import '../services/task_service.dart';
 import '../ui/helper/common_functions.dart';
-import '../ui/widgets/common_widgets.dart';
 import '../ui/widgets/image_container.dart';
 String randomImage =  randomImageChooser("JohannesVermeer");
 class JohannesVermeer extends StatefulWidget {
@@ -59,7 +56,7 @@ class _JohannesVermeerState extends State<JohannesVermeer> {
             builder: (context, setState) {
               return AlertDialog(
                 backgroundColor: colorList.last,
-                content: Container(
+                content: SizedBox(
                   width: width * 0.8 , // Set your desired width
                   height: height * 0.5,
                   child: MaterialApp(
@@ -118,7 +115,6 @@ class _JohannesVermeerState extends State<JohannesVermeer> {
                         for (int i = 0; i < dateRangePickerSelectionChangedArgs.value.length; i++) {
                           selectedDays.add(dateFormat.format(dateRangePickerSelectionChangedArgs.value[i]));
                         }
-                        print(selectedDays);
                       },
                       onSubmit: (dateRangePickerSubmitArgs) {
                         chosenDayProvider.setChosenDay(selectedDays);
@@ -418,7 +414,6 @@ class _JohannesVermeerState extends State<JohannesVermeer> {
                         Navigator.of(context).pop();
                       } else {
                         for (int i = 0; i < chosenDayProvider.chosenDay.length; i++) {
-                          print("date: : ${chosenDayProvider.chosenDay.elementAt(i)}");
                           Task newTask = Task(
                             taskDescription: controller.text,
                             priority: selectedColor,
@@ -461,7 +456,7 @@ class _JohannesVermeerState extends State<JohannesVermeer> {
         isLoading = false;
       });
     } catch (error) {
-      print('Error loading colors: $error');
+      debugPrint('Error: $error');
     }
   }
 
@@ -493,9 +488,9 @@ class _JohannesVermeerState extends State<JohannesVermeer> {
             children: [
               ElevatedButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(colorList.last),
-                  elevation: MaterialStateProperty.all(0),
-                  shape: MaterialStateProperty.all(
+                  backgroundColor: WidgetStateProperty.all(colorList.last),
+                  elevation: WidgetStateProperty.all(0),
+                  shape: WidgetStateProperty.all(
                     const CircleBorder(
                         side: BorderSide(color: Colors.black, width: 1.0)
                     ),

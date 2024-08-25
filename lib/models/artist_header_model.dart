@@ -12,7 +12,7 @@ class ArtistHeader extends StatelessWidget {
   final String artistBirthDeath;
   final String artistDescription;
   const ArtistHeader({
-    Key? key,
+    super.key,
     required this.onTap,
     required this.imagePath,
     required this.title,
@@ -20,7 +20,7 @@ class ArtistHeader extends StatelessWidget {
     required this.artistName,
     required this.artistBirthDeath,
     required this.artistDescription,
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context) {
     double deviceHeight = MediaQuery.of(context).size.height;

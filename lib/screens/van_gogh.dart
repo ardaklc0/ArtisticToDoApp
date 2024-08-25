@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +18,7 @@ import '../ui/widgets/image_container.dart';
 //String randomImage =  randomImageChooser("VanGogh", 10);
 String randomImage =  randomImageChooser("VanGogh");
 class VanGogh extends StatefulWidget {
-  const VanGogh({Key? key, required this.title, this.plannerId, this.date}) : super(key: key);
+  const VanGogh({super.key, required this.title, this.plannerId, this.date});
   final String title;
   final int? plannerId;
   final String? date;
@@ -65,7 +62,7 @@ class _VanGoghState extends State<VanGogh> {
             builder: (context, setState) {
               return AlertDialog(
                 backgroundColor: colorList.last,
-                content: Container(
+                content: SizedBox(
                   width: width * 0.8, // Set your desired width
                   height: height * 0.5,
                   child: MaterialApp(
@@ -134,7 +131,6 @@ class _VanGoghState extends State<VanGogh> {
                           selectedDays.add(dateFormat.format(
                               dateRangePickerSelectionChangedArgs.value[i]));
                         }
-                        print(selectedDays);
                       },
                       onSubmit: (dateRangePickerSubmitArgs) {
                         chosenDayProvider.setChosenDay(selectedDays);
@@ -434,7 +430,6 @@ class _VanGoghState extends State<VanGogh> {
                         Navigator.of(context).pop();
                       } else {
                         for (int i = 0; i < chosenDayProvider.chosenDay.length; i++) {
-                          print("date: : ${chosenDayProvider.chosenDay.elementAt(i)}");
                           Task newTask = Task(
                             taskDescription: controller.text,
                             priority: selectedColor,
@@ -478,7 +473,7 @@ class _VanGoghState extends State<VanGogh> {
         isLoading = false;
       });
     } catch (error) {
-      print('Error loading colors: $error');
+      error.toString();
     }
   }
 

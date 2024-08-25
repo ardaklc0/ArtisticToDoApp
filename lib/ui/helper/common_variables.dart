@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 const double heightProportionOfImageBox = 0.25;
 const double heightProportionOfDateContainer = 0.075;

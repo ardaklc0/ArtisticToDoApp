@@ -101,11 +101,11 @@ class ArtistButton extends StatelessWidget {
   final String imagePath;
   final Widget title;
   const ArtistButton({
-    Key? key,
+    super.key,
     required this.onTap,
     required this.imagePath,
     required this.title,
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
@@ -115,7 +115,7 @@ class ArtistButton extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.all(Radius.circular(15)),
+        borderRadius: const BorderRadius.all(Radius.circular(15)),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.3),

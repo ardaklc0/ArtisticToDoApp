@@ -3,18 +3,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pomodoro2/main.dart';
 import '../models/artist_header_model.dart';
 import '../models/artist_model.dart';
-import '../models/painting_model.dart';
 import '../ui/helper/common_functions.dart';
 import '../ui/helper/common_variables.dart';
 
 class Gallery extends StatefulWidget {
-  const Gallery({Key? key}) : super(key: key);
+  const Gallery({super.key});
 
   @override
-  _GalleryState createState() => _GalleryState();
+  GalleryState createState() => GalleryState();
 }
 
-class _GalleryState extends State<Gallery> {
+class GalleryState extends State<Gallery> {
   int chosenArtistIndex = chosenArtist;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
