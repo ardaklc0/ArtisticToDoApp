@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pomodoro2/provider/planner_provider.dart';
 import 'package:pomodoro2/provider/task_provider.dart';
 import 'package:pomodoro2/provider/time_provider.dart';
-import 'package:pomodoro2/screens/home_page.dart';
-import 'package:pomodoro2/ui/helper/common_functions.dart';
 import 'package:provider/provider.dart';
 import '../ui/helper/common_variables.dart';
 import '../ui/widgets/common_widgets.dart';

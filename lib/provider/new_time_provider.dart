@@ -1,10 +1,7 @@
 import 'dart:async';
 import 'dart:isolate';
 import 'package:flutter/foundation.dart';
-import 'package:pomodoro2/ui/helper/common_functions.dart';
 import 'audio_provider.dart';
-import 'auto_start_provider.dart';
-import 'notification_provider.dart';
 import 'slider_provider.dart';
 
 class NewTimerProvider with ChangeNotifier {
@@ -12,7 +9,7 @@ class NewTimerProvider with ChangeNotifier {
   int _currentTimeInSeconds = 0;
   DateTime _currentDateTime = DateTime.now();
   bool _isRunning = false;
-  bool _isCancel = false;
+  final bool _isCancel = false;
   late Isolate? _isolate;
   String notification = "";
   late ReceivePort _receivePort;
@@ -43,7 +40,6 @@ class NewTimerProvider with ChangeNotifier {
       [_receivePort.sendPort, currentTimeInSeconds], // Pass arguments as a list
     );
     _receivePort.listen(_handleMessage, onDone:() {
-      print("done!");
     });
   }
 

@@ -1,16 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:pomodoro2/models/task_model.dart';
-import 'package:pomodoro2/provider/chosen_day_provider.dart';
-import 'package:pomodoro2/provider/task_provider.dart';
-import 'package:pomodoro2/screens/van_gogh.dart';
-import 'package:pomodoro2/services/planner_service.dart';
-import 'package:pomodoro2/ui/widgets/task_row.dart';
-import 'package:pomodoro2/services/task_service.dart';
-import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import '../../models/planner_model.dart';
 import '../helper/common_variables.dart';
 import '../helper/task_function.dart';
 import 'common_widgets.dart';
@@ -28,12 +17,9 @@ class TaskContainerTest extends StatefulWidget {
 }
 class _TaskContainerTestState extends State<TaskContainerTest> {
   List<Widget> textFields = [];
-  late FocusNode _newTaskFocusNode;
-
   @override
   void initState() {
     super.initState();
-    _newTaskFocusNode = FocusNode();
     initializeTasks(widget.tasks, textFields, widget.dateText, widget.textColor, widget.dateColor, widget.plannerId);
   }
 

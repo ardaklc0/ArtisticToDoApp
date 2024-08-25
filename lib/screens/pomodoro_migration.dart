@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:pomodoro2/ui/widgets/settings_widgets/app_retain.dart';
 import 'package:provider/provider.dart';
 import 'package:timer_count_down/timer_controller.dart';
 import 'package:timer_count_down/timer_count_down.dart';
-import 'package:wakelock_plus/wakelock_plus.dart';
-import '../provider/audio_provider.dart';
 import '../provider/planner_provider.dart';
 import '../provider/task_provider.dart';
 import '../provider/time_provider.dart';
@@ -14,11 +10,11 @@ import '../ui/widgets/common_widgets.dart';
 import '../ui/widgets/pomodoro_widgets/body_widgets.dart';
 
 class CountDownTimerPage extends StatefulWidget {
-  const CountDownTimerPage({Key? key,}) : super(key: key);
+  const CountDownTimerPage({super.key,});
   @override
-  _CountDownTimerPageState createState() => _CountDownTimerPageState();
+  CountDownTimerPageState createState() => CountDownTimerPageState();
 }
-class _CountDownTimerPageState extends State<CountDownTimerPage> {
+class CountDownTimerPageState extends State<CountDownTimerPage> {
   final CountdownController _controller = CountdownController(autoStart: false);
   @override
   Widget build(BuildContext context) {

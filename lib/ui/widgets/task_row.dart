@@ -8,7 +8,6 @@ import '../../provider/keyboard_provider.dart';
 import '../../provider/task_provider.dart';
 import '../../provider/task_update_provider.dart';
 import '../helper/common_variables.dart';
-import '../styles/common_styles.dart';
 class TaskRow extends StatefulWidget {
   final Color? textColor;
   final Color checkboxColor;
@@ -471,7 +470,7 @@ class _TaskRowState extends State<TaskRow> {
             ),
             Checkbox(
               checkColor: Colors.black,
-              fillColor: MaterialStateProperty.resolveWith((states) {
+              fillColor: WidgetStateProperty.resolveWith((states) {
                 if (widget.priority == 0) {
                   return widget.checkboxColor;
                 } else if (widget.priority == 1) {
@@ -481,10 +480,10 @@ class _TaskRowState extends State<TaskRow> {
                 } else if (widget.priority == 3) {
                   return Colors.blueAccent;
                 }
+                return null;
               }),
               value: intConverter(widget.task!.isDone),
               onChanged: (bool? value) async {
-                print("Priority: ${widget.task!.priority}");
                 setState(() {
                   widget.task!.isDone = boolConverter(value!);
                 });
@@ -499,7 +498,6 @@ class _TaskRowState extends State<TaskRow> {
                     priority: widget.priority!,
                   );
                   await updateTask(existingTask);
-                  print("Updated existing task: $existingTask");
                 }
               },
             ),

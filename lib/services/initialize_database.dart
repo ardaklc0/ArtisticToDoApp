@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
@@ -31,7 +32,7 @@ Future<Database> initializeDatabase() async {
     );
     return database;
   } catch (e) {
-    print('Error initializing database: $e');
+    debugPrint('Error: $e');
     rethrow;
   }
 }

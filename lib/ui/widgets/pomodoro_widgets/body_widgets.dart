@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:pomodoro2/provider/task_provider.dart';
 import 'package:pomodoro2/services/planner_service.dart';
@@ -8,12 +7,10 @@ import 'package:pomodoro2/ui/helper/common_variables.dart';
 import 'package:pomodoro2/ui/styles/common_styles.dart';
 import 'package:pomodoro2/ui/widgets/pomodoro_widgets/appbar_widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:wakelock_plus/wakelock_plus.dart';
 import '../../../models/planner_model.dart';
 import '../../../models/task_model.dart';
 import '../../../provider/planner_provider.dart';
 import '../../../provider/time_provider.dart';
-import '../../helper/common_functions.dart';
 class TimeIndicatorWidget extends StatelessWidget {
   const TimeIndicatorWidget({
     super.key,
@@ -128,7 +125,6 @@ class MediaButtons extends StatelessWidget {
                 }
               }
             }
-            print("plannerId: ${plannerProvider.plannerId} <=> taskId: ${TaskProvider.taskId}");
           },
           icon: Icon(
             timerProvider.isRunning ? Icons.pause : Icons.play_arrow,
@@ -227,8 +223,6 @@ class TaskDropdownWidget extends StatelessWidget {
                       }).toList(),
                       onChanged: (value) {
                         taskProvider.setTaskId(value!);
-                        print("value: $value");
-                        print("timerProvider.taskId: ${TaskProvider.taskId}");
                       },
                     );
                   }
@@ -269,7 +263,7 @@ class PlannerChooserWidget extends StatelessWidget {
                     var firstPlanner = planners.first.id;
                     plannerProvider.setPlannerId(firstPlanner!);
                   } catch (error) {
-                    print(error);
+                    debugPrint('Error: $error');
                   }
                 },
                 style: mainUiRaisedButtonStyle,
@@ -294,7 +288,6 @@ Future<bool> dialogBuilder(BuildContext context) async {
     barrierDismissible: false,
     context: context,
     builder: (BuildContext context) {
-      final timerProvider = Provider.of<TimerProvider>(context);
       final taskProvider = Provider.of<TaskProvider>(context);
       final plannerProvider = Provider.of<PlannerProvider>(context);
       return AlertDialog(

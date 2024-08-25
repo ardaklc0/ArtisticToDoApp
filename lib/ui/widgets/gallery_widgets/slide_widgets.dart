@@ -1,9 +1,6 @@
 import 'dart:io';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import '../../../models/artist_header_model.dart';
-import '../../../screens/gallery.dart';
 import '../../helper/common_functions.dart';
 
 Future<List<int>> getNumberListWrtFolder(String artistId) async {

@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pomodoro2/ui/helper/common_variables.dart';
 import 'package:provider/provider.dart';
-
 import '../../../provider/audio_provider.dart';
-
-
 class NotificationSoundWidget extends StatelessWidget {
   const NotificationSoundWidget({
     super.key,
@@ -26,7 +22,7 @@ class NotificationSoundWidget extends StatelessWidget {
         ],
       ),
     child: Padding(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Consumer<SoundSelectionProvider>(
         builder: (context, provider, child) {
           return DropdownButtonFormField<String>(

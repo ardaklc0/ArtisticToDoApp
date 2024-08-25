@@ -59,7 +59,7 @@ Future<List<Task>> getUncheckedTasks(int plannerId) async {
 Future<Task?> getTask(int taskId) async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = await initializeDatabase();
-  final db = await database;
+  final db = database;
   final List<Map<String, dynamic>> maps = await db.query(
     'tasks',
     where: 'id = ?',

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pomodoro2/screens/created_planners.dart';
 import 'package:pomodoro2/screens/pomodoro.dart';
 import 'package:pomodoro2/screens/pomodoro_migration.dart';
 import 'package:pomodoro2/screens/test.dart';
 import 'package:pomodoro2/ui/helper/common_functions.dart';
 import 'package:pomodoro2/ui/styles/common_styles.dart';
 import '../ui/helper/common_variables.dart';
-import '../ui/widgets/common_widgets.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
   @override
@@ -21,7 +19,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
     });
   }
-  late Future<List<Container>> addCreatedPlanners;
+  late Future<List<Dismissible>> addCreatedPlanners;
   @override
   Widget build(BuildContext context) {
     final double deviceHeight = MediaQuery.of(context).size.height;
@@ -76,7 +74,7 @@ class _HomePageState extends State<HomePage> {
   }
   void goToTestPage() {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return TestPage();
+      return const TestPage();
     }));
   }
   void goToPomodoroMig() {
@@ -161,12 +159,4 @@ Widget _body(double deviceHeight, Function createArtistButton, Function goToPomo
       ],
     ),
   ),
-);
-
-Widget _floatingActionButton(Color floatingActionButtonColor, BuildContext context) => FloatingActionButton(
-  backgroundColor: floatingActionButtonColor,
-  child: homeIconForFloatingActionButton,
-  onPressed: () {
-    Navigator.pop(context);
-  },
 );
