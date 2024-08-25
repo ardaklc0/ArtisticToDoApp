@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:app_tutorial/app_tutorial.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -160,16 +161,15 @@ Future<List<Container>> fetchPlanners(BuildContext context, double deviceHeight,
                         ),
                       ),
                       Padding(
-                          padding: const EdgeInsets.only(top: 8, bottom: 8),
-                          child: Text(
+                        padding: const EdgeInsets.only(top: 8, bottom: 8),
+                        child: Text(
                             '${element.creationDate} - ${DateFormat('M/d/y').format(newDate)}',
-                            textScaler: const TextScaler.linear(1.15),
                             style: GoogleFonts.roboto(
                               color: Colors.black,
                               fontWeight: FontWeight.w400,
                               fontStyle: FontStyle.italic,
-                            ),
                           )
+                        )
                       ),
                     ],
                   ),
