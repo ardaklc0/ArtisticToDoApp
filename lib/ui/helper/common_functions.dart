@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:overlay_support/overlay_support.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:pomodoro2/main.dart';
 import 'package:pomodoro2/screens/johannes_vermeer.dart';
@@ -11,8 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../models/planner_model.dart';
 import '../../provider/navbar_provider.dart';
-import '../../provider/slider_provider.dart';
-import '../../provider/task_provider.dart';
 import '../../screens/cezanne.dart';
 import '../../screens/gustav_klimt.dart';
 import '../../screens/monet.dart';
@@ -21,7 +18,6 @@ import '../../screens/picasso.dart';
 import '../../screens/salvador_dali.dart';
 import '../../screens/van_gogh.dart';
 import '../../services/planner_service.dart';
-import '../../services/task_service.dart';
 import '../widgets/common_widgets.dart';
 import 'common_variables.dart';
 void goToArtist(BuildContext context, String artist, int plannerId, String date) {
@@ -198,35 +194,6 @@ Future<List<Color>> sortedColors(String randomImage) async {
   });
   return colorPalettes;
 }
-
-Future<void> saveWorkedMinutes() async {
-  if (TaskProvider.taskId != null) {
-    final task = await getTask(TaskProvider.taskId!);
-    int totalWork = task!.totalWorkMinutes;
-    totalWork += SliderProvider.studyDurationSliderValue;
-    task.totalWorkMinutes = totalWork;
-    await _showCompletionDialog();
-    await updateTask(task);
-  }
-}
-Future<void> _showCompletionDialog() async {
-  showSimpleNotification(
-    duration: const Duration(seconds: 5),
-    slideDismissDirection: DismissDirection.vertical,
-    elevation: 4,
-    const Text(
-      "Working minutes saved successfully!",
-      style: TextStyle(
-        fontSize: 15,
-        color: Colors.black,
-      ),
-    ),
-    background: const Color.fromRGBO(242, 245, 234, 1),
-  );
-}
-
-
-
 class ShimmerLoading extends StatelessWidget {
   final bool isLoading;
   final Widget child;

@@ -2,25 +2,18 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:pomodoro2/provider/audio_provider.dart';
-import 'package:pomodoro2/provider/auto_start_provider.dart';
 import 'package:pomodoro2/provider/chosen_day_provider.dart';
 import 'package:pomodoro2/provider/keyboard_provider.dart';
 import 'package:pomodoro2/provider/navbar_provider.dart';
-import 'package:pomodoro2/provider/notification_provider.dart';
 import 'package:pomodoro2/provider/planner_provider.dart';
-import 'package:pomodoro2/provider/slider_provider.dart';
 import 'package:pomodoro2/provider/task_provider.dart';
 import 'package:pomodoro2/provider/task_update_provider.dart';
 import 'package:pomodoro2/provider/theme_provider.dart';
-import 'package:pomodoro2/provider/time_provider.dart';
 import 'package:pomodoro2/screens/gustav_klimt.dart';
 import 'package:pomodoro2/screens/home_page_test.dart';
 import 'package:pomodoro2/screens/monet.dart';
 import 'package:pomodoro2/screens/osman_hamdi.dart';
 import 'package:pomodoro2/screens/picasso.dart';
-import 'package:pomodoro2/screens/pomodoro.dart';
-import 'package:pomodoro2/screens/pomodoro_migration.dart';
 import 'package:pomodoro2/screens/salvador_dali.dart';
 import 'package:pomodoro2/screens/splash.dart';
 import 'package:pomodoro2/screens/van_gogh.dart';
@@ -35,10 +28,7 @@ int chosenArtist = Random().nextInt(8);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final sliderProvider = SliderProvider();
-  final autoStartProvider = AutoStartProvider();
   final themeProvider = ThemeProvider();
-  final notificationProvider = NotificationProvider();
   final plannerProvider = PlannerProvider();
   final taskProvider = TaskProvider();
   final navbarProvider = NavbarProvider();
@@ -49,11 +39,6 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: themeProvider),
-        ChangeNotifierProvider(create: (context) => TimerProvider()),
-        ChangeNotifierProvider.value(value: sliderProvider),
-        ChangeNotifierProvider.value(value: notificationProvider),
-        ChangeNotifierProvider(create: (context) => SoundSelectionProvider()),
-        ChangeNotifierProvider.value(value: autoStartProvider),
         ChangeNotifierProvider.value(value: plannerProvider),
         ChangeNotifierProvider.value(value: taskProvider),
         ChangeNotifierProvider.value(value: navbarProvider),
@@ -100,8 +85,6 @@ class MyApp extends StatelessWidget {
           '/picasso': (context) => const Picasso(title: 'Picasso Home Page'),
           '/salvador_dali': (context) => const SalvadorDali(title: 'Salvador Dali Page'),
           '/van_gogh': (context) => const VanGogh(title: 'Van Gogh Page'),
-          '/pomodoro': (context) => const Pomodoro(),
-          '/pomodoro_migration': (context) => const CountDownTimerPage(),
           '/home_page_test': (context) => const HomePageTest()
         },
       ),
