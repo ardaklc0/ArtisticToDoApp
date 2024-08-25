@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,7 +16,6 @@ Widget partOfTaskContainer(double deviceWidth, double constantWidth, String dayT
       textAlign: TextAlign.center,
       dayText,
       style: GoogleFonts.abel(
-        fontSize: deviceWidth * 0.048,
         fontStyle: FontStyle.normal,
         fontWeight: FontWeight.normal,
         textStyle: textStyle(textColor, deviceWidth)
@@ -27,7 +27,6 @@ Widget partOfTaskContainer(double deviceWidth, double constantWidth, String dayT
 Widget dismissibleText(String text, double deviceHeight, Color dismissibleColor) => Text(
   text,
   style: TextStyle(
-      fontSize: deviceHeight * 0.017,
       color: dismissibleColor
   ),
 );

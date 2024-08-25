@@ -56,6 +56,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   syncfusion_flutter_datepicker: ^26.2.10
   app_tutorial: ^1.0.6
+  auto_size_text: ^3.0.0
 
 dev_dependencies:
   flutter_test:
