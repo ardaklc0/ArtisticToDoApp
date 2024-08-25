@@ -182,6 +182,22 @@ List<Container> colorContainers(List<Color> colorList){
   return listBoxes;
 }
 Future<List<Color>> sortedColors(String randomImage) async {
+  // take all colors for every image
+  for (int i = 1; i <= 10; i++) {
+    List<Color> colorPalettes = [];
+    final PaletteGenerator paletteGenerator = await PaletteGenerator.fromImageProvider(AssetImage("assets/images/Cezanne/$i.jpg"));
+    for (var element in paletteGenerator.paletteColors) {
+      colorPalettes.add(element.color);
+    }
+    colorPalettes.sort((a, b) {
+      final hslA = HSLColor.fromColor(a);
+      final hslB = HSLColor.fromColor(b);
+      return hslA.lightness.compareTo(hslB.lightness);
+    });
+    // write the file name color for each image
+    debugPrint("CezanneColors(fileName: 'assets/images/Cezanne/$i.jpg', colors: const [${colorPalettes.elementAt(2)}, ${colorPalettes.last}]),");
+  }
+
   List<Color> colorPalettes = [];
   final PaletteGenerator paletteGenerator = await PaletteGenerator.fromImageProvider(AssetImage(randomImage));
   for (var element in paletteGenerator.paletteColors) {
@@ -192,6 +208,7 @@ Future<List<Color>> sortedColors(String randomImage) async {
     final hslB = HSLColor.fromColor(b);
     return hslA.lightness.compareTo(hslB.lightness);
   });
+  debugPrint("Color Palettes: $colorPalettes");
   return colorPalettes;
 }
 class ShimmerLoading extends StatelessWidget {

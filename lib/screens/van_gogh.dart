@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:pomodoro2/services/van_gogh_colors.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../main.dart';
@@ -10,12 +11,10 @@ import '../provider/chosen_day_provider.dart';
 import '../provider/keyboard_provider.dart';
 import '../provider/navbar_provider.dart';
 import '../provider/task_provider.dart';
-import '../provider/task_update_provider.dart';
 import '../services/planner_service.dart';
 import '../services/task_service.dart';
 import '../ui/helper/common_functions.dart';
 import '../ui/widgets/image_container.dart';
-//String randomImage =  randomImageChooser("VanGogh", 10);
 String randomImage =  randomImageChooser("VanGogh");
 class VanGogh extends StatefulWidget {
   const VanGogh({super.key, required this.title, this.plannerId, this.date});
@@ -28,15 +27,21 @@ class VanGogh extends StatefulWidget {
 class _VanGoghState extends State<VanGogh> {
   late Future<SingleChildScrollView> taskFuture;
   late List<Color> colorList;
-  bool isLoading = true;
   String error = '';
   Set<String> selectedDays = {};
 
   @override
   void initState() {
     super.initState();
-    colorList = [Colors.transparent, Colors.transparent];
-    _loadColors();
+    List<Color> chosenColors = vanGoghColors.firstWhere((element) => element.fileName.contains(randomImage)).colors;
+    colorList = [chosenColors.first, chosenColors.last];
+    taskFuture = createPlanner(
+      widget.date!,
+      widget.plannerId!,
+      colorList.last,
+      colorList.first,
+      Colors.black,
+    );
   }
   Future showDaysToChoose() async {
     Planner? currentPlanner = await getPlanner(widget.plannerId!);
@@ -458,24 +463,6 @@ class _VanGoghState extends State<VanGogh> {
     setState(() {});
   }
 
-  Future<void> _loadColors() async {
-    try {
-      List<Color> colors = await sortedColors(randomImage);
-      setState(() {
-        colorList = colors;
-        taskFuture = createPlanner(
-          widget.date!,
-          widget.plannerId!,
-          colorList.last,
-          colorList.elementAt(chosenBackground),
-          Colors.black,
-        );
-        isLoading = false;
-      });
-    } catch (error) {
-      error.toString();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -484,68 +471,63 @@ class _VanGoghState extends State<VanGogh> {
     final navbarProvider = Provider.of<NavbarProvider>(context);
     final keyboardProvider = Provider.of<KeyboardProvider>(context, listen: false);
     final viewInsets = EdgeInsets.fromViewPadding(WidgetsBinding.instance.window.viewInsets, WidgetsBinding.instance.window.devicePixelRatio);
-    return Consumer<TaskUpdateProvider>(
-      builder: (_, taskUpdateProvider, __) {
-        return PopScope(
-          canPop: true,
-          onPopInvoked: (bool didPop) async {
-            if (didPop) {
-              navbarProvider.showNavbar();
-              keyboardProvider.hideKeyboard();
-            }
-          },
-          child: Scaffold(
-            appBar: ShimmerAppBar(
-              isLoading: isLoading,
-              colorList: colorList,
-            ),
-            backgroundColor: isLoading ? Colors.transparent : colorList.last,
-            resizeToAvoidBottomInset: true,
-            persistentFooterButtons: !keyboardProvider.isKeyboardVisible ? [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all(colorList.last),
-                      elevation: WidgetStateProperty.all(0),
-                      shape: WidgetStateProperty.all(
-                        const CircleBorder(
-                            side: BorderSide(color: Colors.black, width: 1.0)
-                        ),
-                      ),
-                    ),
-                    onPressed: () async {
-                      await addTask();
-                      taskFuture = createPlanner(
-                        widget.date!,
-                        widget.plannerId!,
-                        colorList.last,
-                        colorList.elementAt(chosenBackground),
-                        Colors.black,
-                      );
-                      setState(() {});
-                    },
-                    child: const Icon(
-                      Icons.add,
-                      color: Colors.black,
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (bool didPop) async {
+        if (didPop) {
+          navbarProvider.showNavbar();
+          keyboardProvider.hideKeyboard();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: colorList.last,
+        ),
+        backgroundColor: colorList.last,
+        resizeToAvoidBottomInset: true,
+        persistentFooterButtons: !keyboardProvider.isKeyboardVisible ? [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all(colorList.last),
+                  elevation: WidgetStateProperty.all(0),
+                  shape: WidgetStateProperty.all(
+                    const CircleBorder(
+                        side: BorderSide(color: Colors.black, width: 1.0)
                     ),
                   ),
-                ],
-              ),
-            ] : [],
-            body: AnimatedPadding(
-                duration: const Duration(milliseconds: 150),
-                padding: EdgeInsets.only(
-                  bottom: keyboardProvider.isKeyboardVisible
-                      ? viewInsets.bottom
-                      : 0,
                 ),
-                child: _buildBody(deviceWidth, deviceHeight)
-            ),
+                onPressed: () async {
+                  await addTask();
+                  taskFuture = createPlanner(
+                    widget.date!,
+                    widget.plannerId!,
+                    colorList.last,
+                    colorList.first,
+                    Colors.black,
+                  );
+                  setState(() {});
+                },
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.black,
+                ),
+              ),
+            ],
           ),
-        );
-      },
+        ] : [],
+        body: AnimatedPadding(
+            duration: const Duration(milliseconds: 150),
+            padding: EdgeInsets.only(
+              bottom: keyboardProvider.isKeyboardVisible
+                  ? viewInsets.bottom
+                  : 0,
+            ),
+            child: _buildBody(deviceWidth, deviceHeight)
+        ),
+      ),
     );
   }
 
@@ -557,10 +539,6 @@ class _VanGoghState extends State<VanGogh> {
           imageUrl: randomImage,
           imageAlignment: Alignment.center,
         ),
-        if (isLoading) const ShimmerLoading(
-          isLoading: true,
-          child: PlaceholderForPage(),
-        ) else
         Padding(
           padding: const EdgeInsets.only(top: 3),
           child: Column(

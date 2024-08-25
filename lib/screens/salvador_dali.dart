@@ -1,5 +1,6 @@
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:pomodoro2/services/salvador_dali_colors.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../models/planner_model.dart';
 import '../models/task_model.dart';
@@ -26,23 +27,35 @@ class SalvadorDali extends StatefulWidget{
 class _SalvadorDaliState extends State<SalvadorDali> {
   late Future<SingleChildScrollView> taskFuture;
   late List<Color> colorList;
-  bool isLoading = true;
   String error = '';
   Set<String> selectedDays = {};
 
   @override
   void initState() {
     super.initState();
-    colorList = [Colors.transparent, Colors.transparent];
-    _loadColors();
+    List<Color> chosenColors = salvadorDaliColors.firstWhere((element) => element.fileName.contains(randomImage)).colors;
+    colorList = [chosenColors.first, chosenColors.last];
+    taskFuture = createPlanner(
+      widget.date!,
+      widget.plannerId!,
+      colorList.last,
+      colorList.first,
+      Colors.black,
+    );
   }
-
   Future showDaysToChoose() async {
     Planner? currentPlanner = await getPlanner(widget.plannerId!);
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    double width = MediaQuery
+        .of(context)
+        .size
+        .width;
     DateFormat inputFormat = DateFormat("M/d/yyyy");
-    DateTime parsedDateTime = inputFormat.parse(currentPlanner!.creationDate.toString());
+    DateTime parsedDateTime = inputFormat.parse(
+        currentPlanner!.creationDate.toString());
     DateFormat dateFormat = DateFormat('yMd');
     DateRangePickerController controller = DateRangePickerController();
     return showDialog(
@@ -55,13 +68,14 @@ class _SalvadorDaliState extends State<SalvadorDali> {
               return AlertDialog(
                 backgroundColor: colorList.last,
                 content: SizedBox(
-                  width: width * 0.8 , // Set your desired width
+                  width: width * 0.8, // Set your desired width
                   height: height * 0.5,
                   child: MaterialApp(
                     theme: ThemeData(
                       colorScheme: ColorScheme.fromSeed(
                         seedColor: Colors.white,
-                        primary: Colors.black, // Explicitly set text color to white
+                        primary: Colors
+                            .black, // Explicitly set text color to white
                       ),
                       useMaterial3: true,
                     ),
@@ -100,18 +114,27 @@ class _SalvadorDaliState extends State<SalvadorDali> {
                       endRangeSelectionColor: Colors.black,
                       startRangeSelectionColor: Colors.black,
                       confirmText: 'Confirm',
-                      initialSelectedDates: chosenDayProvider.chosenDay.isEmpty ?
-                      [] : [for (int i = 0; i < chosenDayProvider.chosenDay.length; i++)
-                        dateFormat.parse(chosenDayProvider.chosenDay.elementAt(i))],
+                      initialSelectedDates: chosenDayProvider.chosenDay.isEmpty
+                          ?
+                      []
+                          : [
+                        for (int i = 0; i <
+                            chosenDayProvider.chosenDay.length; i++)
+                          dateFormat.parse(chosenDayProvider.chosenDay
+                              .elementAt(i))
+                      ],
                       selectionMode: DateRangePickerSelectionMode.multiple,
                       onCancel: () {
                         selectedDays.clear();
                         Navigator.of(context).pop();
                       },
-                      onSelectionChanged: (dateRangePickerSelectionChangedArgs) {
+                      onSelectionChanged: (
+                          dateRangePickerSelectionChangedArgs) {
                         selectedDays.clear();
-                        for (int i = 0; i < dateRangePickerSelectionChangedArgs.value.length; i++) {
-                          selectedDays.add(dateFormat.format(dateRangePickerSelectionChangedArgs.value[i]));
+                        for (int i = 0; i < dateRangePickerSelectionChangedArgs
+                            .value.length; i++) {
+                          selectedDays.add(dateFormat.format(
+                              dateRangePickerSelectionChangedArgs.value[i]));
                         }
                       },
                       onSubmit: (dateRangePickerSubmitArgs) {
@@ -155,7 +178,7 @@ class _SalvadorDaliState extends State<SalvadorDali> {
                   ),
                 ),
                 content: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: MediaQuery.of(context).size.width * 0.5, // Set width to 80% of screen width
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -439,24 +462,7 @@ class _SalvadorDaliState extends State<SalvadorDali> {
     await showSaveScreen();
     setState(() {});
   }
-  Future<void> _loadColors() async {
-    try {
-      List<Color> colors = await sortedColors(randomImage);
-      setState(() {
-        colorList = colors;
-        taskFuture = createPlanner(
-          widget.date!,
-          widget.plannerId!,
-          colorList.last,
-          colorList.elementAt(chosenBackground),
-          Colors.black,
-        );
-        isLoading = false;
-      });
-    } catch (error) {
-      debugPrint('Error: $error');
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -464,7 +470,7 @@ class _SalvadorDaliState extends State<SalvadorDali> {
     final double deviceHeight = MediaQuery.of(context).size.height;
     final navbarProvider = Provider.of<NavbarProvider>(context);
     final keyboardProvider = Provider.of<KeyboardProvider>(context, listen: false);
-    final viewInsets = EdgeInsets.fromViewPadding(WidgetsBinding.instance.window.viewInsets,WidgetsBinding.instance.window.devicePixelRatio);
+    final viewInsets = EdgeInsets.fromViewPadding(WidgetsBinding.instance.window.viewInsets, WidgetsBinding.instance.window.devicePixelRatio);
     return PopScope(
       canPop: true,
       onPopInvoked: (bool didPop) async {
@@ -474,21 +480,20 @@ class _SalvadorDaliState extends State<SalvadorDali> {
         }
       },
       child: Scaffold(
-        appBar: ShimmerAppBar(
-          isLoading: isLoading,
-          colorList: colorList,
+        appBar: AppBar(
+          backgroundColor: colorList.last,
         ),
-        backgroundColor: isLoading ? Colors.transparent : colorList.last,
+        backgroundColor: colorList.last,
         resizeToAvoidBottomInset: true,
-        persistentFooterButtons: [
+        persistentFooterButtons: !keyboardProvider.isKeyboardVisible ? [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(colorList.last),
-                  elevation: MaterialStateProperty.all(0),
-                  shape: MaterialStateProperty.all(
+                  backgroundColor: WidgetStateProperty.all(colorList.last),
+                  elevation: WidgetStateProperty.all(0),
+                  shape: WidgetStateProperty.all(
                     const CircleBorder(
                         side: BorderSide(color: Colors.black, width: 1.0)
                     ),
@@ -500,7 +505,7 @@ class _SalvadorDaliState extends State<SalvadorDali> {
                     widget.date!,
                     widget.plannerId!,
                     colorList.last,
-                    colorList.elementAt(chosenBackground),
+                    colorList.first,
                     Colors.black,
                   );
                   setState(() {});
@@ -512,11 +517,13 @@ class _SalvadorDaliState extends State<SalvadorDali> {
               ),
             ],
           ),
-        ],
+        ] : [],
         body: AnimatedPadding(
             duration: const Duration(milliseconds: 150),
             padding: EdgeInsets.only(
-              bottom: keyboardProvider.isKeyboardVisible ? viewInsets.bottom : 0,
+              bottom: keyboardProvider.isKeyboardVisible
+                  ? viewInsets.bottom
+                  : 0,
             ),
             child: _buildBody(deviceWidth, deviceHeight)
         ),
@@ -532,32 +539,29 @@ class _SalvadorDaliState extends State<SalvadorDali> {
           imageUrl: randomImage,
           imageAlignment: Alignment.center,
         ),
-        if (isLoading) const ShimmerLoading(
-          isLoading: true,
-          child: PlaceholderForPage(),
-        ) else
-          Padding(
-            padding: const EdgeInsets.only(top: 3),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Flexible(
-                  child: FutureBuilder<SingleChildScrollView>(
-                    future: taskFuture,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else {
-                        return snapshot.data ?? Container();
-                      }
-                    },
-                  ),
+        Padding(
+          padding: const EdgeInsets.only(top: 3),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Flexible(
+                child: FutureBuilder<SingleChildScrollView>(
+                  future: taskFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      return snapshot.data ?? Container();
+                    }
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
+        ),
       ],
     );
   }
