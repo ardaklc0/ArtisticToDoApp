@@ -92,7 +92,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-Future<SingleChildScrollView> createPlanner(String dateTime, int plannerId, Color dateColor, Color? taskColor, Color? textColor) async {
+Future<SingleChildScrollView> createPlanner(String dateTime, int plannerId, Color dateColor, Color? taskColor, Color? textColor, {ScrollController? assignedController}) async {
   List<TaskContainerTest> newContainer = [];
   DateFormat inputFormat = DateFormat("M/d/yyyy");
   DateTime parsedDateTime = inputFormat.parse(dateTime);
@@ -100,7 +100,7 @@ Future<SingleChildScrollView> createPlanner(String dateTime, int plannerId, Colo
   DateFormat dayFormat = DateFormat('EEEE');
   String date = "";
   String day = "";
-  ScrollController controller = ScrollController(initialScrollOffset: 0.0);
+  assignedController ??= ScrollController(initialScrollOffset: 0.0);
   var tasks = await getTasks(plannerId);
   for (int i = 0; i < 7; i++) {
     date = dateFormat.format(parsedDateTime);
@@ -119,7 +119,7 @@ Future<SingleChildScrollView> createPlanner(String dateTime, int plannerId, Colo
     parsedDateTime = parsedDateTime.add(const Duration(days: 1));
   }
   return SingleChildScrollView(
-      controller: controller,
+      controller: assignedController,
       child: Column(
         children: [
           ...newContainer
