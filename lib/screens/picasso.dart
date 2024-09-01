@@ -14,6 +14,7 @@ import '../provider/task_provider.dart';
 import '../services/planner_service.dart';
 import '../services/task_service.dart';
 import '../ui/helper/common_functions.dart';
+import '../ui/helper/common_variables.dart';
 import '../ui/widgets/image_container.dart';
 String randomImage = randomImageChooser("Picasso");
 class Picasso extends StatefulWidget {
@@ -27,20 +28,26 @@ class Picasso extends StatefulWidget {
 class _PicassoState extends State<Picasso> {
   late Future<SingleChildScrollView> taskFuture;
   late List<Color> colorList;
+  late ScrollController scrollController;
   String error = '';
   Set<String> selectedDays = {};
+  late TaskProvider mainTaskProvider;
 
   @override
   void initState() {
     super.initState();
     List<Color> chosenColors = picassoColors.firstWhere((element) => element.fileName.contains(randomImage)).colors;
     colorList = [chosenColors.first, chosenColors.last];
+    mainTaskProvider = Provider.of<TaskProvider>(context, listen: false);
+    double creationOffset = createOffsetWithRespectToChosenDay(widget.date!);
+    scrollController = ScrollController(initialScrollOffset: creationOffset);
     taskFuture = createPlanner(
       widget.date!,
       widget.plannerId!,
       colorList.last,
       colorList.first,
       Colors.black,
+      assignedController: scrollController,
     );
   }
   Future showDaysToChoose() async {
@@ -154,6 +161,15 @@ class _PicassoState extends State<Picasso> {
       },
     );
   }
+
+  double createOffsetWithRespectToChosenDay(String date) {
+    final double deviceHeight = MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.height;
+    final containerSize = (deviceHeight * heightProportionOfDateContainer + deviceHeight * 0.33 + 20);
+    DateTime startDate = DateFormat('M/d/yyyy').parse(widget.date!);
+    DateTime chosenDate = DateFormat('M/d/yyyy').parse(date);
+    return (chosenDate.difference(startDate).inDays * containerSize);
+  }
+
   Future showSaveScreen() async {
     TextEditingController controller = TextEditingController(text: "");
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
@@ -428,6 +444,8 @@ class _PicassoState extends State<Picasso> {
                           plannerId: widget.plannerId!,
                         );
                         await insertTask(newTask);
+                        double offset = createOffsetWithRespectToChosenDay(formatDate);
+                        mainTaskProvider.setInitialOffset(offset);
                         setState(() {});
                         taskProvider.setPrioColor(Colors.black);
                         chosenDayProvider.clearChosenDay();
@@ -444,6 +462,8 @@ class _PicassoState extends State<Picasso> {
                           await insertTask(newTask);
                         }
                         setState(() {});
+                        double offset = createOffsetWithRespectToChosenDay(chosenDayProvider.chosenDay.first);
+                        mainTaskProvider.setInitialOffset(offset);
                         taskProvider.setPrioColor(Colors.black);
                         chosenDayProvider.clearChosenDay();
                         if (!context.mounted) return;
@@ -482,6 +502,13 @@ class _PicassoState extends State<Picasso> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: colorList.last,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop();
+              mainTaskProvider.setInitialOffset(0.0);
+            },
+          ),
         ),
         backgroundColor: colorList.last,
         resizeToAvoidBottomInset: true,
@@ -507,6 +534,7 @@ class _PicassoState extends State<Picasso> {
                     colorList.last,
                     colorList.first,
                     Colors.black,
+                    assignedController: ScrollController(initialScrollOffset: mainTaskProvider.initialOffset),
                   );
                   setState(() {});
                 },
