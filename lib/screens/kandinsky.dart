@@ -1,31 +1,32 @@
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:pomodoro2/services/edvard_munch_colors.dart';
+import 'package:pomodoro2/services/kandinsky_colors.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import '../main.dart';
 import '../models/planner_model.dart';
 import '../models/task_model.dart';
 import '../provider/chosen_day_provider.dart';
 import '../provider/keyboard_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../main.dart';
 import '../provider/navbar_provider.dart';
 import '../provider/task_provider.dart';
-import '../services/osman_hamdi_colors.dart';
 import '../services/planner_service.dart';
 import '../services/task_service.dart';
 import '../ui/helper/common_functions.dart';
 import '../ui/helper/common_variables.dart';
 import '../ui/widgets/image_container.dart';
-String randomImage = randomImageChooser("OsmanHamdi");
-class OsmanHamdi extends StatefulWidget {
-  const OsmanHamdi({super.key, required this.title, this.plannerId, this.date});
+String randomImage =  randomImageChooser("Kandinsky");
+class Kandinsky extends StatefulWidget {
+  const Kandinsky({super.key, required this.title, this.plannerId, this.date});
   final String title;
   final int? plannerId;
   final String? date;
   @override
-  State<OsmanHamdi> createState() => _OsmanHamdiState();
+  State<Kandinsky> createState() => _KandinskyState();
 }
-class _OsmanHamdiState extends State<OsmanHamdi> {
+class _KandinskyState extends State<Kandinsky> {
   late Future<SingleChildScrollView> taskFuture;
   late List<Color> colorList;
   late ScrollController scrollController;
@@ -36,7 +37,7 @@ class _OsmanHamdiState extends State<OsmanHamdi> {
   @override
   void initState() {
     super.initState();
-    List<Color> chosenColors = osmanHamdiColors.firstWhere((element) => element.fileName.contains(randomImage)).colors;
+    List<Color> chosenColors = kandinskyColors.firstWhere((element) => element.fileName.contains(randomImage)).colors;
     colorList = [chosenColors.first, chosenColors.last];
     mainTaskProvider = Provider.of<TaskProvider>(context, listen: false);
     String today = DateFormat('M/d/yyyy').format(DateTime.now());

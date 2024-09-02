@@ -95,6 +95,8 @@ List<Artist> artists = [
   Artist(name: 'Van Gogh', imagePath: 'assets/images/VanGogh/1.jpg', artistId: 'VanGogh'),
   Artist(name: 'Jan Vermeer', imagePath: 'assets/images/JohannesVermeer/1.jpg', artistId: 'JohannesVermeer'),
   Artist(name: 'Cezanne', imagePath: 'assets/images/Cezanne/1.jpg', artistId: 'Cezanne'),
+  Artist(name: 'Edvard Munch', imagePath: 'assets/images/EdvardMunch/1.jpg', artistId: 'EdvardMunch'),
+  Artist(name: 'Kandinsky', imagePath: 'assets/images/Kandinsky/1.jpg', artistId: 'Kandinsky'),
 ];
 class ArtistButton extends StatelessWidget {
   final VoidCallback? onTap;
