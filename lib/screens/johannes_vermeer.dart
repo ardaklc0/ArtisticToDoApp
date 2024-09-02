@@ -41,7 +41,8 @@ class _JohannesVermeerState extends State<JohannesVermeer> {
     List<Color> chosenColors = johannesVermeerColors.firstWhere((element) => element.fileName.contains(randomImage)).colors;
     colorList = [chosenColors.first, chosenColors.last];
     mainTaskProvider = Provider.of<TaskProvider>(context, listen: false);
-    double creationOffset = createOffsetWithRespectToChosenDay(widget.date!);
+    String today = DateFormat('M/d/yyyy').format(DateTime.now());
+    double creationOffset = createOffsetWithRespectToChosenDay(today);
     scrollController = ScrollController(initialScrollOffset: creationOffset);
     taskFuture = createPlanner(
       widget.date!,
