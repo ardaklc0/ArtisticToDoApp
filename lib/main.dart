@@ -9,8 +9,10 @@ import 'package:pomodoro2/provider/planner_provider.dart';
 import 'package:pomodoro2/provider/task_provider.dart';
 import 'package:pomodoro2/provider/task_update_provider.dart';
 import 'package:pomodoro2/provider/theme_provider.dart';
+import 'package:pomodoro2/screens/edvard_munch.dart';
 import 'package:pomodoro2/screens/gustav_klimt.dart';
 import 'package:pomodoro2/screens/home_page_test.dart';
+import 'package:pomodoro2/screens/kandinsky.dart';
 import 'package:pomodoro2/screens/monet.dart';
 import 'package:pomodoro2/screens/osman_hamdi.dart';
 import 'package:pomodoro2/screens/picasso.dart';
@@ -85,6 +87,8 @@ class MyApp extends StatelessWidget {
           '/picasso': (context) => const Picasso(title: 'Picasso Home Page'),
           '/salvador_dali': (context) => const SalvadorDali(title: 'Salvador Dali Page'),
           '/van_gogh': (context) => const VanGogh(title: 'Van Gogh Page'),
+          '/edvard_munch': (context) => const EdvardMunch(title: 'Edvard Munch Page'),
+          '/kandinsky': (context) => const Kandinsky(title: 'Kandinsky Page'),
           '/home_page_test': (context) => const HomePageTest()
         },
       ),

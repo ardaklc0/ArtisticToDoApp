@@ -11,7 +11,9 @@ import 'package:shimmer/shimmer.dart';
 import '../../models/planner_model.dart';
 import '../../provider/navbar_provider.dart';
 import '../../screens/cezanne.dart';
+import '../../screens/edvard_munch.dart';
 import '../../screens/gustav_klimt.dart';
+import '../../screens/kandinsky.dart';
 import '../../screens/monet.dart';
 import '../../screens/osman_hamdi.dart';
 import '../../screens/picasso.dart';
@@ -39,6 +41,10 @@ void goToArtist(BuildContext context, String artist, int plannerId, String date)
         return JohannesVermeer(title: "JohannesVermeer", plannerId: plannerId, date: date);
       case "Cezanne":
         return Cezanne(title: "Cezanne", plannerId: plannerId, date: date);
+      case "EdvardMunch":
+        return EdvardMunch(title: "EdvardMunch", plannerId: plannerId, date: date);
+      case "Kandinsky":
+        return Kandinsky(title: "Kandinsky", plannerId: plannerId, date: date);
       default:
         throw ArgumentError("Unsupported artist: $artist");
     }
@@ -181,11 +187,11 @@ List<Container> colorContainers(List<Color> colorList){
   }
   return listBoxes;
 }
-Future<List<Color>> sortedColors(String randomImage) async {
+Future<List<Color>> sortedColors() async {
   // take all colors for every image
   for (int i = 1; i <= 10; i++) {
     List<Color> colorPalettes = [];
-    final PaletteGenerator paletteGenerator = await PaletteGenerator.fromImageProvider(AssetImage("assets/images/Cezanne/$i.jpg"));
+    final PaletteGenerator paletteGenerator = await PaletteGenerator.fromImageProvider(AssetImage("assets/images/EdvardMunch/$i.jpg"));
     for (var element in paletteGenerator.paletteColors) {
       colorPalettes.add(element.color);
     }
@@ -195,20 +201,19 @@ Future<List<Color>> sortedColors(String randomImage) async {
       return hslA.lightness.compareTo(hslB.lightness);
     });
     // write the file name color for each image
-    debugPrint("CezanneColors(fileName: 'assets/images/Cezanne/$i.jpg', colors: const [${colorPalettes.elementAt(2)}, ${colorPalettes.last}]),");
+    debugPrint("EdvardMunchColors(fileName: 'assets/images/EdvardMunch/$i.jpg', colors: const [${colorPalettes.elementAt(2)}, ${colorPalettes.last}]),");
   }
-
   List<Color> colorPalettes = [];
-  final PaletteGenerator paletteGenerator = await PaletteGenerator.fromImageProvider(AssetImage(randomImage));
-  for (var element in paletteGenerator.paletteColors) {
-    colorPalettes.add(element.color);
-  }
-  colorPalettes.sort((a, b) {
-    final hslA = HSLColor.fromColor(a);
-    final hslB = HSLColor.fromColor(b);
-    return hslA.lightness.compareTo(hslB.lightness);
-  });
-  debugPrint("Color Palettes: $colorPalettes");
+  //final PaletteGenerator paletteGenerator = await PaletteGenerator.fromImageProvider(AssetImage(randomImage));
+  //for (var element in paletteGenerator.paletteColors) {
+  //  colorPalettes.add(element.color);
+  //}
+  //colorPalettes.sort((a, b) {
+  //  final hslA = HSLColor.fromColor(a);
+  //  final hslB = HSLColor.fromColor(b);
+  //  return hslA.lightness.compareTo(hslB.lightness);
+  //});
+  //debugPrint("Color Palettes: $colorPalettes");
   return colorPalettes;
 }
 class ShimmerLoading extends StatelessWidget {
