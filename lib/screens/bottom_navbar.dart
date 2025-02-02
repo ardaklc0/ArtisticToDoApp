@@ -50,7 +50,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
         ),
         PersistentBottomNavBarItem(
-          icon: const Icon(Icons.photo, color: Colors.black),
+          icon: const Icon(Icons.brush, color: Colors.black),
           title: ("Gallery"),
           activeColorPrimary: Colors.black,
           textStyle:GoogleFonts.roboto(
