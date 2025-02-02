@@ -130,4 +130,33 @@ List<Artist> artistEntities = [
     artistBirthDate: 'January, 1839',
     artistDeathDate: 'October, 1906',
   ),
+  Artist(
+      name: 'Edvard Munch',
+      imagePath: 'assets/images/EdvardMunch/1.jpg',
+      artistId: 'EdvardMunch',
+      artistDescription: 'Edvard Munch was a Norwegian painter and printmaker whose intensely '
+          'evocative treatment of psychological themes built upon some of the main tenets of '
+          'late 19th-century Symbolism and greatly influenced German Expressionism in the early '
+          '20th century. His best-known work is The Scream, painted in 1893. Munch\'s work '
+          'is known for its dramatic and expressive treatment of emotion. Munch\'s father'
+          ' died of tuberculosis in 1868, and his mother died of the same disease in 1869. '
+          'Munch was raised by his father\'s brother, Christian Munch, who was a priest. '
+          'Christian Munch\'s strict religious temperament was a source of much discord for Edvard, '
+          'who often rebelled against him.',
+    artistBirthDate: 'December, 1863',
+    artistDeathDate: 'January, 1944',
+  ),
+  Artist(
+      name: 'Kandinsky',
+      imagePath: 'assets/images/Kandinsky/2.jpg',
+      artistId: 'Kandinsky',
+      artistDescription: 'Wassily Wassilyevich Kandinsky was a Russian painter and art theorist. '
+          'Kandinsky is generally credited as the pioneer of abstract art. Born in Moscow, Kandinsky '
+          'spent his childhood in Odessa, where he graduated at Grekov Odessa Art school. He enrolled '
+          'at the University of Moscow, studying law and economics. Successful in his profession—he was '
+          'offered a professorship at the University of Dorpat—Kandinsky began painting studies (life-drawing, '
+          'sketching and anatomy) at the age of 30.',
+    artistBirthDate: 'December, 1866',
+    artistDeathDate: 'December, 1944',
+  )
 ];
