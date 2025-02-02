@@ -148,7 +148,7 @@ List<Artist> artistEntities = [
   ),
   Artist(
       name: 'Kandinsky',
-      imagePath: 'assets/images/Kandinsky/1.jpg',
+      imagePath: 'assets/images/Kandinsky/2.jpg',
       artistId: 'Kandinsky',
       artistDescription: 'Wassily Wassilyevich Kandinsky was a Russian painter and art theorist. '
           'Kandinsky is generally credited as the pioneer of abstract art. Born in Moscow, Kandinsky '
